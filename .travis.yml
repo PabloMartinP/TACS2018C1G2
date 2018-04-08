@@ -1,9 +1,9 @@
 language: java
 jdk:
  - oraclejdk8
+before_script: cd snake
 deploy:
  provider: heroku
  api-key:
   secure: $HEROKU_API_KEY
-before_script: cd snake
-app: tacs2018-snake
+ app: tacs2018-snake
