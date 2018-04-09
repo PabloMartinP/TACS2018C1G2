@@ -22,7 +22,7 @@ public class TransaccionRestController {
     }
     
     @GetMapping("/usuarios/{idUsuario}/transacciones/{moneda}")
-    public DetalleTransaccionesVo obtenerTodas(@RequestParam Long idUsuario, @RequestParam String moneda) {
+    public DetalleTransaccionesVo obtenerTodas(@PathVariable Long idUsuario, @PathVariable String moneda) {
         Moneda monedaMock = new Moneda("DogeCoin", 1.01, 3.55);
         
         List<Transaccion> transacciones = new ArrayList<>();
