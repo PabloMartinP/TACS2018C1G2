@@ -13,19 +13,28 @@ public class UsuarioRestController {
 
     @PostMapping("/usuarios")
     public Usuario guardar(@RequestBody Usuario usuario) {
-        Usuario respuesta = new Usuario("admin", "admin", null, null, new ArrayList<>());
+        Usuario respuesta = new Usuario("admin", "admin", new ArrayList<>(), null, new ArrayList<>());
         return respuesta;
     }
-    
+
     @GetMapping("/usuarios/{id}/portfolio")
-    public List<Billetera> obtenerPortfolio (@RequestParam String id){
+    public List<Billetera> obtenerPortfolio(@RequestParam Long id) {
         ArrayList<Billetera> portfolio = new ArrayList<>();
-        
+
         Moneda bitcoin = new Moneda("Bitcoin", new Double("573.137"), new Double("1.0"));
-        portfolio.add(new Billetera (bitcoin, new Double("0.01")));
+        portfolio.add(new Billetera(bitcoin, new Double("0.01")));
         Moneda ethereum = new Moneda("Ethereum", new Double("378.412"), new Double("0.0560545"));
-        portfolio.add(new Billetera (ethereum, new Double("0.005")));
-        
+        portfolio.add(new Billetera(ethereum, new Double("0.005")));
+
         return portfolio;
     }
+
+    @GetMapping("/usuarios/{id}/portfolio/{moneda}")
+    public Billetera obtenerBilletera(@RequestParam Long id, @RequestParam String moneda) {
+        Moneda bitcoin = new Moneda("Bitcoin", new Double("573.137"), new Double("1.0"));
+        Billetera billetera = new Billetera(bitcoin, 10.0);
+        
+        return billetera;
+    }
+
 }

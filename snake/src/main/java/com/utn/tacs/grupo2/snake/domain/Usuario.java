@@ -11,7 +11,7 @@ public class Usuario {
 
     private String user;
     private String password;
-    private Billetera billetera;
+    private List<Billetera> portfolio;
     private Date ultimoAcceso;
     private List<Transaccion> transacciones;
 }
