@@ -13,7 +13,6 @@ public class MonedaRestController {
 
     @GetMapping("/monedas")
     public List<Moneda> obtenerTodas() {
-
         ArrayList<Moneda> monedas = new ArrayList<>();
 
         monedas.add(new Moneda("Bitcoin", new Double("573.137"), new Double("1.0")));
