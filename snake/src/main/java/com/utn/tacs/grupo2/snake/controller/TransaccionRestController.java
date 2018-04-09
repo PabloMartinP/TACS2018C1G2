@@ -3,12 +3,10 @@ package com.utn.tacs.grupo2.snake.controller;
 import com.utn.tacs.grupo2.snake.domain.Moneda;
 import com.utn.tacs.grupo2.snake.domain.TipoDeTransaccion;
 import com.utn.tacs.grupo2.snake.domain.Transaccion;
-import com.utn.tacs.grupo2.snake.vo.DetalleTransaccionesVo;
 import java.util.ArrayList;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.Date;
 import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -20,16 +18,16 @@ public class TransaccionRestController {
         Transaccion transaccionMock = new Transaccion(moneda, new Date(), 33.0, moneda.getCotizacionBitcoin(), TipoDeTransaccion.COMPRA);
         return transaccionMock;
     }
-    
-    @GetMapping("/usuarios/{idUsuario}/transacciones/{moneda}")
-    public DetalleTransaccionesVo obtenerTodas(@PathVariable Long idUsuario, @PathVariable String moneda) {
+
+    @GetMapping("/transacciones/usuarios/{idUsuario}/monedas/{moneda}")
+    public List<Transaccion> obtenerTodas(@PathVariable Long idUsuario, @PathVariable String moneda) {
         Moneda monedaMock = new Moneda("DogeCoin", 1.01, 3.55);
-        
+
         List<Transaccion> transacciones = new ArrayList<>();
         transacciones.add(new Transaccion(monedaMock, new Date(), 33.0, monedaMock.getCotizacionBitcoin(), TipoDeTransaccion.COMPRA));
         transacciones.add(new Transaccion(monedaMock, new Date(), 20.0, monedaMock.getCotizacionBitcoin(), TipoDeTransaccion.VENTA));
         transacciones.add(new Transaccion(monedaMock, new Date(), 10.0, monedaMock.getCotizacionBitcoin(), TipoDeTransaccion.COMPRA));
-        
-        return new DetalleTransaccionesVo(23.0, monedaMock.getCotizacionBitcoin(), transacciones);
+
+        return transacciones;
     }
 }

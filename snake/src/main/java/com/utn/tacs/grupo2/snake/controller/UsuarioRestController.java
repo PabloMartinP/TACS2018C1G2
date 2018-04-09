@@ -21,18 +21,18 @@ public class UsuarioRestController {
     }
 
     @GetMapping("/usuarios/{id}")
-    public Usuario obtener(@PathVariable Long id){
+    public Usuario obtener(@PathVariable Long id) {
         List<Billetera> portfolio = new ArrayList<>();
         Moneda bitcoin = new Moneda("Bitcoin", new Double("573.137"), new Double("1.0"));
         portfolio.add(new Billetera(bitcoin, new Double("0.01")));
-        
+
         List<Transaccion> transacciones = new ArrayList<>();
         transacciones.add(new Transaccion(bitcoin, new Date(), 33.0, bitcoin.getCotizacionBitcoin(), TipoDeTransaccion.COMPRA));
-        
+
         Usuario usuario = new Usuario("user", "pass", portfolio, new Date(), transacciones);
         return usuario;
     }
-    
+
     @GetMapping("/usuarios/{id}/portfolio")
     public List<Billetera> obtenerPortfolio(@PathVariable Long id) {
         List<Billetera> portfolio = new ArrayList<>();
@@ -45,12 +45,4 @@ public class UsuarioRestController {
         return portfolio;
     }
 
-    @GetMapping("/usuarios/{id}/portfolio/{moneda}")
-    public Billetera obtenerBilletera(@PathVariable Long id, @PathVariable String moneda) {
-        Moneda bitcoin = new Moneda("Bitcoin", new Double("573.137"), new Double("1.0"));
-        Billetera billetera = new Billetera(bitcoin, 10.0);
-        
-        return billetera;
-    }
-    
 }
