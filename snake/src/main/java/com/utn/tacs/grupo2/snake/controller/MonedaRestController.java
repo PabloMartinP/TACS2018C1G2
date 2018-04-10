@@ -4,6 +4,7 @@ import com.utn.tacs.grupo2.snake.domain.Moneda;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +14,6 @@ public class MonedaRestController {
 
     @GetMapping("/monedas")
     public List<Moneda> obtenerTodas() {
-
         ArrayList<Moneda> monedas = new ArrayList<>();
 
         monedas.add(new Moneda("Bitcoin", new Double("573.137"), new Double("1.0")));
@@ -22,4 +22,10 @@ public class MonedaRestController {
         return monedas;
     }
 
+    @GetMapping("/monedas/{moneda}/cotizacion")
+    public Double obtenerCotizacion(@PathVariable String moneda) {
+        Moneda monedaMock = new Moneda("Bitcoin", new Double("573.137"), new Double("1.0"));
+
+        return monedaMock.getCotizacionBitcoin();
+    }
 }
