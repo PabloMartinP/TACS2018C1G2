@@ -14,19 +14,19 @@ public class TransaccionRestController {
 
     @PostMapping("/transacciones")
     public Transaccion guardar(@RequestBody Transaccion transaccion) {
-        Moneda moneda = new Moneda("DogeCoin", 1.01, 3.55);
-        Transaccion transaccionMock = new Transaccion(moneda, new Date(), 33.0, moneda.getCotizacionBitcoin(), TipoDeTransaccion.COMPRA);
+        Moneda moneda = new Moneda("DogeCoin");
+        Transaccion transaccionMock = new Transaccion(moneda, new Date(), 33.0, 3.55, TipoDeTransaccion.COMPRA);
         return transaccionMock;
     }
 
     @GetMapping("/transacciones/usuarios/{idUsuario}/monedas/{moneda}")
     public List<Transaccion> obtenerTodas(@PathVariable Long idUsuario, @PathVariable String moneda) {
-        Moneda monedaMock = new Moneda("DogeCoin", 1.01, 3.55);
+        Moneda monedaMock = new Moneda("DogeCoin");
 
         List<Transaccion> transacciones = new ArrayList<>();
-        transacciones.add(new Transaccion(monedaMock, new Date(), 33.0, monedaMock.getCotizacionBitcoin(), TipoDeTransaccion.COMPRA));
-        transacciones.add(new Transaccion(monedaMock, new Date(), 20.0, monedaMock.getCotizacionBitcoin(), TipoDeTransaccion.VENTA));
-        transacciones.add(new Transaccion(monedaMock, new Date(), 10.0, monedaMock.getCotizacionBitcoin(), TipoDeTransaccion.COMPRA));
+        transacciones.add(new Transaccion(monedaMock, new Date(), 33.0, 3.55, TipoDeTransaccion.COMPRA));
+        transacciones.add(new Transaccion(monedaMock, new Date(), 20.0, 3.55, TipoDeTransaccion.VENTA));
+        transacciones.add(new Transaccion(monedaMock, new Date(), 10.0, 3.55, TipoDeTransaccion.COMPRA));
 
         return transacciones;
     }

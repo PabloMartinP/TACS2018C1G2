@@ -1,8 +1,11 @@
 package com.utn.tacs.grupo2.snake.controller;
 
+import com.utn.tacs.grupo2.snake.domain.CotizacionMoneda;
 import com.utn.tacs.grupo2.snake.domain.Moneda;
 import java.util.ArrayList;
 import java.util.List;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,16 +19,20 @@ public class MonedaRestController {
     public List<Moneda> obtenerTodas() {
         ArrayList<Moneda> monedas = new ArrayList<>();
 
-        monedas.add(new Moneda("Bitcoin", new Double("573.137"), new Double("1.0")));
-        monedas.add(new Moneda("Ethereum", new Double("378.412"), new Double("0.0560545")));
+        monedas.add(new Moneda("Bitcoin"));
+        monedas.add(new Moneda("Ethereum"));
+
+        for (Moneda moneda : monedas) {
+            moneda.add(linkTo(methodOn(MonedaRestController.class).obtenerCotizacion(moneda.getNombre())).withRel("cotizacion"));
+        }
 
         return monedas;
     }
 
     @GetMapping("/monedas/{moneda}/cotizacion")
-    public Double obtenerCotizacion(@PathVariable String moneda) {
-        Moneda monedaMock = new Moneda("Bitcoin", new Double("573.137"), new Double("1.0"));
+    public CotizacionMoneda obtenerCotizacion(@PathVariable String moneda) {
+        CotizacionMoneda cotizacion = new CotizacionMoneda(moneda, new Double("573.137"), new Double("1.0"));
 
-        return monedaMock.getCotizacionBitcoin();
+        return cotizacion;
     }
 }
