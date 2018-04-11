@@ -24,7 +24,7 @@ public class MonedaRestController {
         return monedas;
     }
 
-    @GetMapping("/monedas/{moneda}/cotizacion")
+    @GetMapping("/monedas/{nombreMoneda}/cotizacion")
     public CotizacionMonedaVo obtenerCotizacion(@PathVariable String nombreMoneda) {
         CotizacionMonedaVo cotizacion = new CotizacionMonedaVo(nombreMoneda, new Double("573.137"), new Double("1.0"));
 
