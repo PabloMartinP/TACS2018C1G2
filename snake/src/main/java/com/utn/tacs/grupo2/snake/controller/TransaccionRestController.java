@@ -3,6 +3,7 @@ package com.utn.tacs.grupo2.snake.controller;
 import com.utn.tacs.grupo2.snake.domain.Moneda;
 import com.utn.tacs.grupo2.snake.domain.TipoDeTransaccion;
 import com.utn.tacs.grupo2.snake.domain.Transaccion;
+import com.utn.tacs.grupo2.snake.vo.TransaccionVo;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,13 +21,13 @@ public class TransaccionRestController {
     }
 
     @GetMapping("/transacciones/usuarios/{idUsuario}/monedas/{moneda}")
-    public List<Transaccion> obtenerTodas(@PathVariable Long idUsuario, @PathVariable String moneda) {
+    public List<TransaccionVo> obtenerTodas(@PathVariable Long idUsuario, @PathVariable String moneda) {
         Moneda monedaMock = new Moneda("DogeCoin");
 
-        List<Transaccion> transacciones = new ArrayList<>();
-        transacciones.add(new Transaccion(monedaMock, new Date(), 33.0, 3.55, TipoDeTransaccion.COMPRA));
-        transacciones.add(new Transaccion(monedaMock, new Date(), 20.0, 3.55, TipoDeTransaccion.VENTA));
-        transacciones.add(new Transaccion(monedaMock, new Date(), 10.0, 3.55, TipoDeTransaccion.COMPRA));
+        List<TransaccionVo> transacciones = new ArrayList<>();
+        transacciones.add(new TransaccionVo(new Transaccion(monedaMock, new Date(), 33.0, 3.55, TipoDeTransaccion.COMPRA)));
+        transacciones.add(new TransaccionVo(new Transaccion(monedaMock, new Date(), 20.0, 3.55, TipoDeTransaccion.VENTA)));
+        transacciones.add(new TransaccionVo(new Transaccion(monedaMock, new Date(), 10.0, 3.55, TipoDeTransaccion.COMPRA)));
 
         return transacciones;
     }
