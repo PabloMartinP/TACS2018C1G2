@@ -18,8 +18,7 @@ public class BilleteraVo extends ResourceSupport {
         this.moneda = new MonedaVo(billetera.getMoneda());
         this.cantidad = billetera.getCantidad();
 
-        this.add(linkTo(methodOn(TransaccionRestController.class)
-                .obtenerTodas(usuarioId, billetera.getMoneda().getNombre())).withRel("transacciones"));
+        this.add(linkTo(methodOn(TransaccionRestController.class).obtenerTodas(usuarioId, billetera.getMoneda().getNombre())).withRel("transacciones"));
         this.add(linkTo(methodOn(UsuarioRestController.class).obtener(usuarioId)).withRel("usuario"));
 
     }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class TransaccionRestController {
 
     @PostMapping("/transacciones")
-    public Transaccion guardar(@RequestBody Transaccion transaccion) {
+    public Transaccion realizar(@RequestBody Transaccion transaccion) {
         Moneda moneda = new Moneda("DogeCoin");
         Transaccion transaccionMock = new Transaccion(moneda, new Date(), 33.0, 3.55, TipoDeTransaccion.COMPRA);
         return transaccionMock;
