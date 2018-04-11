@@ -11,6 +11,10 @@ import org.springframework.hateoas.ResourceSupport;
 
 @Data
 @AllArgsConstructor
+/**
+ * La cotizacion de la moneda no se persiste sino que se consulta en
+ * https://coinmarketcap.com/api/.
+ */
 public class CotizacionMonedaVo extends ResourceSupport {
 
     private String monedaNombre;
