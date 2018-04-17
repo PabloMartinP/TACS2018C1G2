@@ -18,63 +18,34 @@ import org.telegram.telegrambots.api.objects.Update;
  * @author fiok
  */
 public class Mensaje {
-    Update _update;
-    final String OPERACIONES = "/monedas: lista de monedas, \n/comprar b 10: Compra 10 Bitcoins\n/vender e 10: Vende 10 Ethereum\n/precio b: Precio(Cotizacion) del Bitcoin";
+    MensajeDeTelegram nuevoMensaje;
     
-    public Mensaje(Update update){
-        this._update = update;
+    public Mensaje(Update nuevoMensaje){
+        this.nuevoMensaje =new MensajeDeTelegram(nuevoMensaje);
     }
     
     private String getRespuesta(){
-        String mensaje;
         String resultado = "";
-        String[] mensajeSeparado;
-        String mensajeSinBarra;
-        int cantidad = 0;
-        String moneda = "_";
+        
         try {            
-            mensaje = _update.getMessage().getText();
-            //PROCESO: 
-            if(mensaje.startsWith("/")){
-                mensajeSinBarra = mensaje.replace("/", "");
-                mensajeSeparado = mensajeSinBarra.split(" ");
-                EnumOperaciones operacion = TelegramUtils.getOperacion(mensajeSeparado[0].substring(0, 1));
-                if(mensajeSeparado.length>1)
-                    moneda= mensajeSeparado[1].substring(0, 1);
-                if(mensajeSeparado.length>2)
-                    cantidad = Integer.parseInt(mensajeSeparado[2]);
-                
-                switch(operacion){
-                    case monedas: //     /m
-                        resultado = "Tenes 10b, 5e";
-                        break;
-                    case comprar://     /c 10 b
-                        resultado = "Compraste " + String.valueOf(cantidad) + " " + moneda;
-                        break;
-                    case vender://      /v 10 b
-                        resultado = "Vendiste " + String.valueOf(cantidad) + " " + moneda;
-                        break;
-                    case precio://      /p b
-                        resultado = "Cotizacion de " + moneda + ": $123";
-                        break;
-                    default:
-                        resultado = OPERACIONES;
-                }
-                return resultado; 
-            }else{
-                resultado = "what?\n" + OPERACIONES;
-            }
-        } catch (NumberFormatException e) {
             
-            resultado =_update.getMessage().getText() + ":Rompiste todo!:"+ e.getMessage() + OPERACIONES;
+            if(nuevoMensaje.esUnaOperacion()){
+                resultado = nuevoMensaje.getOperacion().getResultado(nuevoMensaje.getPartes());
+            }else{
+                resultado = "Hola**" + nuevoMensaje.getPartes().getTexto() + ": \n" + OperacionDeTelegram.OPERACIONES;
+            }
+
+        } catch (Exception e) {
+            //TODO: Cuando este estable no mostrar el error 
+            resultado =nuevoMensaje.getPartes().getTexto() + ":Rompiste todo!:"+ e.getMessage() + OperacionDeTelegram.OPERACIONES;
         }
                 
         return resultado;
     }
     
     public SendMessage returnMessage(){
-        SendMessage message = new SendMessage()
-                .setChatId(_update.getMessage().getChatId())
+        SendMessage message = new SendMessage()                
+                .setChatId(nuevoMensaje.getUpdateObject().getMessage().getChatId())
                 .setText( getRespuesta());
         return message;
     }
