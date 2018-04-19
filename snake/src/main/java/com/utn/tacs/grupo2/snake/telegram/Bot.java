@@ -32,11 +32,12 @@ public class Bot extends TelegramLongPollingBot {
     }
     
     @Override
-    public void onUpdateReceived(org.telegram.telegrambots.api.objects.Update update) {        
+    public void onUpdateReceived(org.telegram.telegrambots.api.objects.Update nuevoMensaje) {        
         // We check if the update has a message and the message has text
-        if (update.hasMessage() && update.getMessage().hasText()) {            
+        if (nuevoMensaje.hasMessage() && nuevoMensaje.getMessage().hasText()) {            
             try {
-                Mensaje mensaje = new Mensaje(update);
+                Mensaje mensaje = new Mensaje(nuevoMensaje);
+                
                 execute(mensaje.returnMessage()); // Call method to send the message
             } catch (TelegramApiException e) {
                 e.printStackTrace();
