@@ -19,6 +19,6 @@ public class Transaccion {
     private Date fechaDeCreacion;
     private BigDecimal cantidad;
     private BigDecimal cotizacion;
-    private TipoDeTransaccion tipo;
+    private TipoTransaccion tipo;
 
 }

@@ -1,7 +1,7 @@
 package com.utn.tacs.grupo2.snake.service;
 
 import com.utn.tacs.grupo2.snake.SnakeApplicationTests;
-import com.utn.tacs.grupo2.snake.domain.TipoDeTransaccion;
+import com.utn.tacs.grupo2.snake.domain.TipoTransaccion;
 import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -38,7 +38,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
         transaccion.setMonedaNombre("bitcoin");
         transaccion.setCantidad(BigDecimal.TEN);
         transaccion.setFechaDeCreacion(new Date());
-        transaccion.setTipo(TipoDeTransaccion.COMPRA);
+        transaccion.setTipo(TipoTransaccion.COMPRA);
 
         // ejercitamos
         transaccionService.registrar(transaccion);
