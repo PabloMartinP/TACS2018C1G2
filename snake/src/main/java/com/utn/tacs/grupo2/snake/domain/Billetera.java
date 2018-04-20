@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class Billetera implements Serializable {
     private Long id;
     private String monedaNombre;
     @JoinColumn
+    @ManyToOne
     private Usuario usuario;
     private BigDecimal cantidad;
 }

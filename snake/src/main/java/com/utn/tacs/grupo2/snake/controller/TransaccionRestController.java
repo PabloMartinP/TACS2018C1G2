@@ -21,7 +21,6 @@ public class TransaccionRestController {
 
     @PostMapping("/transacciones")
     public Transaccion realizar(@RequestBody Transaccion transaccion) {
-
         return transaccionService.registrar(transaccion);
     }
 

@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.client.RestTemplate;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 @Transactional
-public class SnakeApplicationTests {
+@SpringBootTest
+@RunWith(SpringRunner.class)
+public abstract class SnakeApplicationTests {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -30,12 +30,7 @@ public class SnakeApplicationTests {
     public void setUp() {
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
     }
-
-    @After
-    public void tearDown() {
-        mockRestServiceServer.reset();
-    }
-
+    
     protected String obtenerContenidoArchivo(String rutaArchivo) throws IOException {
         File file = new ClassPathResource(rutaArchivo).getFile();
         return FileCopyUtils.copyToString(new FileReader(file));

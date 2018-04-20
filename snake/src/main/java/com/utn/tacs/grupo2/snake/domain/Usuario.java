@@ -1,7 +1,7 @@
 package com.utn.tacs.grupo2.snake.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,5 +21,5 @@ public class Usuario implements Serializable {
     private Long id;
     private String username;
     private String password;
-    private Date ultimoAcceso;
+    private LocalDateTime ultimoAcceso;
 }

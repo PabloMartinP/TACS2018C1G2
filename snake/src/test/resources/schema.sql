@@ -23,10 +23,10 @@ CREATE TABLE transaccion (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   billetera_id bigint(20) NOT NULL,
   moneda_nombre varchar(50),
-  tipo varchar(50),
   cantidad decimal(21,12),
   cotizacion decimal(21,12),
   fecha datetime,
+  tipo varchar(50),
   PRIMARY KEY (id),
   FOREIGN KEY (billetera_id) REFERENCES billetera(id),
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
