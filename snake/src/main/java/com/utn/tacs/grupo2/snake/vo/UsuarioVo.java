@@ -16,7 +16,7 @@ public class UsuarioVo extends ResourceSupport {
 
     public UsuarioVo(Usuario usuario) {
 
-        this.user = usuario.getUser();
+        this.user = usuario.getUsername();
         this.usuarioId = usuario.getId();
 
         final Link selfLink = linkTo(methodOn(UsuarioRestController.class).obtener(this.usuarioId)).withRel("self");
