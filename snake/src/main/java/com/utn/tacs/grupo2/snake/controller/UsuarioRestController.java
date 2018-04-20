@@ -16,14 +16,14 @@ public class UsuarioRestController {
 
     @PostMapping("/usuarios")
     public Usuario guardar(@RequestBody Usuario usuario) {
-        Usuario usuarioMock = new Usuario(1L, "user", "pass", new ArrayList<>(), null, new ArrayList<>());
+        Usuario usuarioMock = new Usuario(1L, "user", "pass", new ArrayList<>(), null);
         return usuarioMock;
     }
 
     @GetMapping("/usuarios/{id}")
     public UsuarioVo obtener(@PathVariable Long id) {
 
-        Usuario usuario = new Usuario(id, "user", "pass", null, new Date(), null);
+        Usuario usuario = new Usuario(id, "user", "pass", null, new Date());
 
         return new UsuarioVo(usuario);
     }
@@ -33,9 +33,9 @@ public class UsuarioRestController {
         List<BilleteraVo> portfolio = new ArrayList<>();
 
         Moneda bitcoin = new Moneda("Bitcoin");
-        portfolio.add(new BilleteraVo(new Billetera(bitcoin, new Double("0.01")), usuarioId));
+        portfolio.add(new BilleteraVo(new Billetera(bitcoin, new Double("0.01"), null), usuarioId));
         Moneda ethereum = new Moneda("Ethereum");
-        portfolio.add(new BilleteraVo(new Billetera(ethereum, new Double("0.005")), usuarioId));
+        portfolio.add(new BilleteraVo(new Billetera(ethereum, new Double("0.005"), null), usuarioId));
 
         return portfolio;
     }
