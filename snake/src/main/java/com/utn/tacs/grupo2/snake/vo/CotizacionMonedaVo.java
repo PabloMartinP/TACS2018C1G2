@@ -25,10 +25,6 @@ public class CotizacionMonedaVo extends ResourceSupport {
     private String symbol;
     private BigDecimal cotizacionDolar;
 
-    public String getMonedaNombre() {
-        return monedaNombre;
-    }
-
     @JsonProperty("id")
     public void setMonedaNombre(String monedaNombre) {
         this.monedaNombre = monedaNombre;
@@ -37,5 +33,15 @@ public class CotizacionMonedaVo extends ResourceSupport {
     @JsonProperty("price_usd")
     public void setCotizacionDolar(BigDecimal cotizacionDolar) {
         this.cotizacionDolar = cotizacionDolar;
+    }
+
+    @JsonProperty("monedaNombre")
+    public String getMonedaNombre() {
+        return this.monedaNombre;
+    }
+
+    @JsonProperty("cotizacionDolar")
+    public BigDecimal getCotizacionDolar() {
+        return this.cotizacionDolar;
     }
 }
