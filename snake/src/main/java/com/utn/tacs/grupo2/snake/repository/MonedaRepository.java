@@ -13,7 +13,7 @@ public class MonedaRepository {
 
     public CotizacionMonedaVo obtener(String monedaNombre) {
 
-        CotizacionMonedaVo[] cotizacionMonedaVo = restTemplate.getForObject("https://api.coinmarketcap.com/v1/ticker/Bitcoin/", CotizacionMonedaVo[].class);
+        CotizacionMonedaVo[] cotizacionMonedaVo = restTemplate.getForObject("https://api.coinmarketcap.com/v1/ticker/" + monedaNombre, CotizacionMonedaVo[].class);
 
         return cotizacionMonedaVo[0];
     }
