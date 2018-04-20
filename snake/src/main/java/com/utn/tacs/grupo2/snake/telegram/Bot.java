@@ -15,11 +15,28 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
  *
  * @author fiok
  */
-public class Bot extends TelegramLongPollingBot {
-    
+public class Bot extends TelegramLongPollingBot {    
     //TODO: Esto deberia estar en un archivo externo y que no se suba al repo
-    private final String TOKEN = "517166907:AAGfamZ2PBV22lQa0308JqbVT-ANcjBVVZo";
-    private final String USER = "fiokaombot";
+    //BOT DE MARTIN P.
+    private final String TOKEN_PROD = "517166907:AAGfamZ2PBV22lQa0308JqbVT-ANcjBVVZo";
+    private final String USER_PROD = "fiokaombot";
+    
+    //BOT DE MARTIN P - DEV
+    private final String TOKEN_DESA = "573734744:AAHilpuD8OC9B9FNcBiEwd3URTOtoRNrMjY";
+    private final String USER_DESA = "snaketacsbot";
+    private String TOKEN;
+    private String USER;
+    
+    public Bot(Boolean estaEnProduccion){
+        if(estaEnProduccion){
+            TOKEN = TOKEN_PROD;
+            USER = USER_PROD;
+        }else{
+            TOKEN = TOKEN_DESA;
+            USER = USER_DESA;
+        }            
+    }
+    
 
     @Override
     public String getBotToken() {
