@@ -30,11 +30,12 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
         String cotizacionBitcoinResponse = obtenerContenidoArchivo("jsons/response_cotizacionBitcoin.json");
 
         //set up
-        mockRestServiceServer.expect(requestTo("https://api.coinmarketcap.com/v1/ticker/Bitcoin/"))
+        mockRestServiceServer.expect(requestTo("https://api.coinmarketcap.com/v1/ticker/bitcoin"))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(cotizacionBitcoinResponse, MediaType.APPLICATION_JSON));
 
         Transaccion transaccion = new Transaccion();
+        transaccion.setMonedaNombre("bitcoin");
         transaccion.setCantidad(BigDecimal.TEN);
         transaccion.setFechaDeCreacion(new Date());
         transaccion.setTipo(TipoDeTransaccion.COMPRA);
