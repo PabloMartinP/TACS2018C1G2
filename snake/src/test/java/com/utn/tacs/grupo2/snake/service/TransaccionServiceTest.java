@@ -1,11 +1,12 @@
 package com.utn.tacs.grupo2.snake.service;
 
 import com.utn.tacs.grupo2.snake.SnakeApplicationTests;
+import com.utn.tacs.grupo2.snake.domain.Billetera;
 import com.utn.tacs.grupo2.snake.domain.TipoTransaccion;
 import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,10 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
                 .andRespond(withSuccess(cotizacionBitcoinResponse, MediaType.APPLICATION_JSON));
 
         Transaccion transaccion = new Transaccion();
+        transaccion.setBilletera(new Billetera(1L, "bitcoin", null, BigDecimal.ONE));
         transaccion.setMonedaNombre("bitcoin");
         transaccion.setCantidad(BigDecimal.TEN);
-        transaccion.setFechaDeCreacion(new Date());
+        transaccion.setFecha(LocalDateTime.now());
         transaccion.setTipo(TipoTransaccion.COMPRA);
 
         // ejercitamos

@@ -4,7 +4,7 @@ CREATE TABLE usuario (
   username varchar(255),
   password varchar(255) NOT NULL DEFAULT '123456',
   enabled bit(1) NOT NULL DEFAULT 1,
-  ultimoAcceso datetime,
+  ultimo_acceso datetime,
   PRIMARY KEY (id),
   UNIQUE KEY (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
@@ -27,6 +27,7 @@ CREATE TABLE transaccion (
   tipo varchar(50),
   cantidad decimal(21,12),
   cotizacion decimal(21,12),
+  fecha datetime,
   PRIMARY KEY (id),
   FOREIGN KEY (billetera_id) REFERENCES billetera(id),
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
