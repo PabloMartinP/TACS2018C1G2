@@ -1,6 +1,7 @@
 package com.utn.tacs.grupo2.snake.vo;
 
 import com.utn.tacs.grupo2.snake.domain.Transaccion;
+import java.math.BigDecimal;
 import java.util.Date;
 import lombok.Data;
 import org.springframework.hateoas.ResourceSupport;
@@ -10,12 +11,12 @@ public class TransaccionVo extends ResourceSupport {
 
     private MonedaVo moneda;
     private Date fechaDeCreacion;
-    private Double cantidad;
-    private Double cotizacion;
+    private BigDecimal cantidad;
+    private BigDecimal cotizacion;
     private String tipo;
 
     public TransaccionVo(Transaccion transaccion) {
-        this.moneda = new MonedaVo(transaccion.getMoneda());
+        this.moneda = new MonedaVo(transaccion.getMonedaNombre());
         this.fechaDeCreacion = transaccion.getFechaDeCreacion();
         this.cantidad = transaccion.getCantidad();
         this.cotizacion = transaccion.getCotizacion();

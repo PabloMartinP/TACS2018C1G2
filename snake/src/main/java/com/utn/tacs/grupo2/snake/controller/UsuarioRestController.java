@@ -1,10 +1,10 @@
 package com.utn.tacs.grupo2.snake.controller;
 
 import com.utn.tacs.grupo2.snake.domain.Billetera;
-import com.utn.tacs.grupo2.snake.domain.Moneda;
 import com.utn.tacs.grupo2.snake.domain.Usuario;
 import com.utn.tacs.grupo2.snake.vo.BilleteraVo;
 import com.utn.tacs.grupo2.snake.vo.UsuarioVo;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,10 +32,8 @@ public class UsuarioRestController {
     public List<BilleteraVo> obtenerPortfolio(@PathVariable Long usuarioId) {
         List<BilleteraVo> portfolio = new ArrayList<>();
 
-        Moneda bitcoin = new Moneda("Bitcoin");
-        portfolio.add(new BilleteraVo(new Billetera(bitcoin, new Double("0.01"), null), usuarioId));
-        Moneda ethereum = new Moneda("Ethereum");
-        portfolio.add(new BilleteraVo(new Billetera(ethereum, new Double("0.005"), null), usuarioId));
+        portfolio.add(new BilleteraVo(new Billetera("Bitcoin", new BigDecimal("0.01"), null), usuarioId));
+        portfolio.add(new BilleteraVo(new Billetera("Ethereum", new BigDecimal("0.005"), null), usuarioId));
 
         return portfolio;
     }

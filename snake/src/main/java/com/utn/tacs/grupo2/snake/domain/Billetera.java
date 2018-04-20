@@ -1,5 +1,6 @@
 package com.utn.tacs.grupo2.snake.domain;
 
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Billetera {
 
-    private Moneda moneda;
-    private Double cantidad;
+    private String monedaNombre;
+    private BigDecimal cantidad;
     private List<Transaccion> transacciones;
 }

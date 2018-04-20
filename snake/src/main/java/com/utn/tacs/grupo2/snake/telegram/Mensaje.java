@@ -5,11 +5,6 @@
  */
 package com.utn.tacs.grupo2.snake.telegram;
 
-import com.utn.tacs.grupo2.snake.controller.MonedaRestController;
-import com.utn.tacs.grupo2.snake.domain.Moneda;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 
@@ -18,35 +13,36 @@ import org.telegram.telegrambots.api.objects.Update;
  * @author fiok
  */
 public class Mensaje {
+
     MensajeDeTelegram nuevoMensaje;
-    
-    public Mensaje(Update nuevoMensaje){
-        this.nuevoMensaje =new MensajeDeTelegram(nuevoMensaje);
+
+    public Mensaje(Update nuevoMensaje) {
+        this.nuevoMensaje = new MensajeDeTelegram(nuevoMensaje);
     }
-    
-    private String getRespuesta(){
+
+    private String getRespuesta() {
         String resultado = "";
-        
-        try {            
-            
-            if(nuevoMensaje.esUnaOperacion()){
+
+        try {
+
+            if (nuevoMensaje.esUnaOperacion()) {
                 resultado = nuevoMensaje.getOperacion().getResultado(nuevoMensaje.getPartes());
-            }else{
+            } else {
                 resultado = "Hola**" + nuevoMensaje.getPartes().getTexto() + ": \n" + OperacionDeTelegram.OPERACIONES;
             }
 
         } catch (Exception e) {
-            //TODO: Cuando este estable no mostrar el error 
-            resultado =nuevoMensaje.getPartes().getTexto() + ":Rompiste todo!:"+ e.getMessage() + OperacionDeTelegram.OPERACIONES;
+            //TODO: Cuando este estable no mostrar el error
+            resultado = nuevoMensaje.getPartes().getTexto() + ":Rompiste todo!:" + e.getMessage() + OperacionDeTelegram.OPERACIONES;
         }
-                
+
         return resultado;
     }
-    
-    public SendMessage returnMessage(){
-        SendMessage message = new SendMessage()                
+
+    public SendMessage returnMessage() {
+        SendMessage message = new SendMessage()
                 .setChatId(nuevoMensaje.getUpdateObject().getMessage().getChatId())
-                .setText( getRespuesta());
+                .setText(getRespuesta());
         return message;
     }
 }

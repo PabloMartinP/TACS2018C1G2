@@ -5,12 +5,16 @@
  */
 package com.utn.tacs.grupo2.snake.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.hateoas.ResourceSupport;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 /**
  * La cotizacion de la moneda no se persiste sino que se consulta en
  * https://coinmarketcap.com/api/.
@@ -18,6 +22,20 @@ import org.springframework.hateoas.ResourceSupport;
 public class CotizacionMonedaVo extends ResourceSupport {
 
     private String monedaNombre;
-    private Double cotizacionDolar;
-    private Double cotizacionBitcoin;
+    private String symbol;
+    private BigDecimal cotizacionDolar;
+
+    public String getMonedaNombre() {
+        return monedaNombre;
+    }
+
+    @JsonProperty("id")
+    public void setMonedaNombre(String monedaNombre) {
+        this.monedaNombre = monedaNombre;
+    }
+
+    @JsonProperty("price_usd")
+    public void setCotizacionDolar(BigDecimal cotizacionDolar) {
+        this.cotizacionDolar = cotizacionDolar;
+    }
 }
