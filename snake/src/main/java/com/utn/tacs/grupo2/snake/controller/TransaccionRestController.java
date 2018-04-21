@@ -26,9 +26,9 @@ public class TransaccionRestController {
 
         List<Transaccion> transacciones = transaccionService.buscarTodas(idUsuario, moneda);
 
-        for (Transaccion transaccion : transacciones) {
+        transacciones.forEach((transaccion) -> {
             transaccionesVo.add(new TransaccionVo(transaccion));
-        }
+        });
         return transaccionesVo;
     }
 }

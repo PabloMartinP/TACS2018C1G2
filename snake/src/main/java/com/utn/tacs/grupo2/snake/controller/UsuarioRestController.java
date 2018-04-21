@@ -37,9 +37,9 @@ public class UsuarioRestController {
 
         List<Billetera> billeteras = billeteraRepository.findByUsuarioId(usuarioId);
 
-        for (Billetera billetera : billeteras) {
+        billeteras.forEach((billetera) -> {
             portfolio.add(new BilleteraVo(billetera, usuarioId));
-        }
+        });
         return portfolio;
     }
 
