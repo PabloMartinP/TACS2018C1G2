@@ -2,6 +2,7 @@ package com.utn.tacs.grupo2.snake.controller;
 
 import com.utn.tacs.grupo2.snake.domain.Billetera;
 import com.utn.tacs.grupo2.snake.domain.Usuario;
+import com.utn.tacs.grupo2.snake.domain.UsuarioInvalidoException;
 import com.utn.tacs.grupo2.snake.repository.BilleteraRepository;
 import com.utn.tacs.grupo2.snake.repository.UsuarioRepository;
 import com.utn.tacs.grupo2.snake.vo.BilleteraVo;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.ConstraintViolationException;
 
 @RestController
 @RequestMapping("/api")
@@ -21,8 +24,11 @@ public class UsuarioRestController {
 
     @PostMapping("/usuarios")
     public Usuario guardar(@RequestBody Usuario usuario) {
-
-        return usuarioRepository.save(usuario);
+        try {
+            return usuarioRepository.save(usuario);
+        } catch (ConstraintViolationException e) {
+            throw new UsuarioInvalidoException();
+        }
     }
 
     @GetMapping("/usuarios/{id}")
