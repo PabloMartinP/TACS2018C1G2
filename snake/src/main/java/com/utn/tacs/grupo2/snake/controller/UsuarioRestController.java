@@ -31,6 +31,18 @@ public class UsuarioRestController {
         return new UsuarioVo(usuarioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException()));
     }
 
+    @GetMapping("/usuarios")
+    public List<UsuarioVo> obtenerTodos() {
+
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        List<UsuarioVo> usuariosVo = new ArrayList<>();
+
+        usuarios.forEach((usuario) -> {
+            usuariosVo.add(new UsuarioVo(usuario));
+        });
+        return usuariosVo;
+    }
+
     @GetMapping("/usuarios/{usuarioId}/portfolio")
     public List<BilleteraVo> obtenerPortfolio(@PathVariable Long usuarioId) {
         List<BilleteraVo> portfolio = new ArrayList<>();
