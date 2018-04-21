@@ -6,8 +6,8 @@ import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import com.utn.tacs.grupo2.snake.repository.BilleteraRepository;
 import com.utn.tacs.grupo2.snake.repository.MonedaRepository;
 import com.utn.tacs.grupo2.snake.repository.TransaccionRepository;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +22,13 @@ public class TransaccionService {
     private final static Long USUARIO_ID = 1L;
 
     public Transaccion registrar(Transaccion transaccion) {
-        
+
         transaccion.setCotizacion(monedaRepository.obtener(transaccion.getMonedaNombre()).getCotizacionDolar());
         transaccion.setFecha(LocalDateTime.now());
         Billetera billetera = billeteraRepository.findByUsuarioIdAndMonedaNombre(USUARIO_ID, transaccion.getMonedaNombre());
         actualizarBilletera(billetera, transaccion);
         transaccion.setBilletera(billetera);
-        
+
         return transaccionRepository.save(transaccion);
     }
 
@@ -38,6 +38,10 @@ public class TransaccionService {
         } else {
             billetera.setCantidad(billetera.getCantidad().subtract(transaccion.getCantidad()));
         }
+    }
+
+    public List<Transaccion> buscarTodas(Long usuarioId, String monedaNombre) {
+        return transaccionRepository.findByBilleteraUsuarioIdAndMonedaNombre(usuarioId, monedaNombre);
     }
 
 }

@@ -5,6 +5,7 @@ import com.utn.tacs.grupo2.snake.builder.TransaccionBuilder;
 import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
         assertThat(transaccion.getCotizacion()).isEqualTo(new BigDecimal("8503.46"));
         assertThat(transaccion.getBilletera().getCantidad()).isEqualByComparingTo(BigDecimal.valueOf(11L));
     }
-    
+
     @Test
     public void registrar_conTransaccionVentaValida_retornaTransaccion() throws IOException {
         String cotizacionBitcoinResponse = obtenerContenidoArchivo("jsons/response_cotizacionBitcoin.json");
@@ -91,14 +92,14 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
                 .conBilletera(null)
                 .conCantidad(BigDecimal.ONE)
                 .build();
-          mockRestServiceServer
+        mockRestServiceServer
                 .expect(requestTo("https://api.coinmarketcap.com/v1/ticker/" + monedaNombre))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withStatus(HttpStatus.NOT_FOUND));
-        
+
         transaccionService.registrar(transaccion);
     }
-    
+
     @Test(expected = HttpServerErrorException.class)
     public void registrar_conApiCaida_lanzaHttpServerErrorException() throws IOException {
         String cotizacionBitcoinResponse = obtenerContenidoArchivo("jsons/response_cotizacionBitcoin.json");
@@ -110,12 +111,24 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
                 .conBilletera(null)
                 .conCantidad(BigDecimal.ONE)
                 .build();
-          mockRestServiceServer
+        mockRestServiceServer
                 .expect(requestTo("https://api.coinmarketcap.com/v1/ticker/" + monedaNombre))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withServerError());
-        
+
         transaccionService.registrar(transaccion);
+    }
+
+    @Test
+    public void buscarTodas_usuarioId1BilleteraBitcoin_listaDeTransacciones() {
+
+        Long usuarioId = 1L;
+        String monedaNombre = "bitcoin";
+        List<Transaccion> transaccionesENcontradas = transaccionService.buscarTodas(usuarioId, monedaNombre);
+
+        assertThat(transaccionesENcontradas).isNotNull();
+        assertThat(transaccionesENcontradas.isEmpty()).isFalse();
+
     }
 
 }

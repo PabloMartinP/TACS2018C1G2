@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,6 +33,7 @@ public class Transaccion implements Serializable {
     private LocalDateTime fecha;
     private BigDecimal cantidad;
     private BigDecimal cotizacion;
+    @Enumerated(EnumType.STRING)
     private TipoTransaccion tipo;
 
 }
