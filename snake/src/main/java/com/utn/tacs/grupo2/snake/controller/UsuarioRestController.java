@@ -9,6 +9,7 @@ import com.utn.tacs.grupo2.snake.vo.UsuarioVo;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,10 +19,12 @@ public class UsuarioRestController {
 
     private final UsuarioRepository usuarioRepository;
     private final BilleteraRepository billeteraRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping("/usuarios")
-    public Usuario guardar(@RequestBody Usuario usuario) {
 
+    public Usuario guardar(@RequestBody Usuario usuario) {
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         return usuarioRepository.save(usuario);
     }
 
@@ -54,5 +57,4 @@ public class UsuarioRestController {
         });
         return portfolio;
     }
-
 }
