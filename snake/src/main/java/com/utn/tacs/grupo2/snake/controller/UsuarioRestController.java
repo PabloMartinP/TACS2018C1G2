@@ -11,6 +11,10 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.validation.Valid;
+
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -20,8 +24,7 @@ public class UsuarioRestController {
     private final BilleteraRepository billeteraRepository;
 
     @PostMapping("/usuarios")
-    public Usuario guardar(@RequestBody Usuario usuario) {
-
+    public Usuario guardar(@Valid @RequestBody Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
 
