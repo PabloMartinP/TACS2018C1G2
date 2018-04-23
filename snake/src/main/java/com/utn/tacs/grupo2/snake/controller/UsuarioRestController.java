@@ -8,12 +8,10 @@ import com.utn.tacs.grupo2.snake.vo.BilleteraVo;
 import com.utn.tacs.grupo2.snake.vo.UsuarioVo;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-
 import javax.validation.Valid;
-
+import lombok.RequiredArgsConstructor;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -25,6 +23,9 @@ public class UsuarioRestController {
 
     @PostMapping("/usuarios")
     public Usuario guardar(@Valid @RequestBody Usuario usuario) {
+
+        Assert.isNull(usuarioRepository.findByUsername(usuario.getUsername()), "Error al crear al usuario.");
+
         return usuarioRepository.save(usuario);
     }
 
