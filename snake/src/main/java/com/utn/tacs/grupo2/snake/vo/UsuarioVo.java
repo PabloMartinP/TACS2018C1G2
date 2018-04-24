@@ -12,11 +12,11 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class UsuarioVo extends ResourceSupport {
 
     private Long usuarioId;
-    private String user;
+    private String username;
 
     public UsuarioVo(Usuario usuario) {
 
-        this.user = usuario.getUsername();
+        this.username = usuario.getUsername();
         this.usuarioId = usuario.getId();
 
         final Link selfLink = linkTo(methodOn(UsuarioRestController.class).obtener(this.usuarioId)).withRel("self");
