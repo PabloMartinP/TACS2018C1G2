@@ -102,7 +102,6 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
 
     @Test(expected = HttpServerErrorException.class)
     public void registrar_conApiCaida_lanzaHttpServerErrorException() throws IOException {
-        String cotizacionBitcoinResponse = obtenerContenidoArchivo("jsons/response_cotizacionBitcoin.json");
         String monedaNombre = "bitcoin";
         Transaccion transaccion = TransaccionBuilder
                 .compraTipica()
@@ -115,6 +114,34 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
                 .expect(requestTo("https://api.coinmarketcap.com/v1/ticker/" + monedaNombre))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withServerError());
+
+        transaccionService.registrar(transaccion);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void registrar_conCantidadInvalida_lanzaException() throws IOException {
+        String monedaNombre = "bitcoin";
+        Transaccion transaccion = TransaccionBuilder
+                .compraTipica()
+                .conId(null)
+                .conMonedaNombre(monedaNombre)
+                .conBilletera(null)
+                .conCantidad(BigDecimal.valueOf(-1L))
+                .build();
+
+        transaccionService.registrar(transaccion);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void registrar_conCantidadCero_lanzaException() throws IOException {
+        String monedaNombre = "bitcoin";
+        Transaccion transaccion = TransaccionBuilder
+                .compraTipica()
+                .conId(null)
+                .conMonedaNombre(monedaNombre)
+                .conBilletera(null)
+                .conCantidad(BigDecimal.ZERO)
+                .build();
 
         transaccionService.registrar(transaccion);
     }
