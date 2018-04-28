@@ -6,10 +6,12 @@ import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import com.utn.tacs.grupo2.snake.repository.BilleteraRepository;
 import com.utn.tacs.grupo2.snake.repository.MonedaRepository;
 import com.utn.tacs.grupo2.snake.repository.TransaccionRepository;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,8 @@ public class TransaccionService {
     private final static Long USUARIO_ID = 1L;
 
     public Transaccion registrar(Transaccion transaccion) {
+
+        Assert.isTrue(transaccion.getCantidad().compareTo(BigDecimal.ZERO) > 0, "La cantidad indicada no puede ser menor a 0.");
 
         transaccion.setCotizacion(monedaRepository.obtener(transaccion.getMonedaNombre()).getCotizacionDolar());
         transaccion.setFecha(LocalDateTime.now());
