@@ -23,7 +23,7 @@ public class UsuarioRestController {
     private final BilleteraRepository billeteraRepository;    
     
     @PostMapping("/usuarios/{usuarioId}/telegram")
-    public boolean validarTelegramId(@Valid @RequestBody UsuarioTelegram usuario){
+    public boolean validarTelegramId(@RequestBody UsuarioTelegram usuario){
         boolean result;
         Usuario usuarioEncontrado = usuarioRepository.findByUsernameAndTelegramId(usuario.getUsername(), usuario.getTelegramToken());
         if(usuarioEncontrado != null){
@@ -44,8 +44,10 @@ public class UsuarioRestController {
         if(usuario!=null)
             return new UsuarioVo(usuario);
         else
-            return null;//TODO: o tirar un 404
+            return null//TODO: o tirar un 404
     }
+    
+    
 
     @PostMapping("/usuarios")
     public Usuario guardar(@Valid @RequestBody Usuario usuario) {

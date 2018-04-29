@@ -27,7 +27,7 @@ public class Usuario implements Serializable {
     private String username;
     @NotNull
     @NotEmpty
-    @JsonIgnore
+    //@JsonIgnore
     private String password;
     private LocalDateTime ultimoAcceso;
     private Long telegramId;
