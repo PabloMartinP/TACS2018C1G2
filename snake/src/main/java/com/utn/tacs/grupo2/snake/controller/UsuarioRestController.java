@@ -22,7 +22,7 @@ public class UsuarioRestController {
     private final UsuarioRepository usuarioRepository;
     private final BilleteraRepository billeteraRepository;    
     
-    @PostMapping("/usuarios/{usuarioId}/telegram")
+    @PostMapping("/usuarios/telegram")
     public boolean validarTelegramId(@RequestBody UsuarioTelegram usuario){
         boolean result;
         Usuario usuarioEncontrado = usuarioRepository.findByUsernameAndTelegramId(usuario.getUsername(), usuario.getTelegramToken());
