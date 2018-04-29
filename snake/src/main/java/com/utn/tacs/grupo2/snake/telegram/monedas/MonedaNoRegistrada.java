@@ -11,17 +11,20 @@ import com.utn.tacs.grupo2.snake.telegram.Moneda;
  *
  * @author fiok
  */
-public class BitcoinMoneda implements Moneda{
-    private final String ABREVIACION = "btc" ;
-    private final String NOMBRE = "bitcoin" ;
+public class MonedaNoRegistrada implements Moneda {
 
+    private String moneda ;
+    public MonedaNoRegistrada(String moneda){
+        this.moneda = moneda;
+    }
     @Override
     public String getAbreviacion() {
-        return ABREVIACION;
+        return "?";
     }
 
     @Override
     public String getNombre() {
-        return NOMBRE;
+        return moneda;
     }
+    
 }

@@ -11,9 +11,9 @@ import com.utn.tacs.grupo2.snake.telegram.Moneda;
  *
  * @author fiok
  */
-public class EthereumMoneda implements Moneda{
-    private final String ABREVIACION = "eth" ;
-    private final String NOMBRE = "ethereum" ;
+public class MonedaBitcoin implements Moneda{
+    private final String ABREVIACION = "btc" ;
+    private final String NOMBRE = "bitcoin" ;
 
     @Override
     public String getAbreviacion() {
@@ -24,5 +24,4 @@ public class EthereumMoneda implements Moneda{
     public String getNombre() {
         return NOMBRE;
     }
-    
 }

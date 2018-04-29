@@ -5,9 +5,9 @@
  */
 package com.utn.tacs.grupo2.snake.telegram;
 
-import com.utn.tacs.grupo2.snake.telegram.monedas.BitcoinMoneda;
-import com.utn.tacs.grupo2.snake.telegram.monedas.EthereumMoneda;
-import com.utn.tacs.grupo2.snake.telegram.monedas.NoRegistradaMoneda;
+import com.utn.tacs.grupo2.snake.telegram.monedas.MonedaBitcoin;
+import com.utn.tacs.grupo2.snake.telegram.monedas.MonedaEthereum;
+import com.utn.tacs.grupo2.snake.telegram.monedas.MonedaNoRegistrada;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -35,11 +35,11 @@ public class TelegramUtils {
     public static Moneda newMoneda(String moneda){
         switch (moneda) {
             case "b":
-                return new BitcoinMoneda();
+                return new MonedaBitcoin();
             case "e":
-                return new EthereumMoneda();
+                return new MonedaEthereum();
             default:
-                return new NoRegistradaMoneda(moneda);
+                return new MonedaNoRegistrada(moneda);
         }
     }
     
