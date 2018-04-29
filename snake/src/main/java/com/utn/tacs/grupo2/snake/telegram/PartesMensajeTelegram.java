@@ -5,6 +5,8 @@
  */
 package com.utn.tacs.grupo2.snake.telegram;
 
+import com.utn.tacs.grupo2.snake.telegram.vo.UsuarioVo;
+//import com.utn.tacs.grupo2.snake.vo.UsuarioVo;
 import org.telegram.telegrambots.api.objects.Update;
 
 /**
@@ -12,23 +14,91 @@ import org.telegram.telegrambots.api.objects.Update;
  * @author fiok
  */
 public class PartesMensajeTelegram {
+
+
     private int cantidad = 0;
     private Moneda moneda = null;
     
    private String texto;
    private String[] mensajeSeparado;
    private String mensajeSinBarra;
+   private String username; 
+   private Long telegramToken;
+   private Long telegramId;
+   private UsuarioVo usuario;
    public PartesMensajeTelegram(Update nuevoMensaje){     
         texto = nuevoMensaje.getMessage().getText();   
         mensajeSinBarra = texto.replace("/", "");
         mensajeSeparado = mensajeSinBarra.split(" ");
-             
-        if(mensajeSeparado.length>1)
-            moneda= TelegramUtils.newMoneda(mensajeSeparado[1].substring(0, 1)); 
-        if(mensajeSeparado.length>2)
-            cantidad = Integer.parseInt(mensajeSeparado[2]);
-
+        telegramId =Long.valueOf(nuevoMensaje.getMessage().getFrom().getId().toString());
+        
+        
+        if(esUnLogin()){
+            username = mensajeSeparado[1];
+            telegramToken = Long.parseLong(mensajeSeparado[2]);
+        }else{            
+            if(tryLogin()){
+                if(mensajeSeparado.length>1)
+                    moneda= TelegramUtils.newMoneda(mensajeSeparado[1].substring(0, 1)); 
+                if(mensajeSeparado.length>2)
+                    cantidad = Integer.parseInt(mensajeSeparado[2]);
+            }            
+        }
     }
+   
+   public UsuarioVo getUsuario(){
+       return this.usuario;
+   }
+
+   private boolean tryLogin(){
+       this.usuario = Api.login(this.telegramId);
+       return LogOk();
+   }
+   
+   public boolean LogOk(){
+       return this.usuario !=null;
+   }
+   
+    /**
+     * @return the telegramId
+     */
+    public Long getTelegramId() {
+        return telegramId;
+    }
+
+    /**
+     * @param telegramId the telegramId to set
+     */
+    public void setTelegramId(Long telegramId) {
+        this.telegramId = telegramId;
+    }
+    
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return this.usuario.getUsername();
+    }
+
+
+    /**
+     * @return the telegramToken
+     */
+    public Long getTelegramToken() {
+        return telegramToken;
+    }
+
+    /**
+     * @param telegramToken the telegramToken to set
+     */
+    public void setTelegramToken(Long telegramToken) {
+        this.telegramToken = telegramToken;
+    }
+   
+   public boolean esUnLogin(){
+       return getOperacionString().equalsIgnoreCase("l");
+   }
+   
     public String getTexto(){
         return texto;
     }

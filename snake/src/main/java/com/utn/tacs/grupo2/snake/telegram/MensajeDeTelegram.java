@@ -8,6 +8,7 @@ package com.utn.tacs.grupo2.snake.telegram;
 import com.utn.tacs.grupo2.snake.telegram.operaciones.OperacionDeTelegramPrecio;
 import com.utn.tacs.grupo2.snake.telegram.operaciones.OperacionDeTelegramCompra;
 import com.utn.tacs.grupo2.snake.telegram.operaciones.OperacionDeTelegramInvalida;
+import com.utn.tacs.grupo2.snake.telegram.operaciones.OperacionDeTelegramLogin;
 import com.utn.tacs.grupo2.snake.telegram.operaciones.OperacionDeTelegramVenta;
 import com.utn.tacs.grupo2.snake.telegram.operaciones.OperacionDeTelegramMonedas;
 import org.telegram.telegrambots.api.objects.Update;
@@ -22,8 +23,14 @@ public class MensajeDeTelegram {
    
     public MensajeDeTelegram(Update nuevoMensaje){
         this.updateObject = nuevoMensaje;
-        partes = new PartesMensajeTelegram(nuevoMensaje);                
+        partes = new PartesMensajeTelegram(nuevoMensaje);
+        
     }
+    
+    public boolean LogOk(){
+        return partes.LogOk();
+    }
+    
     public Update getUpdateObject(){
         return updateObject;
     }
@@ -43,6 +50,7 @@ public class MensajeDeTelegram {
             case "c": return new OperacionDeTelegramCompra();
             case "v": return new OperacionDeTelegramVenta();
             case "p": return new OperacionDeTelegramPrecio();            
+            case "l": return new OperacionDeTelegramLogin();            
             default: return new OperacionDeTelegramInvalida();
         }
     }
