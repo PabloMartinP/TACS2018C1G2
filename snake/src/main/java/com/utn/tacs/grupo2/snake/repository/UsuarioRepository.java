@@ -9,4 +9,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Usuario findByUsername(String username);
 
+    Usuario findByTelegramId(long telegramId);
+    
+    Usuario findByUsernameAndTelegramId(String username, long telegramId);
+    
+    
 }

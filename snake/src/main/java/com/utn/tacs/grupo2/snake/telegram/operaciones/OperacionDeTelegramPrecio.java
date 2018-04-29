@@ -28,7 +28,6 @@ public class OperacionDeTelegramPrecio implements OperacionDeTelegram{
         url = "https://tacs2018-snake.herokuapp.com/api/monedas/"+parametros.getMoneda().getNombre()+"/cotizacion";
         CotizacionMonedaVo cotizacionMonedaVo = restTemplate.getForObject(url, CotizacionMonedaVo.class);        
         return "Cotizacion de " + parametros.getMoneda().getNombre() + " en USD: "+String.valueOf(cotizacionMonedaVo.getCotizacionDolar());
-
     }
     
 }

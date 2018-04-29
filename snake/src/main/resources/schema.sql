@@ -4,6 +4,7 @@ CREATE TABLE usuario (
   password varchar(255) NOT NULL DEFAULT '123456',
   enabled bit(1) NOT NULL DEFAULT 1,
   ultimo_acceso datetime,
+  telegram_id bigint(20), 
   PRIMARY KEY (id),
   UNIQUE KEY (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
