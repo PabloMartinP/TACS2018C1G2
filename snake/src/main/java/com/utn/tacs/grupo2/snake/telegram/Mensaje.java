@@ -29,14 +29,14 @@ public class Mensaje {
                 if (nuevoMensaje.esUnaOperacion()) {
                     resultado = nuevoMensaje.getOperacion().getResultado(nuevoMensaje.getPartes());
                 } else {
-                    resultado = "Hola "+nuevoMensaje.getPartes().getUsername()+" ^^:" + nuevoMensaje.getPartes().getTexto() + ": \n" + OperacionDeTelegram.OPERACIONES;
+                    resultado = "Hola "+nuevoMensaje.getPartes().getUsuario().getUsername()+" ^^:" + nuevoMensaje.getPartes().getTexto() + ": \n" + OperacionDeTelegram.OPERACIONES;
                 }
             }else{
                 resultado = "Debe autenticarse con /login username token";
             }
         } catch (Exception e) {
             //TODO: Cuando este estable no mostrar el error
-            resultado = nuevoMensaje.getPartes().getTexto() + ":Rompiste todo!:" + e.getMessage() + OperacionDeTelegram.OPERACIONES;
+            resultado = nuevoMensaje.getPartes().getTexto() + ":Error!:" + e.getMessage() + OperacionDeTelegram.OPERACIONES;
         }
 
         return resultado;

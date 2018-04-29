@@ -36,14 +36,16 @@ public class PartesMensajeTelegram {
         if(esUnLogin()){
             username = mensajeSeparado[1];
             telegramToken = Long.parseLong(mensajeSeparado[2]);
-        }else{            
+            tryLogin();
+        }else{
             if(tryLogin()){
                 if(mensajeSeparado.length>1)
                     moneda= TelegramUtils.newMoneda(mensajeSeparado[1].substring(0, 1)); 
                 if(mensajeSeparado.length>2)
                     cantidad = Integer.parseInt(mensajeSeparado[2]);
-            }            
+            }
         }
+        
     }
    
    public UsuarioVo getUsuario(){
@@ -56,7 +58,7 @@ public class PartesMensajeTelegram {
    }
    
    public boolean LogOk(){
-       return this.usuario !=null;
+       return this.usuario !=null || this.esUnLogin();
    }
    
     /**
@@ -77,7 +79,7 @@ public class PartesMensajeTelegram {
      * @return the username
      */
     public String getUsername() {
-        return this.usuario.getUsername();
+        return username;
     }
 
 
@@ -104,7 +106,10 @@ public class PartesMensajeTelegram {
     }
 
     public String getOperacionString(){
-        return mensajeSeparado[0].substring(0, 1);
+        if(mensajeSeparado.length>0)
+            return mensajeSeparado[0].substring(0, 1);
+        else
+            return "";
     }
     /**
      * @return the cantidad
