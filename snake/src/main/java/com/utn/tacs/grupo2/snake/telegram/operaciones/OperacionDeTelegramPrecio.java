@@ -7,16 +7,31 @@ package com.utn.tacs.grupo2.snake.telegram.operaciones;
 
 import com.utn.tacs.grupo2.snake.telegram.OperacionDeTelegram;
 import com.utn.tacs.grupo2.snake.telegram.PartesMensajeTelegram;
+import com.utn.tacs.grupo2.snake.telegram.vo.CotizacionMonedaVo;
+import org.springframework.web.client.RestTemplate;
 
 /**
  *
  * @author fiok
  */
-public class OperacionDeTelegramPrecio implements OperacionDeTelegram{
 
+public class OperacionDeTelegramPrecio implements OperacionDeTelegram{
+    private final RestTemplate restTemplate;
+
+    //TODO: Esto entiendo que deberia hacerse de otra forma con Spring
+    public OperacionDeTelegramPrecio(){
+        restTemplate = new RestTemplate();                
+    }
     @Override
     public String getResultado(PartesMensajeTelegram parametros) {
-        return "Cotizacion de " + parametros.getMoneda() + ": $123";
+        String url = "";
+        url = "https://tacs2018-snake.herokuapp.com/api/monedas/"+parametros.getMoneda().getNombre()+"/cotizacion";
+        CotizacionMonedaVo cotizacionMonedaVo = restTemplate.getForObject(url, CotizacionMonedaVo.class);        
+        if(cotizacionMonedaVo !=null){
+            return "Cotizacion de " + parametros.getMoneda().getNombre() + " en USD: "+String.valueOf(cotizacionMonedaVo.getCotizacionDolar());
+        }else
+            return "";
+        
     }
     
 }

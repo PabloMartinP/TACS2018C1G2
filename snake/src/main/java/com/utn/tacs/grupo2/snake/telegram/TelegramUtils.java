@@ -5,6 +5,9 @@
  */
 package com.utn.tacs.grupo2.snake.telegram;
 
+import com.utn.tacs.grupo2.snake.telegram.monedas.BitcoinMoneda;
+import com.utn.tacs.grupo2.snake.telegram.monedas.EthereumMoneda;
+import com.utn.tacs.grupo2.snake.telegram.monedas.NoRegistradaMoneda;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -23,9 +26,23 @@ public class TelegramUtils {
         try {
             botsApi.registerBot(new Bot(estaEnProduccion));
             
-        } catch (TelegramApiException e) {        
+        } catch (TelegramApiException e) {       
+            
             e.printStackTrace();
         }
     }
+    
+    public static Moneda newMoneda(String moneda){
+        switch (moneda) {
+            case "b":
+                return new BitcoinMoneda();
+            case "e":
+                return new EthereumMoneda();
+            default:
+                return new NoRegistradaMoneda(moneda);
+        }
+    }
+    
+    
     
 }
