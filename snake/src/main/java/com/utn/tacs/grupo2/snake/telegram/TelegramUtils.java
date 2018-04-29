@@ -22,14 +22,20 @@ public class TelegramUtils {
     public static void Start(Boolean estaEnProduccion ){
         
         ApiContextInitializer.init();
-        TelegramBotsApi botsApi = new TelegramBotsApi();        
-        try {
-            botsApi.registerBot(new Bot(estaEnProduccion));
+        boolean ok; 
+        do{
+            try {
+                TelegramBotsApi botsApi = new TelegramBotsApi();        
+                botsApi.registerBot(new Bot(estaEnProduccion));
+                ok = true;
+            } catch (TelegramApiException e) {                   
+                e.printStackTrace();
+                //ok = false;
+                ok = true;//para que no se quede infinitamente
+            }
+        }while(!ok);
             
-        } catch (TelegramApiException e) {       
-            
-            e.printStackTrace();
-        }
+        
     }
     
     public static Moneda newMoneda(String moneda){

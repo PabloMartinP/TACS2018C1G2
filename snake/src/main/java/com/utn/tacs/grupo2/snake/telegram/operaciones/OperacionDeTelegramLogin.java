@@ -8,20 +8,20 @@ package com.utn.tacs.grupo2.snake.telegram.operaciones;
 import com.utn.tacs.grupo2.snake.telegram.Api;
 import com.utn.tacs.grupo2.snake.telegram.OperacionDeTelegram;
 import com.utn.tacs.grupo2.snake.telegram.PartesMensajeTelegram;
-import com.utn.tacs.grupo2.snake.telegram.vo.CotizacionMonedaVo;
 
 /**
  *
  * @author fiok
  */
-
-public class OperacionDeTelegramPrecio implements OperacionDeTelegram{
+public class OperacionDeTelegramLogin implements OperacionDeTelegram {
 
     @Override
     public String getResultado(PartesMensajeTelegram parametros) {
-        CotizacionMonedaVo cotizacionMonedaVo = Api.getCotizacion(parametros.getMoneda().getNombre());
-        
-        return "Cotizacion de " + parametros.getMoneda().getNombre() + " en USD: "+String.valueOf(cotizacionMonedaVo.getCotizacionDolar());
+        boolean logOk = Api.validarUsuario(parametros.getUsername(), parametros.getTelegramId(), parametros.getTelegramToken());
+        if(logOk)
+            return "Log OK";
+        else
+            return "Log no OK";
     }
     
 }

@@ -13,11 +13,13 @@ public class UsuarioVo extends ResourceSupport {
 
     private Long usuarioId;
     private String username;
-
+    //TODO: Lo agrego para tenerlo a mano para poder probar, en teoria no deberia pasarse asi nomas
+    private Long telegramId;
     public UsuarioVo(Usuario usuario) {
 
         this.username = usuario.getUsername();
         this.usuarioId = usuario.getId();
+        this.telegramId = usuario.getTelegramId();
 
         final Link selfLink = linkTo(methodOn(UsuarioRestController.class).obtener(this.usuarioId)).withRel("self");
         this.add(selfLink);
