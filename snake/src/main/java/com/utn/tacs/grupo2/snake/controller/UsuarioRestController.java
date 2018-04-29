@@ -44,7 +44,7 @@ public class UsuarioRestController {
         if(usuario!=null)
             return new UsuarioVo(usuario);
         else
-            return null//TODO: o tirar un 404
+            return null;//TODO: o tirar un 404
     }
     
     
