@@ -13,7 +13,7 @@ import org.telegram.telegrambots.api.objects.Update;
  */
 public class PartesMensajeTelegram {
     private int cantidad = 0;
-    private String moneda = "";
+    private Moneda moneda = null;
     
    private String texto;
    private String[] mensajeSeparado;
@@ -24,7 +24,7 @@ public class PartesMensajeTelegram {
         mensajeSeparado = mensajeSinBarra.split(" ");
              
         if(mensajeSeparado.length>1)
-            moneda= mensajeSeparado[1].substring(0, 1);
+            moneda= TelegramUtils.newMoneda(mensajeSeparado[1].substring(0, 1)); 
         if(mensajeSeparado.length>2)
             cantidad = Integer.parseInt(mensajeSeparado[2]);
 
@@ -53,14 +53,14 @@ public class PartesMensajeTelegram {
     /**
      * @return the moneda
      */
-    public String getMoneda() {
+    public Moneda getMoneda() {
         return moneda;
     }
 
     /**
      * @param moneda the moneda to set
      */
-    public void setMoneda(String moneda) {
+    public void setMoneda(Moneda moneda) {
         this.moneda = moneda;
     }
 }

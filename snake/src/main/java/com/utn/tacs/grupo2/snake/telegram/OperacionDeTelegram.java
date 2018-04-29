@@ -5,12 +5,14 @@
  */
 package com.utn.tacs.grupo2.snake.telegram;
 
+import org.springframework.web.client.RestTemplate;
+
 /**
  *
  * @author fiok
  */
 public interface OperacionDeTelegram {
-    
+
     public static final String OPERACIONES = "Operaciones disponibles: \n/monedas: lista de monedas, \n/comprar b 10: Compra 10 Bitcoins\n/vender e 10: Vende 10 Ethereum\n/precio b: Precio(Cotizacion) del Bitcoin";
     
     public String getResultado(PartesMensajeTelegram parametros);
