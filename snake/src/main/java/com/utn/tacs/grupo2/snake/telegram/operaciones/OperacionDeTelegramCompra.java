@@ -5,6 +5,7 @@
  */
 package com.utn.tacs.grupo2.snake.telegram.operaciones;
 
+import com.utn.tacs.grupo2.snake.telegram.Api;
 import com.utn.tacs.grupo2.snake.telegram.OperacionDeTelegram;
 import com.utn.tacs.grupo2.snake.telegram.PartesMensajeTelegram;
 
@@ -16,7 +17,11 @@ public class OperacionDeTelegramCompra implements OperacionDeTelegram {
 
     @Override
     public String getResultado(PartesMensajeTelegram parametros) {
-         return "Compraste " + String.valueOf(parametros.getCantidad()) + " " + parametros.getMoneda();
+        boolean ok  = Api.comprar(parametros.getUsuario().getUsuarioId(), parametros.getMoneda(), parametros.getCantidad());
+        if(ok)
+            return "Compraste " + String.valueOf(parametros.getCantidad()) + " " + parametros.getMoneda().getNombre();
+        else
+            return "No se pudo comprar T_T";
     }
     
 }

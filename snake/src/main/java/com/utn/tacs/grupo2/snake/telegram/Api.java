@@ -10,6 +10,7 @@ import com.utn.tacs.grupo2.snake.telegram.vo.CotizacionMonedaVo;
 import com.utn.tacs.grupo2.snake.telegram.vo.UsuarioVo;
 //import com.utn.tacs.grupo2.snake.vo.BilleteraVo;
 import com.utn.tacs.grupo2.snake.telegram.vo.BilleteraVo;
+import com.utn.tacs.grupo2.snake.telegram.vo.TransaccionVo;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -82,17 +83,41 @@ public class Api {
         BilleteraVo[] billetera ;
         billetera = restTemplate.getForObject(url, BilleteraVo[].class);        
         BigDecimal cantidad = new BigDecimal(0);
-        for(BilleteraVo b:billetera){
-            if(b.getMoneda().getNombre().equalsIgnoreCase(moneda.getNombre())){
-                cantidad = b.getCantidad();
-                cantidad = cantidad.setScale(2, RoundingMode.CEILING);
-                break;
-            }                
-        }
-        
-        
-
+        if(billetera!=null){
+            for(BilleteraVo b:billetera){
+                if(b.getMoneda().getNombre().equalsIgnoreCase(moneda.getNombre())){
+                    cantidad = b.getCantidad();
+                    cantidad = cantidad.setScale(2, RoundingMode.CEILING);
+                    break;
+                }                
+            }
+        }        
         return cantidad;
+    }
+
+    public static boolean comprar(Long usuarioId, Moneda moneda, BigDecimal cantidad) {
+        return Api.transaccion(usuarioId, moneda, cantidad, "COMPRA");            
+    }
+    private static boolean transaccion(Long usuarioId, Moneda moneda, BigDecimal cantidad, String tipo){
+        RestTemplate restTemplate= newRestTemplate();
+        String url = URL + "/transacciones/";
+        TransaccionVo t;
+        if(tipo.equalsIgnoreCase("COMPRA") )
+            t = TransaccionVo.newCompra();
+        else
+            t = TransaccionVo.newVenta();
+        
+        t.setCantidad(cantidad);
+        t.setMonedaNombre(moneda.getNombre());
+        TransaccionVo b = restTemplate.postForObject(url, t, TransaccionVo.class);        
+        if(b!=null)
+            return b.getId()>0;
+        else
+            return false;    
+    }
+    
+    public static boolean vender(Long usuarioId, Moneda moneda, BigDecimal cantidad) {
+        return Api.transaccion(usuarioId, moneda, cantidad, "VENTA");
     }
     
     
