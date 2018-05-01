@@ -1,0 +1,14 @@
+div.header {
+    display: flex;
+    justify-content: space-between;
+    margin: 10vh;
+}
+
+.header p {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.header material-icons {
+    font-size: 1.2rem;
+}
