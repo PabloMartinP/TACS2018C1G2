@@ -19,7 +19,7 @@ public class OperacionDeTelegramLogin implements OperacionDeTelegram {
     public String getResultado(PartesMensajeTelegram parametros) {
         boolean logOk = Api.validarUsuario(parametros.getUsername(), parametros.getTelegramId(), parametros.getTelegramToken());
         if(logOk)
-            return "Log OK";
+            return "Bienvenido "+parametros.getUsername();
         else
             return "Log no OK";
     }

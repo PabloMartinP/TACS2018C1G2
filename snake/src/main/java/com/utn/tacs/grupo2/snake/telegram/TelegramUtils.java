@@ -31,11 +31,9 @@ public class TelegramUtils {
             } catch (TelegramApiException e) {                   
                 e.printStackTrace();
                 //ok = false;
-                ok = true;//para que no se quede infinitamente
+                ok = true;
             }
         }while(!ok);
-            
-        
     }
     
     public static Moneda newMoneda(String moneda){

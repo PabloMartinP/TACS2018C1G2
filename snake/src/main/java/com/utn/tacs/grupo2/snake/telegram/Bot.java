@@ -1,5 +1,8 @@
 package com.utn.tacs.grupo2.snake.telegram;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -48,8 +51,16 @@ public class Bot extends TelegramLongPollingBot {
                 Mensaje mensaje = new Mensaje(nuevoMensaje);
 
                 execute(mensaje.returnMessage()); // Call method to send the message
-            } catch (TelegramApiException e) {
+            } catch (TelegramApiException e) {                
                 e.printStackTrace();
+                SendMessage messageError = new SendMessage()
+                .setChatId(nuevoMensaje.getMessage().getChatId())
+                .setText(e.getMessage());                       
+                try {
+                    execute(messageError);
+                } catch (TelegramApiException ex) {
+                    Logger.getLogger(Bot.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }

@@ -5,8 +5,10 @@
  */
 package com.utn.tacs.grupo2.snake.telegram.operaciones;
 
+import com.utn.tacs.grupo2.snake.telegram.Api;
 import com.utn.tacs.grupo2.snake.telegram.OperacionDeTelegram;
 import com.utn.tacs.grupo2.snake.telegram.PartesMensajeTelegram;
+import java.math.BigDecimal;
 
 /**
  *
@@ -16,7 +18,9 @@ public class OperacionDeTelegramMonedas implements OperacionDeTelegram {
 
     @Override
     public String getResultado(PartesMensajeTelegram parametros) {
-        return "Tenes 10b, 5e";
+        
+        BigDecimal cantidad = Api.getCantidadDeMonedasDe(parametros.getUsuario().getUsuarioId(),  parametros.getMoneda());
+        return "Tenes " + cantidad.toString() + " de " + parametros.getMoneda().getNombre();
     }
     
 }

@@ -6,6 +6,7 @@
 package com.utn.tacs.grupo2.snake.telegram;
 
 import com.utn.tacs.grupo2.snake.telegram.vo.UsuarioVo;
+import java.math.BigDecimal;
 //import com.utn.tacs.grupo2.snake.vo.UsuarioVo;
 import org.telegram.telegrambots.api.objects.Update;
 
@@ -16,7 +17,7 @@ import org.telegram.telegrambots.api.objects.Update;
 public class PartesMensajeTelegram {
 
 
-    private int cantidad = 0;
+    private BigDecimal cantidad = new BigDecimal(0);
     private Moneda moneda = null;
     
    private String texto;
@@ -36,14 +37,16 @@ public class PartesMensajeTelegram {
         if(esUnLogin()){
             username = mensajeSeparado[1];
             telegramToken = Long.parseLong(mensajeSeparado[2]);
-        }else{            
+            tryLogin();
+        }else{
             if(tryLogin()){
                 if(mensajeSeparado.length>1)
                     moneda= TelegramUtils.newMoneda(mensajeSeparado[1].substring(0, 1)); 
                 if(mensajeSeparado.length>2)
-                    cantidad = Integer.parseInt(mensajeSeparado[2]);
-            }            
+                    cantidad = new BigDecimal(mensajeSeparado[2]);
+            }
         }
+        
     }
    
    public UsuarioVo getUsuario(){
@@ -56,7 +59,7 @@ public class PartesMensajeTelegram {
    }
    
    public boolean LogOk(){
-       return this.usuario !=null;
+       return this.usuario !=null || this.esUnLogin();
    }
    
     /**
@@ -77,7 +80,7 @@ public class PartesMensajeTelegram {
      * @return the username
      */
     public String getUsername() {
-        return this.usuario.getUsername();
+        return username;
     }
 
 
@@ -104,19 +107,22 @@ public class PartesMensajeTelegram {
     }
 
     public String getOperacionString(){
-        return mensajeSeparado[0].substring(0, 1);
+        if(mensajeSeparado.length>0)
+            return mensajeSeparado[0].substring(0, 1);
+        else
+            return "";
     }
     /**
      * @return the cantidad
      */
-    public int getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
     /**
      * @param cantidad the cantidad to set
      */
-    public void setCantidad(int cantidad) {
+    public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
 
