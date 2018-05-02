@@ -11,7 +11,7 @@ import ContentSend from 'material-ui/svg-icons/content/send';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import Transacciones from './Transacciones.jsx';
+import ListadoTransacciones from './ListadoTransacciones.jsx';
 import FontIcon from 'material-ui/FontIcon';
 
 
@@ -63,7 +63,7 @@ export default class Billetera extends Component {
             autoScrollBodyContent={true}
             onRequestClose={this.toggle.bind(this)}
           >
-            <Transacciones />
+            <ListadoTransacciones />
           </Dialog>
         </TableRowColumn> 
       </TableRow>

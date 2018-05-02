@@ -13,7 +13,6 @@ export default class AgregarTransaccion extends Component {
     }
 
     render() {
-			console.log(this.state);
         return (
             <div className="row mb-20">
                 <div className="input col-md-3">
