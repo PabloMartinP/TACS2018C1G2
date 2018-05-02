@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class TransaccionRestController {
 
     private final TransaccionService transaccionService;
+    private final static Long USUARIO_ID = 1L;
 
     @PostMapping("/transacciones")
     public Transaccion realizar(@RequestBody Transaccion transaccion) {
-        return transaccionService.registrar(transaccion);
+        return transaccionService.registrar(transaccion, USUARIO_ID);
     }
 
     @GetMapping("/usuarios/{idUsuario}/monedas/{moneda}/transacciones")

@@ -1,17 +1,14 @@
 package com.utn.tacs.grupo2.snake.controller;
 
-import com.utn.tacs.grupo2.snake.domain.Billetera;
 import com.utn.tacs.grupo2.snake.domain.Usuario;
 import com.utn.tacs.grupo2.snake.domain.UsuarioTelegram;
-import com.utn.tacs.grupo2.snake.repository.BilleteraRepository;
 import com.utn.tacs.grupo2.snake.repository.UsuarioRepository;
-import com.utn.tacs.grupo2.snake.vo.BilleteraVo;
+import com.utn.tacs.grupo2.snake.service.UsuarioService;
 import com.utn.tacs.grupo2.snake.vo.UsuarioVo;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioRestController {
 
     private final UsuarioRepository usuarioRepository;
-    private final BilleteraRepository billeteraRepository;
+    private final UsuarioService usuarioService;
 
     @PostMapping("/usuarios/telegram")
     public boolean validarTelegramId(@RequestBody UsuarioTelegram usuario) {
@@ -50,24 +47,19 @@ public class UsuarioRestController {
 
     @PostMapping("/usuarios")
     public Usuario guardar(@Valid @RequestBody Usuario usuario) {
-
-        Assert.isNull(usuarioRepository.findByUsername(usuario.getUsername()), "Error al crear al usuario.");
-
-        return usuarioRepository.save(usuario);
+       return usuarioService.guardar(usuario);
     }
 
     @GetMapping("/usuarios/{id}")
     public UsuarioVo obtener(@PathVariable Long id) {
-
-        return new UsuarioVo(usuarioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException()));
+        return new UsuarioVo(usuarioService.obtener(id));
     }
 
     @GetMapping("/usuarios")
     public List<UsuarioVo> obtenerTodos() {
+        List<Usuario> usuarios = usuarioService.obtenerTodos();
 
-        List<Usuario> usuarios = usuarioRepository.findAll();
         List<UsuarioVo> usuariosVo = new ArrayList<>();
-
         usuarios.forEach((usuario) -> {
             usuariosVo.add(new UsuarioVo(usuario));
         });

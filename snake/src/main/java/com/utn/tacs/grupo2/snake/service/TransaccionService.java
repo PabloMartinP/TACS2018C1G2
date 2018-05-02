@@ -21,15 +21,14 @@ public class TransaccionService {
     private final BilleteraRepository billeteraRepository;
     private final TransaccionRepository transaccionRepository;
 
-    private final static Long USUARIO_ID = 1L;
-
-    public Transaccion registrar(Transaccion transaccion) {
+    public Transaccion registrar(Transaccion transaccion, Long usuarioId) {
 
         Assert.isTrue(transaccion.getCantidad().compareTo(BigDecimal.ZERO) > 0, "La cantidad indicada no puede ser menor a 0.");
 
         transaccion.setCotizacion(monedaRepository.obtenerCotizacion(transaccion.getMonedaNombre()).getCotizacionDolar());
         transaccion.setFecha(LocalDateTime.now());
-        Billetera billetera = billeteraRepository.findByUsuarioIdAndMonedaNombre(USUARIO_ID, transaccion.getMonedaNombre());
+        Billetera billetera = billeteraRepository.findByUsuarioIdAndMonedaNombre(usuarioId, transaccion.getMonedaNombre())
+                .orElseThrow(() -> new IllegalArgumentException());
         actualizarBilletera(billetera, transaccion);
         transaccion.setBilletera(billetera);
 
@@ -47,7 +46,8 @@ public class TransaccionService {
     }
 
     public List<Transaccion> buscarTodas(Long usuarioId, String monedaNombre) {
-        return transaccionRepository.findByBilleteraUsuarioIdAndMonedaNombre(usuarioId, monedaNombre);
+        return transaccionRepository.findByBilleteraUsuarioIdAndMonedaNombre(usuarioId, monedaNombre)
+                .orElseThrow(() -> new IllegalArgumentException());
     }
 
 }

@@ -25,6 +25,8 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
     @Autowired
     private TransaccionService transaccionService;
 
+    private final static Long USUARIO_ID = 1L;
+
     /**
      * Nomenclatura de los test nombreMetodo_contexto_retorno ()
      */
@@ -47,7 +49,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
                 .andRespond(withSuccess(cotizacionBitcoinResponse, MediaType.APPLICATION_JSON));
 
         // ejercitamos
-        transaccionService.registrar(transaccion);
+        transaccionService.registrar(transaccion, USUARIO_ID);
 
         // validamos
         assertThat(transaccion).isNotNull();
@@ -73,7 +75,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(cotizacionBitcoinResponse, MediaType.APPLICATION_JSON));
 
-        transaccionService.registrar(transaccion);
+        transaccionService.registrar(transaccion, USUARIO_ID);
 
         assertThat(transaccion).isNotNull();
         assertThat(transaccion.getId()).isNotNull();
@@ -98,7 +100,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withStatus(HttpStatus.NOT_FOUND));
 
-        transaccionService.registrar(transaccion);
+        transaccionService.registrar(transaccion, USUARIO_ID);
     }
 
     @Test(expected = HttpServerErrorException.class)
@@ -116,7 +118,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withServerError());
 
-        transaccionService.registrar(transaccion);
+        transaccionService.registrar(transaccion, USUARIO_ID);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -130,7 +132,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
                 .conCantidad(BigDecimal.valueOf(-1L))
                 .build();
 
-        transaccionService.registrar(transaccion);
+        transaccionService.registrar(transaccion, USUARIO_ID);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -144,17 +146,42 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
                 .conCantidad(BigDecimal.ZERO)
                 .build();
 
-        transaccionService.registrar(transaccion);
+        transaccionService.registrar(transaccion, USUARIO_ID);
     }
 
     @Test
-    public void buscarTodas_usuarioId1BilleteraBitcoin_listaDeTransacciones() {
-
-        Long usuarioId = 1L;
+    public void buscarTodas_conUsuarioExistenteYMonedaBitcoin_retornaListaDeTransacciones() {
         String monedaNombre = "bitcoin";
-        List<Transaccion> transaccionesENcontradas = transaccionService.buscarTodas(usuarioId, monedaNombre);
+        List<Transaccion> transacciones = transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
 
-        assertThat(transaccionesENcontradas).isNotNull();
-        assertThat(transaccionesENcontradas.isEmpty()).isFalse();
+        assertThat(transacciones).isNotNull();
+        assertThat(transacciones.isEmpty()).isFalse();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void buscarTodas_conUsuarioInexistenteYMonedaBitcoin_lanzaIllegalArgumentException() {
+        String monedaNombre = "bitcoin";
+        transaccionService.buscarTodas(Long.MAX_VALUE, monedaNombre);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void buscarTodas_conUsuarioInvalidoYMonedaBitcoin_lanzaIllegalArgumentException() {
+        String monedaNombre = "bitcoin";
+        
+        transaccionService.buscarTodas(null, monedaNombre);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void buscarTodas_conUsuarioExistenteYMonedaInexistente_lanzaIllegalArgumentException() {
+        String monedaNombre = "pesos";
+        
+        transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void buscarTodas_conUsuarioExistenteYMonedaInvalida_lanzaIllegalArgumentException() {
+        String monedaNombre = null;
+        
+        transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
     }
 }

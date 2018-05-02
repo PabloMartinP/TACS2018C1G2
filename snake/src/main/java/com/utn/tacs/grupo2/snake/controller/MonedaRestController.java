@@ -1,6 +1,6 @@
 package com.utn.tacs.grupo2.snake.controller;
 
-import com.utn.tacs.grupo2.snake.repository.MonedaRepository;
+import com.utn.tacs.grupo2.snake.service.MonedaService;
 import com.utn.tacs.grupo2.snake.vo.CotizacionMonedaVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MonedaRestController {
 
-    private final MonedaRepository monedaRepository;
+    private final MonedaService monedaService;
 
-    @GetMapping("/monedas/{nombreMoneda}/cotizacion")
-    public CotizacionMonedaVo obtenerCotizacion(@PathVariable String nombreMoneda) {
-        return monedaRepository.obtenerCotizacion(nombreMoneda);
+    @GetMapping("/monedas/{moneda}/cotizacion")
+    public CotizacionMonedaVo obtenerCotizacion(@PathVariable String moneda) {
+        return monedaService.obtenerCotizacion(moneda);
     }
 }
