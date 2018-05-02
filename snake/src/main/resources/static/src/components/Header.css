@@ -1,7 +1,6 @@
 div.header {
     display: flex;
     justify-content: space-between;
-    margin: 10vh;
 }
 
 .header p {
@@ -11,4 +10,12 @@ div.header {
 
 .header material-icons {
     font-size: 1.2rem;
+}
+
+.header .icon-left {
+    margin-top: 10px;
+}
+
+.header span {
+    float: right;
 }
