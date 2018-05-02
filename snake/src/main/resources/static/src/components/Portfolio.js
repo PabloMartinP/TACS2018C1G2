@@ -79,6 +79,7 @@ export default class Portfolio extends Component {
 										<TableHeaderColumn>Cantidad</TableHeaderColumn>
 										<TableHeaderColumn>Cotización actual</TableHeaderColumn>
 										<TableHeaderColumn>Ganancia/Perdida</TableHeaderColumn>
+										<TableHeaderColumn>Ver Transacciones</TableHeaderColumn>
 									</TableRow>
 								</TableHeader>
 								<TableBody>
