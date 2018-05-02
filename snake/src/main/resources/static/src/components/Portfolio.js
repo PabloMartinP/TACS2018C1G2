@@ -1,6 +1,15 @@
 import React, { Component } from 'react'
 import Billetera from './Billetera'
-
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow
+} from 'material-ui/Table';
+import TextField from 'material-ui/TextField';
+import './Portfolio.css';
+import AgregarTransaccion from './AgregarTransaccion.jsx';
 
 export default class Portfolio extends Component {
     constructor(props) {
@@ -60,9 +69,26 @@ export default class Portfolio extends Component {
 
     render() {
         return (
-            <div>
-              <p>Portfolio:</p>
-              { this.state.portfolio ? this.state.portfolio.map((billetera, index) => <Billetera key={index} billetera={billetera} />) : <p>Cargando...</p> }
+            <div className="table-container">
+							<AgregarTransaccion />
+              <h5>Portfolio:</h5>
+							<Table>
+								<TableHeader displaySelectAll={false}>
+									<TableRow>
+										<TableHeaderColumn>Moneda</TableHeaderColumn>
+										<TableHeaderColumn>Cantidad</TableHeaderColumn>
+										<TableHeaderColumn>Cotización actual</TableHeaderColumn>
+										<TableHeaderColumn>Ganancia/Perdida</TableHeaderColumn>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									{ 
+										this.state.portfolio ?
+										this.state.portfolio.map((billetera, index) => <Billetera key={index} billetera={billetera} />)
+										: <TableRow></TableRow>
+									}
+								</TableBody>
+							</Table>
             </div>
         )
     }

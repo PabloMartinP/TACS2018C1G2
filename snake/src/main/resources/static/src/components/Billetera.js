@@ -1,7 +1,15 @@
 import React from 'react'
+import {
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+
 
 export default ({billetera}) => (
-    <div>
-      {billetera.moneda.nombre}  Cantidad: {billetera.cantidad}  Cotización actual: USD {billetera.moneda.corizacionActual || '100000'} Ganancia/Perdida: USD <span>-400</span>
-    </div>
+    <TableRow>
+      <TableRowColumn>{billetera.moneda.nombre}</TableRowColumn>
+      <TableRowColumn>{billetera.cantidad}</TableRowColumn>
+      <TableRowColumn>USD {billetera.moneda.corizacionActual || '100000'}</TableRowColumn>
+      <TableRowColumn>USD <span>-400</span></TableRowColumn> 
+    </TableRow>
 )
