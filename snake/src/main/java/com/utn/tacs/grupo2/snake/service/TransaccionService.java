@@ -27,7 +27,7 @@ public class TransaccionService {
 
         Assert.isTrue(transaccion.getCantidad().compareTo(BigDecimal.ZERO) > 0, "La cantidad indicada no puede ser menor a 0.");
 
-        transaccion.setCotizacion(monedaRepository.obtener(transaccion.getMonedaNombre()).getCotizacionDolar());
+        transaccion.setCotizacion(monedaRepository.obtenerCotizacion(transaccion.getMonedaNombre()).getCotizacionDolar());
         transaccion.setFecha(LocalDateTime.now());
         Billetera billetera = billeteraRepository.findByUsuarioIdAndMonedaNombre(USUARIO_ID, transaccion.getMonedaNombre());
         actualizarBilletera(billetera, transaccion);
@@ -39,8 +39,10 @@ public class TransaccionService {
     private void actualizarBilletera(Billetera billetera, Transaccion transaccion) {
         if (TipoTransaccion.COMPRA.equals(transaccion.getTipo())) {
             billetera.setCantidad(billetera.getCantidad().add(transaccion.getCantidad()));
+            billetera.setDiferencia(billetera.getDiferencia().subtract(transaccion.getCantidad().multiply(transaccion.getCotizacion())));
         } else {
             billetera.setCantidad(billetera.getCantidad().subtract(transaccion.getCantidad()));
+            billetera.setDiferencia(billetera.getDiferencia().add(transaccion.getCantidad().multiply(transaccion.getCotizacion())));
         }
     }
 

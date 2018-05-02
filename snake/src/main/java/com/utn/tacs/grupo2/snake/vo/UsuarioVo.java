@@ -1,5 +1,6 @@
 package com.utn.tacs.grupo2.snake.vo;
 
+import com.utn.tacs.grupo2.snake.controller.BilleteraRestController;
 import com.utn.tacs.grupo2.snake.controller.UsuarioRestController;
 import com.utn.tacs.grupo2.snake.domain.Usuario;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class UsuarioVo extends ResourceSupport {
         final Link selfLink = linkTo(methodOn(UsuarioRestController.class).obtener(this.usuarioId)).withRel("self");
         this.add(selfLink);
 
-        Link portfolioLink = linkTo(methodOn(UsuarioRestController.class).obtenerPortfolio(this.usuarioId)).withRel("portfolio");
+        Link portfolioLink = linkTo(methodOn(BilleteraRestController.class).obtenerPortfolio(this.usuarioId)).withRel("portfolio");
         this.add(portfolioLink);
 
     }

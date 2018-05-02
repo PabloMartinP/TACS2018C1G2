@@ -20,34 +20,33 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioRestController {
 
     private final UsuarioRepository usuarioRepository;
-    private final BilleteraRepository billeteraRepository;    
-    
+    private final BilleteraRepository billeteraRepository;
+
     @PostMapping("/usuarios/telegram")
-    public boolean validarTelegramId(@RequestBody UsuarioTelegram usuario){
+    public boolean validarTelegramId(@RequestBody UsuarioTelegram usuario) {
         boolean result;
         Usuario usuarioEncontrado = usuarioRepository.findByUsernameAndTelegramId(usuario.getUsername(), usuario.getTelegramToken());
-        if(usuarioEncontrado != null){
+        if (usuarioEncontrado != null) {
             //si existe le piso el telegramId por el usuario.telegramid
             usuarioEncontrado.setTelegramId(usuario.getTelegramId());
             usuarioRepository.save(usuarioEncontrado);
             result = true;
-        }else{
+        } else {
             result = false;
         }
         return result;
     }
-    
+
     @GetMapping("/usuarios/telegram/{telegramId}")
-    public UsuarioVo obtenerPorTelegramId(@PathVariable Long telegramId){
+    public UsuarioVo obtenerPorTelegramId(@PathVariable Long telegramId) {
         Usuario usuario = usuarioRepository.findByTelegramId(telegramId);
         //Assert.isNull(usuario, "Error 404");
-        if(usuario!=null)
+        if (usuario != null) {
             return new UsuarioVo(usuario);
-        else
+        } else {
             return null;//TODO: o tirar un 404
+        }
     }
-    
-    
 
     @PostMapping("/usuarios")
     public Usuario guardar(@Valid @RequestBody Usuario usuario) {
@@ -74,17 +73,4 @@ public class UsuarioRestController {
         });
         return usuariosVo;
     }
-
-    @GetMapping("/usuarios/{usuarioId}/portfolio")
-    public List<BilleteraVo> obtenerPortfolio(@PathVariable Long usuarioId) {
-        List<BilleteraVo> portfolio = new ArrayList<>();
-
-        List<Billetera> billeteras = billeteraRepository.findByUsuarioId(usuarioId);
-
-        billeteras.forEach((billetera) -> {
-            portfolio.add(new BilleteraVo(billetera, usuarioId));
-        });
-        return portfolio;
-    }
-
 }

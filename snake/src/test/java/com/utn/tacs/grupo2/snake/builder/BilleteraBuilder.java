@@ -10,6 +10,7 @@ public class BilleteraBuilder {
     private String monedaNombre;
     private Usuario usuario;
     private BigDecimal cantidad;
+    private BigDecimal diferencia;
 
     public Billetera build() {
         Billetera billetera = new Billetera();
@@ -17,6 +18,7 @@ public class BilleteraBuilder {
         billetera.setMonedaNombre(monedaNombre);
         billetera.setUsuario(usuario);
         billetera.setCantidad(cantidad);
+        billetera.setDiferencia(diferencia);
         return billetera;
     }
 
@@ -26,6 +28,7 @@ public class BilleteraBuilder {
         builder.monedaNombre = "Bitcoin";
         builder.usuario = UsuarioBuilder.tipico().build();
         builder.cantidad = BigDecimal.TEN;
+        builder.diferencia = BigDecimal.ZERO;
         return builder;
     }
 
@@ -46,6 +49,11 @@ public class BilleteraBuilder {
 
     public BilleteraBuilder conCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
+        return this;
+    }
+    
+    public BilleteraBuilder conDiferencia(BigDecimal diferencia){
+        this.diferencia = diferencia;
         return this;
     }
 

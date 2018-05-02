@@ -53,8 +53,9 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
         assertThat(transaccion).isNotNull();
         assertThat(transaccion.getId()).isNotNull();
         assertThat(transaccion.getCotizacion()).isNotNull();
-        assertThat(transaccion.getCotizacion()).isEqualTo(new BigDecimal("8503.46"));
+        assertThat(transaccion.getCotizacion()).isEqualTo(new BigDecimal("1000"));
         assertThat(transaccion.getBilletera().getCantidad()).isEqualByComparingTo(BigDecimal.valueOf(11L));
+        assertThat(transaccion.getBilletera().getDiferencia()).isEqualByComparingTo(new BigDecimal("-1100"));
     }
 
     @Test
@@ -77,13 +78,13 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
         assertThat(transaccion).isNotNull();
         assertThat(transaccion.getId()).isNotNull();
         assertThat(transaccion.getCotizacion()).isNotNull();
-        assertThat(transaccion.getCotizacion()).isEqualTo(new BigDecimal("8503.46"));
+        assertThat(transaccion.getCotizacion()).isEqualTo(new BigDecimal("1000"));
         assertThat(transaccion.getBilletera().getCantidad()).isEqualByComparingTo(BigDecimal.valueOf(9L));
+        assertThat(transaccion.getBilletera().getDiferencia()).isEqualByComparingTo(new BigDecimal("900"));
     }
 
     @Test(expected = HttpClientErrorException.class)
     public void registrar_conTransaccionConMonedaNombreInexistente_lanzaHttpClientErrorException() throws IOException {
-        String cotizacionBitcoinResponse = obtenerContenidoArchivo("jsons/response_cotizacionBitcoinInexistente.json");
         String monedaNombre = "inexistente";
         Transaccion transaccion = TransaccionBuilder
                 .compraTipica()
@@ -155,7 +156,5 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
 
         assertThat(transaccionesENcontradas).isNotNull();
         assertThat(transaccionesENcontradas.isEmpty()).isFalse();
-
     }
-
 }

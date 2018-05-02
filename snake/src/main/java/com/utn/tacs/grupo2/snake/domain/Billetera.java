@@ -26,4 +26,5 @@ public class Billetera implements Serializable {
     @ManyToOne
     private Usuario usuario;
     private BigDecimal cantidad;
+    private BigDecimal diferencia;
 }
