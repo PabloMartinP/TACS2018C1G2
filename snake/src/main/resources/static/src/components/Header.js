@@ -5,7 +5,7 @@ import AppBar from 'material-ui/AppBar';
 import './Header.css';
 
 export default ({userName, message}) => (
-    <div className="header">
+    <div className="header mb-20">
       <AppBar
         title={<span>{(message || 'Bienvenido') + ' ' + userName + '!'}</span>}
         iconElementLeft={<div className="icon-left">
@@ -13,6 +13,7 @@ export default ({userName, message}) => (
             power_settings_new
           </FontIcon>
         </div>}
+        style={{paddingLeft: "50px", paddingRight: "50px"}}
       />
     </div>
 )

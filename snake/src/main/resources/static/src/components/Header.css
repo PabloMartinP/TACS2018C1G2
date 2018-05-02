@@ -19,3 +19,7 @@ div.header {
 .header span {
     float: right;
 }
+
+.mb-20 {
+    margin-bottom: 20px;
+}
