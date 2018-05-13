@@ -35,8 +35,12 @@ public class Mensaje {
                 resultado = "Debe autenticarse con /login username token";
             }
         } catch (Exception e) {
-            //TODO: Cuando este estable no mostrar el error
-            resultado = nuevoMensaje.getPartes().getTexto() + ":Error!:" + e.getMessage() + OperacionDeTelegram.OPERACIONES;
+            String msg;
+            msg = e.getMessage();
+            if(msg!=null)
+                resultado ="[" + nuevoMensaje.getPartes().getTexto() + "] " + ":Error!:" + msg +  "\n"+ OperacionDeTelegram.OPERACIONES;
+            else
+                resultado = "[" +nuevoMensaje.getPartes().getTexto() + "] " + ":Error!:" +"\n"+ OperacionDeTelegram.OPERACIONES;
         }
 
         return resultado;
