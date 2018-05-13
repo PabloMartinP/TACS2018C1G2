@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import dancing_jesus from '../logo2.gif';
 import './Login.css';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -23,33 +22,35 @@ class Login extends Component {
       [event.target.name + 'Error']: ''});
   }
 
-  login(event) {
-    const errorMessage = "Debe completar este campo";
-    ['username', 'password'].map(word => {
-      if (this.state[word].length === 0) {
-        this.setState({[word + 'Error']: errorMessage});
-      }
-      return true;
-    });
-    const self = this;
-    try {
-      fetch('http://localhost:8080/login', {mode: 'cors'})
-        .then(response => response.json())
-        .then(userValidatedFromServer => {
-          if (!userValidatedFromServer) {
-            self.setState({error: 'Usuario o contraseña incorrecta'});
-          }
-        });
-    } catch(exception) {
-      self.setState({error: 'Error del servidor'});
-    }
-  }
+  // login(event) {
+  //   const errorMessage = "Debe completar este campo";
+  //   ['username', 'password'].map(word => {
+  //     if (this.state[word].length === 0) {
+  //       this.setState({[word + 'Error']: errorMessage});
+  //     }
+  //     return true;
+  //   });
+  //   const self = this;
+  //   try {
+  //     fetch('http://localhost:8080/login/authentication', {mode: 'cors'})
+  //       .then(response => response.json())
+  //       .then(userValidatedFromServer => {
+  //         if (!userValidatedFromServer) {
+  //           self.setState({error: 'Usuario o contraseña incorrecta'});
+  //         } else {
+  //           window.location.replace("http://localhost:8080");
+  //         }
+  //       });
+  //   } catch(exception) {
+  //     self.setState({error: 'Error del servidor'});
+  //   }
+  // }
 
   render() {
     return (
       <div className="App">
         <header className="App-header mb-20">
-          <img src={dancing_jesus} className="logo" alt="logo" />
+          <img src="/public/logo2.gif" className="logo" alt="logo" />
           <h1 className="App-title">SNAKE</h1>
         </header>
         <div className="mb-20 col-sm-5 col-6 col-centered">
@@ -71,7 +72,7 @@ class Login extends Component {
           /><br />
         </div>
         <div className="mb-20">
-          <RaisedButton label="Ingresar" onClick={this.login.bind(this)} primary={true}/>
+          <RaisedButton label="Ingresar" primary={true} type="submit"/>
         </div>
         <div className="row col-sm-5 col-md-6 col-centered">
           <div className="col-md-6">

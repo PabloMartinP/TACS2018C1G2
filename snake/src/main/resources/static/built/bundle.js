@@ -62,6 +62,10 @@
 	
 	var _Header2 = _interopRequireDefault(_Header);
 	
+	var _Login = __webpack_require__(451);
+	
+	var _Login2 = _interopRequireDefault(_Login);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -83,17 +87,27 @@
 	  }
 	
 	  _createClass(App, [{
+	    key: 'getComponent',
+	    value: function getComponent() {
+	      switch (this.props.reactComponent) {
+	        case 'portfolio':
+	          return React.createElement(
+	            'div',
+	            { className: 'App' },
+	            React.createElement(_Header2.default, { userName: 'Snake' }),
+	            React.createElement(_Portfolio2.default, null)
+	          );
+	        default:
+	          return React.createElement(_Login2.default, null);
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return React.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
-	        React.createElement(
-	          'div',
-	          { className: 'App' },
-	          React.createElement(_Header2.default, { userName: 'Snake' }),
-	          React.createElement(_Portfolio2.default, null)
-	        )
+	        this.getComponent()
 	      );
 	    }
 	  }]);
@@ -101,7 +115,7 @@
 	  return App;
 	}(React.Component);
 	
-	ReactDOM.render(React.createElement(App, null), document.getElementById('react'));
+	ReactDOM.render(React.createElement(App, { reactComponent: document.getElementById('app').getAttribute('name') }), document.getElementById('app'));
 
 /***/ }),
 /* 1 */
@@ -46786,9 +46800,15 @@
 	        'div',
 	        { className: 'icon-left' },
 	        _react2.default.createElement(
-	          _FontIcon2.default,
-	          { className: 'material-icons', color: _colors.red900, title: 'Logout' },
-	          'power_settings_new'
+	          'a',
+	          { onClick: function onClick() {
+	              return document.getElementById('logoutForm').submit();
+	            }, style: { cursor: "pointer" } },
+	          _react2.default.createElement(
+	            _FontIcon2.default,
+	            { className: 'material-icons', color: _colors.red900, title: 'Logout' },
+	            'power_settings_new'
+	          )
 	        )
 	      ),
 	      style: { paddingLeft: "50px", paddingRight: "50px" }
@@ -47304,6 +47324,233 @@
 	
 	// module
 	exports.push([module.id, "div.header {\n    display: flex;\n    justify-content: space-between;\n}\n\n.header p {\n    margin: 0;\n    font-size: 2.5rem;\n}\n\n.header material-icons {\n    font-size: 1.2rem;\n}\n\n.header .icon-left {\n    margin-top: 10px;\n}\n\n.header span {\n    float: right;\n}\n\n.mb-20 {\n    margin-bottom: 20px;\n}", ""]);
+	
+	// exports
+
+
+/***/ }),
+/* 451 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(88);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	__webpack_require__(452);
+	
+	var _TextField = __webpack_require__(412);
+	
+	var _TextField2 = _interopRequireDefault(_TextField);
+	
+	var _RaisedButton = __webpack_require__(409);
+	
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+	
+	var _FlatButton = __webpack_require__(406);
+	
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Login = function (_Component) {
+	  _inherits(Login, _Component);
+	
+	  function Login(props) {
+	    _classCallCheck(this, Login);
+	
+	    var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
+	
+	    _this.state = {
+	      username: '',
+	      password: '',
+	      error: '',
+	      usernameError: '',
+	      passwordError: ''
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(Login, [{
+	    key: 'handleOnInputChange',
+	    value: function handleOnInputChange(event) {
+	      var _setState;
+	
+	      this.setState((_setState = {}, _defineProperty(_setState, event.target.name, event.target.value), _defineProperty(_setState, 'error', ''), _defineProperty(_setState, event.target.name + 'Error', ''), _setState));
+	    }
+	
+	    // login(event) {
+	    //   const errorMessage = "Debe completar este campo";
+	    //   ['username', 'password'].map(word => {
+	    //     if (this.state[word].length === 0) {
+	    //       this.setState({[word + 'Error']: errorMessage});
+	    //     }
+	    //     return true;
+	    //   });
+	    //   const self = this;
+	    //   try {
+	    //     fetch('http://localhost:8080/login/authentication', {mode: 'cors'})
+	    //       .then(response => response.json())
+	    //       .then(userValidatedFromServer => {
+	    //         if (!userValidatedFromServer) {
+	    //           self.setState({error: 'Usuario o contraseña incorrecta'});
+	    //         } else {
+	    //           window.location.replace("http://localhost:8080");
+	    //         }
+	    //       });
+	    //   } catch(exception) {
+	    //     self.setState({error: 'Error del servidor'});
+	    //   }
+	    // }
+	
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'App' },
+	        _react2.default.createElement(
+	          'header',
+	          { className: 'App-header mb-20' },
+	          _react2.default.createElement('img', { src: '/public/logo2.gif', className: 'logo', alt: 'logo' }),
+	          _react2.default.createElement(
+	            'h1',
+	            { className: 'App-title' },
+	            'SNAKE'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'mb-20 col-sm-5 col-6 col-centered' },
+	          _react2.default.createElement(
+	            'p',
+	            { className: 'error' },
+	            this.state.error
+	          ),
+	          _react2.default.createElement(_TextField2.default, {
+	            style: { width: "100%" },
+	            hintText: 'Usuario',
+	            onChange: this.handleOnInputChange.bind(this),
+	            name: 'username',
+	            errorText: this.state.usernameError
+	          }),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(_TextField2.default, {
+	            hintText: 'Contrase\xF1a',
+	            style: { width: "100%" },
+	            onChange: this.handleOnInputChange.bind(this),
+	            name: 'password',
+	            errorText: this.state.passwordError,
+	            type: 'password'
+	          }),
+	          _react2.default.createElement('br', null)
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'mb-20' },
+	          _react2.default.createElement(_RaisedButton2.default, { label: 'Ingresar', primary: true, type: 'submit' })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row col-sm-5 col-md-6 col-centered' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-6' },
+	            _react2.default.createElement(_FlatButton2.default, { label: 'Olvidaste tu contrase\xF1a', primary: true })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-6' },
+	            _react2.default.createElement(_FlatButton2.default, { label: 'Registrar', primary: true,
+	              style: { alignSelf: "flex-end", position: "absolute" } })
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Login;
+	}(_react.Component);
+	
+	exports.default = Login;
+
+/***/ }),
+/* 452 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var content = __webpack_require__(453);
+	
+	if (typeof content === 'string') content = [[module.id, content, '']];
+	
+	var transform;
+	var insertInto;
+	
+	var options = { "hmr": true };
+	
+	options.transform = transform;
+	options.insertInto = undefined;
+	
+	var update = __webpack_require__(421)(content, options);
+	
+	if (content.locals) module.exports = content.locals;
+	
+	if (false) {
+		module.hot.accept("!!../../../../node_modules/css-loader/index.js!!./Login.css", function () {
+			var newContent = require("!!../../../../node_modules/css-loader/index.js!!./Login.css");
+	
+			if (typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+	
+			var locals = function (a, b) {
+				var key,
+				    idx = 0;
+	
+				for (key in a) {
+					if (!b || a[key] !== b[key]) return false;
+					idx++;
+				}
+	
+				for (key in b) {
+					idx--;
+				}return idx === 0;
+			}(content.locals, newContent.locals);
+	
+			if (!locals) throw new Error('Aborting CSS HMR due to changed css-modules locals.');
+	
+			update(newContent);
+		});
+	
+		module.hot.dispose(function () {
+			update();
+		});
+	}
+
+/***/ }),
+/* 453 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(420)(false);
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".App {\n    text-align: center;\n  }\n  \n.App-logo {\nanimation: App-logo-spin infinite 20s linear;\nheight: 80px;\n}\n\n.App-header {\nbackground-color: #00bcd4;\npadding: 20px;\ncolor: white;\n}\n\n.App-title {\nfont-size: 1.5em;\nmargin-bottom: 20px;\nmargin-top: 20px;\n}\n\n.App-intro {\nfont-size: large;\n}\n\n@keyframes App-logo-spin {\nfrom { transform: rotate(0deg); }\nto { transform: rotate(360deg); }\n}\n\n.mb-20 {\nmargin-bottom: 20px;\n}\n\n.col-centered{\nfloat: none;\nmargin: 0 auto;\n}\n\n.col-centered.mb-20 {\nmargin-bottom: 20px;\n}\n\n.logo {\nheight: 100px;\n}\n\n.error {\nbottom: 2px;\nfont-size: 12px;\nline-height: 12px;\ncolor: rgb(244, 67, 54);\n}", ""]);
 	
 	// exports
 
