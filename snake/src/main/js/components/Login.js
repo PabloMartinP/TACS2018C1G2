@@ -52,7 +52,6 @@ class Login extends Component {
                     <header className="App-header mb-20">
                         <img src="/public/logo2.gif" className="logo" alt="logo" />
                         <h1 className="App-title">SNAKE</h1>
-                        <h2 style="font-size: 1em;">username: chester password:chester</h2>
                     </header>
                     <div className="mb-20 col-sm-5 col-6 col-centered">
                         <p className="error">{this.state.error}</p>
