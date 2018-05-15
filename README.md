@@ -3,8 +3,9 @@
 ![inspector de billeteras](https://i.ytimg.com/vi/SBSIotb48Jc/hqdefault.jpg)
 
 ## Requerimientos
-- Maven
+- Maven > 3.1
 - Java 1.8
+- npm
 
 ## Links útiles
 * [Entidades](https://drive.google.com/file/d/1zwPUHzhI3LDzClJPeA2sCS8lPmJ7Yh3X/view?usp=sharing)
