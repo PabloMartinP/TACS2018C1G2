@@ -3,6 +3,7 @@ package com.utn.tacs.grupo2.snake.controller;
 import com.utn.tacs.grupo2.snake.domain.Usuario;
 import com.utn.tacs.grupo2.snake.domain.UsuarioTelegram;
 import com.utn.tacs.grupo2.snake.repository.UsuarioRepository;
+import com.utn.tacs.grupo2.snake.security.SecurityUtils;
 import com.utn.tacs.grupo2.snake.service.UsuarioService;
 import com.utn.tacs.grupo2.snake.vo.UsuarioVo;
 import java.util.ArrayList;
@@ -47,12 +48,17 @@ public class UsuarioRestController {
 
     @PostMapping("/usuarios")
     public Usuario guardar(@Valid @RequestBody Usuario usuario) {
-       return usuarioService.guardar(usuario);
+        return usuarioService.guardar(usuario);
     }
 
     @GetMapping("/usuarios/{id}")
     public UsuarioVo obtener(@PathVariable Long id) {
         return new UsuarioVo(usuarioService.obtener(id));
+    }
+
+    @GetMapping("/usuarios/logueado")
+    public UsuarioVo obtenerLogueado(@PathVariable Long id) {
+        return new UsuarioVo(SecurityUtils.getUsuarioLogueado().getUsuario());
     }
 
     @GetMapping("/usuarios")
@@ -65,4 +71,5 @@ public class UsuarioRestController {
         });
         return usuariosVo;
     }
+
 }

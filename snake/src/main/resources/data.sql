@@ -1,6 +1,6 @@
 INSERT INTO usuario
  (id  ,  username,  password, enabled, ultimo_acceso, telegram_id) VALUES
- (1   , 'Chester',  'Turley',       1,  '2018-04-10', 1234);
+ (1   , 'chester',  'chester',       1,  '2018-04-10', 1234);
 
 INSERT INTO billetera
  (id  , usuario_id, moneda_nombre, cantidad, diferencia) VALUES
