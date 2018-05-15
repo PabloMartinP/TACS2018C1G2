@@ -17,6 +17,9 @@ mvn clean install
 ## Para levantar
 mvn spring-boot:run
 
+## autenticacion
+username: chester
+password: chester
 
 ## Url
 /api/usuarios (desde esta url se puede navegar por todas las entidades)
