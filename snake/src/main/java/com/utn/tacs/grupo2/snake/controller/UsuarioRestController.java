@@ -51,14 +51,14 @@ public class UsuarioRestController {
         return usuarioService.guardar(usuario);
     }
 
+    @GetMapping("/usuarios/logueado")
+    public UsuarioVo obtenerLogueado() {
+        return new UsuarioVo(SecurityUtils.getUsuarioLogueado().getUsuario());
+    }
+
     @GetMapping("/usuarios/{id}")
     public UsuarioVo obtener(@PathVariable Long id) {
         return new UsuarioVo(usuarioService.obtener(id));
-    }
-
-    @GetMapping("/usuarios/logueado")
-    public UsuarioVo obtenerLogueado(@PathVariable Long id) {
-        return new UsuarioVo(SecurityUtils.getUsuarioLogueado().getUsuario());
     }
 
     @GetMapping("/usuarios")

@@ -19,4 +19,9 @@ public class MonedaRestController {
     public CotizacionMonedaVo obtenerCotizacion(@PathVariable String moneda) {
         return monedaService.obtenerCotizacion(moneda);
     }
+
+    @GetMapping("/monedas")
+    public String obtenerTodas() {
+        return "[{\"nombre\":\"Bitcoin\",\"_links\":{\"cotizacion\":{\"href\":\"/api/monedas/Bitcoin/cotizacion\"}}},{\"nombre\":\"Ethereum\",\"_links\":{\"cotizacion\":{\"href\":\"/api/monedas/Ethereum/cotizacion\"}}}]";
+    }
 }
