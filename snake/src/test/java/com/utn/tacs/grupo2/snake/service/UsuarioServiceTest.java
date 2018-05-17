@@ -62,7 +62,7 @@ public class UsuarioServiceTest extends SnakeApplicationTests {
         assertThat(usuario.getId()).isNotNull();
         assertThat(cantidadUsuariosDespues).isEqualTo(cantidadUsuariosAntes + 1);
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void guardar_conNombreDeUsuarioExistente_lanzaIllegalArgumentException() {
         Usuario usuario = UsuarioBuilder
@@ -71,5 +71,5 @@ public class UsuarioServiceTest extends SnakeApplicationTests {
 
         usuarioService.guardar(usuario);
     }
-    
+
 }
