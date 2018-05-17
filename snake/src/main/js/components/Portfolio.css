@@ -1,0 +1,14 @@
+.table-container {
+    margin-right: 100px;
+    margin-left: 100px;
+}
+
+.table-container h5 {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.table-container .input {
+    margin-left: 20px;
+    text-align: left;
+}

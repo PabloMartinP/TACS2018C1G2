@@ -11,7 +11,7 @@ public class MonedaRepository {
 
     private final RestTemplate restTemplate;
 
-    public CotizacionMonedaVo obtener(String monedaNombre) {
+    public CotizacionMonedaVo obtenerCotizacion(String monedaNombre) {
 
         CotizacionMonedaVo[] cotizacionMonedaVo = restTemplate.getForObject("https://api.coinmarketcap.com/v1/ticker/" + monedaNombre, CotizacionMonedaVo[].class);
 

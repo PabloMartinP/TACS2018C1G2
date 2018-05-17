@@ -3,6 +3,7 @@ import Header from './components/Header'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Portfolio from './components/Portfolio'
 import './App.css'
+import Login from './components/Login';
 
 
 class App extends Component {
@@ -23,6 +24,7 @@ class App extends Component {
     render() {
         return (
             <MuiThemeProvider>
+                {/* <Login /> */}
               <div className="App">
                 <Header userName="Snake"/>
                 <Portfolio />

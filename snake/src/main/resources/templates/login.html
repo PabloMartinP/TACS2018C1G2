@@ -4,7 +4,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
         <title>Snake</title>
         <meta charset="UTF-8">
@@ -19,8 +19,9 @@ and open the template in the editor.
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     </head>
     <body>
-        <form id="logoutForm" th:action="@{/logout}" method="post" th:hidden="true"></form> 
-        <div id="app" th:name="${reactComponent}"></div>
+        <form th:action="@{/login}" method="POST">
+            <div id="app" th:name="login"></div>
+        </form>
         <script src="built/bundle.js"></script>
     </body>
 </html>

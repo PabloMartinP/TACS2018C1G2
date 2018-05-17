@@ -14,6 +14,7 @@ CREATE TABLE billetera (
   usuario_id bigint(20) NOT NULL,
   moneda_nombre varchar(50),
   cantidad decimal(21,12),
+  diferencia decimal(21,12),  
   PRIMARY KEY (id),
   FOREIGN KEY (usuario_id) REFERENCES usuario(id),
   UNIQUE KEY (usuario_id, moneda_nombre)

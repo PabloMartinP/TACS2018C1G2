@@ -21,7 +21,5 @@ public class TransaccionVo extends ResourceSupport {
         this.cantidad = transaccion.getCantidad();
         this.cotizacion = transaccion.getCotizacion();
         this.tipo = transaccion.getTipo().toString();
-
     }
-
 }

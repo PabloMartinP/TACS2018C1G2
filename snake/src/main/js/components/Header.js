@@ -9,9 +9,11 @@ export default ({userName, message}) => (
       <AppBar
         title={<span>{(message || 'Bienvenido') + ' ' + userName + '!'}</span>}
         iconElementLeft={<div className="icon-left">
-          <FontIcon className="material-icons" color={red900} title="Logout">
-            power_settings_new
-          </FontIcon>
+          <a onClick={() => document.getElementById('logoutForm').submit()} style={{cursor: "pointer"}}>
+            <FontIcon className="material-icons" color={red900} title="Logout">
+              power_settings_new
+            </FontIcon>
+          </a>
         </div>}
         style={{paddingLeft: "50px", paddingRight: "50px"}}
       />
