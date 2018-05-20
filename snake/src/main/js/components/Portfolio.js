@@ -17,9 +17,15 @@ export default class Portfolio extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/usuarios/1/portfolio')
-                .then(response => response.json())
-                .then(result => this.setState({portfolio: result}))
+        fetch('/api/usuarios/logueado', {credentials: "same-origin"})
+            .then(response => {
+                    return response.json();
+                })
+                .then(result => {
+                    fetch('/api/usuarios/' + result.usuarioId + '/portfolio')
+                        .then(response => response.json())
+                        .then(result => this.setState({portfolio: result}));
+                });
     }
 
     render() {
