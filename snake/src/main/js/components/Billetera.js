@@ -15,9 +15,7 @@ export default class Billetera extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            modalOpen: false
-        }
+        this.state = { modalOpen: false };
     }
 
     toggle() {
@@ -25,7 +23,6 @@ export default class Billetera extends Component {
     }
 
     render() {
-        const {billetera} = this.props;
         const actions = [
             <FlatButton
                 label="Cerrar"
@@ -35,11 +32,11 @@ export default class Billetera extends Component {
         ];
         return (
             <TableRow>
-                <TableRowColumn>{billetera.moneda.nombre}
+                <TableRowColumn>{this.props.moneda}
                 </TableRowColumn>
-                <TableRowColumn>{billetera.cantidad}</TableRowColumn>
-                <TableRowColumn>USD {billetera.moneda.corizacionActual || '100000'}</TableRowColumn>
-                <TableRowColumn>USD <span>-400</span></TableRowColumn>
+                <TableRowColumn>{this.props.cantidad}</TableRowColumn>
+                <TableRowColumn>USD {this.props.cotizacion}</TableRowColumn>
+                <TableRowColumn>USD <span>{this.props.usuario.obtenerBalanceDe(this.props.moneda)}</span></TableRowColumn>
                 <TableRowColumn>
                     <RaisedButton
                         label={
@@ -60,7 +57,7 @@ export default class Billetera extends Component {
                         autoScrollBodyContent={true}
                         onRequestClose={this.toggle.bind(this)}
                     >
-                        <ListadoTransacciones/>
+                        <ListadoTransacciones usuario={this.props.usuario} moneda={this.props.moneda}/>
                     </Dialog>
                 </TableRowColumn>
             </TableRow>
