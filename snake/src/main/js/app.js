@@ -7,31 +7,30 @@ import Header from './components/Header';
 import Login from './components/Login';
 
 class App extends React.Component {
-
-  getComponent() {
-    switch(this.props.reactComponent) {
-      case 'portfolio':
-        return (
-          <div className="App">
-            <Header userName="Snake"/>
-            <Portfolio />
-          </div>
-        );
-      default:
-        return <Login />;
+    getComponent() {
+        switch (this.props.reactComponent) {
+            case 'portfolio':
+                return (
+                    <div className="App">
+                        <Header userName={'Chester'}/>
+                        <Portfolio usuarioId={1}/>
+                    </div>
+                );
+            default:
+                return <Login/>;
+        }
     }
-  }
 
-	render() {
-		return (
-      <MuiThemeProvider>
-        {this.getComponent()}
-      </MuiThemeProvider>
-    );
-	}
+    render() {
+        return (
+            <MuiThemeProvider>
+                {this.getComponent()}
+            </MuiThemeProvider>
+        );
+    }
 }
 
 ReactDOM.render(
-	<App reactComponent={document.getElementById('app').getAttribute('name')}/>,
-	document.getElementById('app')
+    <App reactComponent={document.getElementById('app').getAttribute('name')}/>,
+    document.getElementById('app')
 );
