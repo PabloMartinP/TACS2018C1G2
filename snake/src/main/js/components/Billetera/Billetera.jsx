@@ -9,7 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import ListadoTransacciones from '../ListadoTransacciones/ListadoTransacciones.jsx';
 import FontIcon from 'material-ui/FontIcon';
-
+import '../Portfolio/Portfolio.css';
 
 export default class Billetera extends Component {
 
@@ -50,7 +50,15 @@ export default class Billetera extends Component {
                         style={{width: "60px", minWidth: "0px"}}
                     />
                     <Dialog
-                        title="Transacciones"
+                        title={
+                            <div>
+                                <h4>Transacciones</h4>
+                                <h6 className="subtitle">
+                                    {this.props.moneda.toUpperCase() + ' | USD ' +
+                                    (this.props.cotizacion ? this.props.cotizacion : '-')}
+                                </h6>
+                            </div>
+                        }
                         modal={false}
                         actions={actions}
                         open={this.state.modalOpen}

@@ -17,7 +17,7 @@ export default class Portfolio extends Component {
         this.state = {usuario: null, cotizador: null}
     }
 
-    componentDidMount() {
+    actualizarInfoPortfolio() {
         SnakeRestAPI.obtenerUsuario()
             .then(usuario => this.setState({ usuario }));
 
@@ -25,10 +25,19 @@ export default class Portfolio extends Component {
             .then(cotizador => this.setState({ cotizador }));
     }
 
+    componentDidMount() {
+        this.actualizarInfoPortfolio();
+    }
+
     render() {
         return (
             <div className="table-container">
-                { this.state.cotizador ? <AgregarTransaccion cotizador={this.state.cotizador}/> : null }
+                { this.state.cotizador ?
+                    <AgregarTransaccion
+                        cotizador={this.state.cotizador}
+                        actualizarInfoPortfolio={this.actualizarInfoPortfolio.bind(this)}/>
+                    : null 
+                }
                 <h5>Portfolio:</h5>
                 <Table>
                     <TableHeader displaySelectAll={false}>

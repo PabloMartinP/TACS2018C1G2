@@ -25,7 +25,10 @@ export default class AgregarTransaccion extends Component {
     createNewTransaction() {
         const transaccion = this.state.transaccion.crear(this.state.moneda, this.state.cantidad);
         SnakeRestAPI.registrarTransaccion(transaccion)
-            .then(this.clearState())
+            .then(() => {
+                this.clearState();
+                this.props.actualizarInfoPortfolio();
+            })
     }
 
     render() {
