@@ -35,6 +35,10 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .logoutSuccessUrl("/login?logout");
 
+        http.csrf().disable();
+
+        http.httpBasic();
+
     }
 
     @Autowired
