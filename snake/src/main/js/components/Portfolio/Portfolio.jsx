@@ -43,11 +43,13 @@ export default class Portfolio extends Component {
                     <TableBody>
                         {
                             (this.state.usuario && this.state.cotizador) ?
-                                Array.from(this.state.usuario.listarCriptomonedas()).map(([moneda, cantidad]) => <Billetera key={moneda}
-                                                                                                                            usuario={this.state.usuario}
-                                                                                                                            moneda={moneda}
-                                                                                                                            cotizacion={this.state.cotizador.cotizar(moneda)}
-                                                                                                                            cantidad={cantidad} />)
+                                Array.from(this.state.usuario.listarCriptomonedas()).map(([moneda, cantidad]) => {
+                                    return <Billetera key={moneda}
+                                    usuario={this.state.usuario}
+                                    moneda={moneda}
+                                    cotizacion={this.state.cotizador.cotizaciones.get(moneda)}
+                                    cantidad={cantidad} />
+                                })
                                 : <TableRow></TableRow>
                         }
                     </TableBody>

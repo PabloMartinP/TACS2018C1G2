@@ -22,6 +22,6 @@ public class MonedaRestController {
 
     @GetMapping("/monedas")
     public String obtenerTodas() {
-        return "[{\"nombre\":\"Bitcoin\",\"_links\":{\"cotizacion\":{\"href\":\"/api/monedas/Bitcoin/cotizacion\"}}},{\"nombre\":\"Ethereum\",\"_links\":{\"cotizacion\":{\"href\":\"/api/monedas/Ethereum/cotizacion\"}}}]";
+        return "[{\"nombre\":\"bitcoin\",\"_links\":{\"cotizacion\":{\"href\":\"/api/monedas/Bitcoin/cotizacion\"}}},{\"nombre\":\"ethereum\",\"_links\":{\"cotizacion\":{\"href\":\"/api/monedas/Ethereum/cotizacion\"}}}]";
     }
 }

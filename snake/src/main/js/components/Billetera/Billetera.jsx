@@ -35,7 +35,7 @@ export default class Billetera extends Component {
                 <TableRowColumn>{this.props.moneda}
                 </TableRowColumn>
                 <TableRowColumn>{this.props.cantidad}</TableRowColumn>
-                <TableRowColumn>USD {this.props.cotizacion}</TableRowColumn>
+                <TableRowColumn>USD {this.props.cotizacion ? this.props.cotizacion : '-'}</TableRowColumn>
                 <TableRowColumn>USD <span>{this.props.usuario.obtenerBalanceDe(this.props.moneda)}</span></TableRowColumn>
                 <TableRowColumn>
                     <RaisedButton
