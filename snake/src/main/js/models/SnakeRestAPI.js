@@ -26,9 +26,9 @@ const SnakeRestAPI = {
             .then(() => Cotizador.crear(cotizaciones)))
     },
 
-    obtenerUsuarioPorId(id) {
+    obtenerUsuario() {
         let usuario;
-        return fetch('/api/usuarios/' + id)
+        return fetch('/api/usuarios/logueado', {credentials: "same-origin"})
             .then(respuesta => respuesta.json())
             .then(usuarioEnJson => {
                 usuario = Usuario.crear(usuarioEnJson.username, this);
@@ -52,4 +52,4 @@ const SnakeRestAPI = {
     }
 }
 
-module.exports = { SnakeRestAPI: SnakeRestAPI };
+module.exports = { SnakeRestAPI };

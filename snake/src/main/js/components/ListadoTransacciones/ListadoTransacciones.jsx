@@ -7,7 +7,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import './Portfolio.css';
+import '../Portfolio/Portfolio.css';
 
 export default class Transacciones extends Component {
 

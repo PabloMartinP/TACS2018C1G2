@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Billetera from './Billetera'
+import Billetera from '../Billetera/Billetera.jsx'
 import {
     Table,
     TableBody,
@@ -8,8 +8,8 @@ import {
     TableRow
 } from 'material-ui/Table';
 import './Portfolio.css';
-import AgregarTransaccion from './AgregarTransaccion.jsx';
-import {SnakeRestAPI} from '../models/SnakeRestAPI';
+import AgregarTransaccion from '../AgregarTransaccion/AgregarTransaccion.jsx';
+import {SnakeRestAPI} from '../../models/SnakeRestAPI';
 
 export default class Portfolio extends Component {
     constructor(props) {
@@ -18,15 +18,11 @@ export default class Portfolio extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/usuarios/logueado', {credentials: "same-origin"})
-            .then(response => {
-                    return response.json();
-                })
-                .then(result => {
-		    this.setState({ usuario: result });
-                    SnakeRestAPI.obtenerCotizador()
-            		.then(cotizador => this.setState({ cotizador }));
-                });
+        SnakeRestAPI.obtenerUsuario()
+            .then(usuario => this.setState({ usuario }));
+
+        SnakeRestAPI.obtenerCotizador()
+            .then(cotizador => this.setState({ cotizador }));
     }
 
     render() {

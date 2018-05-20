@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import TextField from 'material-ui/TextField';
-import './Portfolio.css';
+import '../Portfolio/Portfolio.css';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import {SnakeRestAPI} from '../models/SnakeRestAPI';
-import {Compra, Venta} from '../models/Transaccion';
+import {SnakeRestAPI} from '../../models/SnakeRestAPI';
+import {Compra, Venta} from '../../models/Transaccion';
 
 export default class AgregarTransaccion extends Component {
     constructor(props) {

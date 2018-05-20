@@ -1,10 +1,10 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Portfolio from './components/Portfolio';
+import Portfolio from './components/Portfolio/Portfolio.jsx';
 import './App.css';
-import Header from './components/Header';
-import Login from './components/Login';
+import Header from './components/Header/Header.jsx';
+import Login from './components/Login/Login.jsx';
 
 class App extends React.Component {
     getComponent() {
