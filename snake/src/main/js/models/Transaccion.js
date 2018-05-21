@@ -1,9 +1,12 @@
 const Transaccion = {
-    crear(unaCriptomoneda, cantidad, cotizacionAlMomentoDeLaTransaccion) {
+    crear(unaCriptomoneda, cantidad, cotizacionAlMomentoDeLaTransaccion, fecha) {
         const nuevaTransaccion = Object.create(this);
         nuevaTransaccion.criptomoneda = unaCriptomoneda;
         nuevaTransaccion.cantidad = cantidad;
         nuevaTransaccion.cotizacionAlMomentoDeLaTransaccion = cotizacionAlMomentoDeLaTransaccion;
+        const fechaFormateada = fecha ? new Date(fecha.year, fecha.monthValue, fecha.dayOfMonth, fecha.hour,
+            fecha.minute, fecha.second, 0) : new Date();
+        nuevaTransaccion.fecha = fechaFormateada;
         return nuevaTransaccion;
     },
 

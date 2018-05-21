@@ -7,6 +7,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import {SnakeRestAPI} from '../../models/SnakeRestAPI';
 import {Compra, Venta} from '../../models/Transaccion';
+const moment = require('moment');
 
 export default class AgregarTransaccion extends Component {
     constructor(props) {

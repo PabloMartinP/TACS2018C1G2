@@ -44,7 +44,8 @@ const SnakeRestAPI = {
                         .then(transaccionesEnJson => transaccionesEnJson.forEach(transaccionEnJson => {
                             const tipoDeTransaccion = transaccionEnJson.tipo === 'COMPRA' ? Compra : Venta;
                             // FIXME: Rompe el encapsulamiento del usuario
-                            usuario.transacciones.push(tipoDeTransaccion.crear(criptomoneda, transaccionEnJson.cantidad, transaccionEnJson.cotizacion));
+                            return usuario.transacciones.push(tipoDeTransaccion.crear(criptomoneda, transaccionEnJson.cantidad,
+                                transaccionEnJson.cotizacion, transaccionEnJson.fecha));
                         }));
                 });
             })

@@ -8,6 +8,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import '../Portfolio/Portfolio.css';
+const moment = require('moment');
 
 export default class Transacciones extends Component {
 
@@ -23,12 +24,14 @@ export default class Transacciones extends Component {
                     </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
-                    { this.props.usuario.listarTransaccionesDe(this.props.moneda).map((transaccion, index) =>
+                    { this.props.usuario.listarTransaccionesDe(this.props.moneda)
+                        .sort((txA, txB) => txA.fecha < txB.fecha)
+                        .map((transaccion, index) =>
                         <TableRow key={index}>
                             <TableRowColumn>{transaccion.nombre}</TableRowColumn>
                             <TableRowColumn>{transaccion.cantidad}</TableRowColumn>
                             <TableRowColumn>USD {transaccion.cotizacionAlMomentoDeLaTransaccion}</TableRowColumn>
-                            <TableRowColumn>09/03/2018</TableRowColumn>
+                            <TableRowColumn>{moment(transaccion.fecha).format('DD/MM/YYYY')}</TableRowColumn>
                         </TableRow>
                     )}
                 </TableBody>
