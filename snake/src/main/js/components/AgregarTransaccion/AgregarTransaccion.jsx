@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import TextField from 'material-ui/TextField';
+        import TextField from 'material-ui/TextField';
 import '../Portfolio/Portfolio.css';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -26,50 +26,50 @@ export default class AgregarTransaccion extends Component {
     createNewTransaction() {
         const transaccion = this.state.transaccion.crear(this.state.moneda, this.state.cantidad);
         SnakeRestAPI.registrarTransaccion(transaccion)
-            .then(() => {
-                this.clearState();
-                this.props.actualizarInfoPortfolio();
-            })
+                .then(() => {
+                    this.clearState();
+                    this.props.actualizarInfoPortfolio();
+                })
     }
 
     render() {
         return (
-            <div className="row mb-20">
-                <div className="input col-md-3">
-                    <SelectField
-                        floatingLabelText="Tipo de Transacción"
-                        value={this.state.transaccion}
-                        onChange={(event, index, value) => this.setState({transaccion: value})} >
-                        <MenuItem value={Compra} primaryText="Compra"/>
-                        <MenuItem value={Venta} primaryText="Venta"/>
-                    </SelectField>
+                <div className="row mb-20">
+                    <div className="input col-md-3">
+                        <SelectField
+                            floatingLabelText="Tipo de Transacción"
+                            value={this.state.transaccion}
+                            onChange={(event, index, value) => this.setState({transaccion: value})} >
+                            <MenuItem value={Compra} primaryText="Compra"/>
+                            <MenuItem value={Venta} primaryText="Venta"/>
+                        </SelectField>
+                    </div>
+                    <div className="input col-md-3">
+                        <SelectField
+                            floatingLabelText="Moneda"
+                            value={this.state.moneda}
+                            onChange={(event, index, value) => this.setState({moneda: value})}>
+                            {this.props.cotizador.listarMonedasCotizadas().map(moneda => <MenuItem key={moneda} value={moneda} primaryText={moneda}/>)}
+                        </SelectField>
+                    </div>
+                    <div className="input col-md-3">
+                        <br/>
+                        <TextField hintText="cantidad monedas"
+                                   style={{width: "90%", marginLeft: "10px"}}
+                                   value={this.state.cantidad}
+                                   onChange={event => this.setState({cantidad: event.target.value})}/>
+                    </div>
+                    <div>
+                        <br/>
+                        <FloatingActionButton
+                            onClick={() => this.createNewTransaction()}
+                            mini={true}
+                            disabled={this.isDisabled()}
+                            style={{boxShadow: "0", marginLeft: "20px"}}>
+                            <ContentAdd/>
+                        </FloatingActionButton>
+                    </div>
                 </div>
-                <div className="input col-md-3">
-                    <SelectField
-                        floatingLabelText="Moneda"
-                        value={this.state.moneda}
-                        onChange={(event, index, value) => this.setState({moneda: value})}>
-                        {this.props.cotizador.listarMonedasCotizadas().map(moneda => <MenuItem key={moneda} value={moneda} primaryText={moneda}/>)}
-                    </SelectField>
-                </div>
-                <div className="input col-md-3">
-                    <br/>
-                    $<TextField hintText="Valor"
-                                style={{width: "90%", marginLeft: "10px"}}
-                                value={this.state.cantidad}
-                                onChange={event => this.setState({cantidad: event.target.value})}/>
-                </div>
-                <div>
-                    <br/>
-                    <FloatingActionButton
-                        onClick={() => this.createNewTransaction()}
-                        mini={true}
-                        disabled={this.isDisabled()}
-                        style={{boxShadow: "0", marginLeft: "20px"}}>
-                        <ContentAdd/>
-                    </FloatingActionButton>
-                </div>
-            </div>
-        )
-    }
-}
+                                    )
+                        }
+                    }
