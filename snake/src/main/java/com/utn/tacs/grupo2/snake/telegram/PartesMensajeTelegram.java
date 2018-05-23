@@ -99,7 +99,7 @@ public class PartesMensajeTelegram {
     }
    
    public boolean esUnLogin(){
-       return getOperacionString().equalsIgnoreCase("l");
+       return getTexto().equalsIgnoreCase("login");
    }
    
     public String getTexto(){
