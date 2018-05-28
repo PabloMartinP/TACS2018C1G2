@@ -2,6 +2,7 @@ package com.utn.tacs.grupo2.snake.service;
 
 import com.utn.tacs.grupo2.snake.SnakeApplicationTest;
 import com.utn.tacs.grupo2.snake.builder.UsuarioBuilder;
+import com.utn.tacs.grupo2.snake.domain.Rol;
 import com.utn.tacs.grupo2.snake.domain.Usuario;
 import com.utn.tacs.grupo2.snake.repository.UsuarioRepository;
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
 
         assertThat(usuario).isNotNull();
         assertThat(usuario.getId()).isNotNull();
+        assertThat(usuario.getRol()).isEqualTo(Rol.USER);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -69,6 +71,7 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
                 .conId(null)
                 .conUsername("Homer")
                 .conPassword("Simpson")
+                .conRol(Rol.USER)
                 .conUltimoAcceso(null)
                 .build();
 
