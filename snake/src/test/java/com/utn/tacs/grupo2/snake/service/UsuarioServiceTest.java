@@ -9,6 +9,8 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 public class UsuarioServiceTest extends SnakeApplicationTests {
 
@@ -29,6 +31,7 @@ public class UsuarioServiceTest extends SnakeApplicationTests {
     }
 
     @Test
+    @WithUserDetails(value = "chester")
     public void obtener_conUsuarioIdExistente_retornaUsuario() {
         Usuario usuario = usuarioService.obtener(USUARIO_ID);
 
@@ -37,13 +40,26 @@ public class UsuarioServiceTest extends SnakeApplicationTests {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "chester")
     public void obtener_conUsuarioIdInexistente_lanzaIllegalArgumentException() {
         usuarioService.obtener(Long.MAX_VALUE);
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "chester")
     public void obtener_conUsuarioIdNulo_lanzaIllegalArgumentException() {
         usuarioService.obtener(null);
+    }
+
+    @Test(expected = AuthenticationCredentialsNotFoundException.class)
+    public void obtener_conUsuarioNoLogeado_lanzaAuthenticationCredentialsNotFoundException() {
+        usuarioService.obtener(USUARIO_ID);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "homer")
+    public void obtener_conUsuarioSinPermisos_lanzaIllegalArgumentException() {
+        usuarioService.obtener(USUARIO_ID);
     }
 
     @Test
@@ -62,7 +78,7 @@ public class UsuarioServiceTest extends SnakeApplicationTests {
         assertThat(usuario.getId()).isNotNull();
         assertThat(cantidadUsuariosDespues).isEqualTo(cantidadUsuariosAntes + 1);
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void guardar_conNombreDeUsuarioExistente_lanzaIllegalArgumentException() {
         Usuario usuario = UsuarioBuilder
@@ -71,5 +87,5 @@ public class UsuarioServiceTest extends SnakeApplicationTests {
 
         usuarioService.guardar(usuario);
     }
-    
+
 }

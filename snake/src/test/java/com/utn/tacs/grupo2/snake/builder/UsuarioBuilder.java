@@ -22,8 +22,8 @@ public class UsuarioBuilder {
     public static UsuarioBuilder tipico() {
         UsuarioBuilder builder = new UsuarioBuilder();
         builder.id = 1L;
-        builder.username = "Chester";
-        builder.password = "Turley";
+        builder.username = "chester";
+        builder.password = "chester";
         builder.ultimoAcceso = LocalDateTime.now();
         return builder;
     }

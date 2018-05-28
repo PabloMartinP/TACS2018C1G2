@@ -2,8 +2,10 @@ package com.utn.tacs.grupo2.snake.service;
 
 import com.utn.tacs.grupo2.snake.domain.Usuario;
 import com.utn.tacs.grupo2.snake.repository.UsuarioRepository;
+import com.utn.tacs.grupo2.snake.security.SecurityUtils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -17,8 +19,10 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    @PreAuthorize("isAuthenticated()")
     public Usuario obtener(Long usuarioId) {
         Assert.notNull(usuarioId, "Error al buscar usuario.");
+        SecurityUtils.validarUsuario(usuarioId);
         return usuarioRepository.findById(usuarioId).orElseThrow(() -> new IllegalArgumentException());
     }
 

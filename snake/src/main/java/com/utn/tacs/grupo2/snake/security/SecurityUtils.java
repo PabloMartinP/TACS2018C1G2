@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 @RequiredArgsConstructor
 @Component
@@ -24,6 +25,11 @@ public class SecurityUtils {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority(rol));
     }
 
+    public static void validarUsuario(Long usuarioId) {
+        Long usuarioLogeadoId = SecurityUtils.getUsuarioLogueado().getUsuario().getId();
+        Assert.isTrue(usuarioLogeadoId.equals(usuarioId), "Permiso Denegado");
+    }
+
     public UsuarioVo loguearseComoUsuario(String username) {
 
         UserDetails user = userDetailsService.loadUserByUsername(username);
@@ -33,4 +39,5 @@ public class SecurityUtils {
 
         return new UsuarioVo(SecurityUtils.getUsuarioLogueado().getUsuario());
     }
+
 }
