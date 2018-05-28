@@ -1,6 +1,6 @@
 package com.utn.tacs.grupo2.snake.service;
 
-import com.utn.tacs.grupo2.snake.SnakeApplicationTests;
+import com.utn.tacs.grupo2.snake.SnakeApplicationTest;
 import com.utn.tacs.grupo2.snake.builder.TransaccionBuilder;
 import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import java.io.IOException;
@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.test.context.support.WithUserDetails;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
@@ -19,7 +21,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
-public class TransaccionServiceTest extends SnakeApplicationTests {
+public class TransaccionServiceTest extends SnakeApplicationTest {
 
     //autowired para que spring nos provea una instancia del service
     @Autowired
@@ -31,6 +33,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
      * Nomenclatura de los test nombreMetodo_contexto_retorno ()
      */
     @Test
+    @WithUserDetails(value = "chester")
     public void registrar_conTransaccionCompraValida_retornaTransaccion() throws IOException {
         //set up
         String cotizacionBitcoinResponse = obtenerContenidoArchivo("jsons/response_cotizacionBitcoin.json");
@@ -61,6 +64,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
     }
 
     @Test
+    @WithUserDetails(value = "chester")
     public void registrar_conTransaccionVentaValida_retornaTransaccion() throws IOException {
         String cotizacionBitcoinResponse = obtenerContenidoArchivo("jsons/response_cotizacionBitcoin.json");
         String monedaNombre = "bitcoin";
@@ -86,6 +90,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
     }
 
     @Test(expected = HttpClientErrorException.class)
+    @WithUserDetails(value = "chester")
     public void registrar_conTransaccionConMonedaNombreInexistente_lanzaHttpClientErrorException() throws IOException {
         String monedaNombre = "inexistente";
         Transaccion transaccion = TransaccionBuilder
@@ -104,6 +109,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
     }
 
     @Test(expected = HttpServerErrorException.class)
+    @WithUserDetails(value = "chester")
     public void registrar_conApiCaida_lanzaHttpServerErrorException() throws IOException {
         String monedaNombre = "bitcoin";
         Transaccion transaccion = TransaccionBuilder
@@ -122,6 +128,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "chester")
     public void registrar_conCantidadInvalida_lanzaException() throws IOException {
         String monedaNombre = "bitcoin";
         Transaccion transaccion = TransaccionBuilder
@@ -136,6 +143,7 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "chester")
     public void registrar_conCantidadCero_lanzaException() throws IOException {
         String monedaNombre = "bitcoin";
         Transaccion transaccion = TransaccionBuilder
@@ -149,7 +157,37 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
         transaccionService.registrar(transaccion, USUARIO_ID);
     }
 
+    @Test(expected = AuthenticationCredentialsNotFoundException.class)
+    public void registrar_conUsuarioNoLogeado_lanzaAuthenticationCredentialsNotFoundException() {
+        String monedaNombre = "bitcoin";
+        Transaccion transaccion = TransaccionBuilder
+                .compraTipica()
+                .conId(null)
+                .conMonedaNombre(monedaNombre)
+                .conBilletera(null)
+                .conCantidad(BigDecimal.ONE)
+                .build();
+
+        transaccionService.registrar(transaccion, USUARIO_ID);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "homer")
+    public void registrar_conUsuarioSinPermisos_lanzaIllegalArgumentException() {
+        String monedaNombre = "bitcoin";
+        Transaccion transaccion = TransaccionBuilder
+                .compraTipica()
+                .conId(null)
+                .conMonedaNombre(monedaNombre)
+                .conBilletera(null)
+                .conCantidad(BigDecimal.ONE)
+                .build();
+
+        transaccionService.registrar(transaccion, USUARIO_ID);
+    }
+
     @Test
+    @WithUserDetails(value = "chester")
     public void buscarTodas_conUsuarioExistenteYMonedaBitcoin_retornaListaDeTransacciones() {
         String monedaNombre = "bitcoin";
         List<Transaccion> transacciones = transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
@@ -159,29 +197,46 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "chester")
     public void buscarTodas_conUsuarioInexistenteYMonedaBitcoin_lanzaIllegalArgumentException() {
         String monedaNombre = "bitcoin";
         transaccionService.buscarTodas(Long.MAX_VALUE, monedaNombre);
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "chester")
     public void buscarTodas_conUsuarioInvalidoYMonedaBitcoin_lanzaIllegalArgumentException() {
         String monedaNombre = "bitcoin";
-        
+
         transaccionService.buscarTodas(null, monedaNombre);
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "chester")
     public void buscarTodas_conUsuarioExistenteYMonedaInexistente_lanzaIllegalArgumentException() {
         String monedaNombre = "pesos";
-        
+
         transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "chester")
     public void buscarTodas_conUsuarioExistenteYMonedaInvalida_lanzaIllegalArgumentException() {
         String monedaNombre = null;
-        
+
+        transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
+    }
+    
+    @Test(expected = AuthenticationCredentialsNotFoundException.class)
+    public void buscarTodas_conUsuarioNoLogeado_lanzaAuthenticationCredentialsNotFoundException() {
+        String monedaNombre = "bitcoin";
+        transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "homer")
+    public void buscarTodas_conUsuarioSinPermisos_lanzaIllegalArgumentException() {
+        String monedaNombre = "bitcoin";
         transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
     }
 }

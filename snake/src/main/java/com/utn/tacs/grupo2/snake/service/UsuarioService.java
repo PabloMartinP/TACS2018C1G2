@@ -21,8 +21,8 @@ public class UsuarioService {
 
     @PreAuthorize("isAuthenticated()")
     public Usuario obtener(Long usuarioId) {
-        Assert.notNull(usuarioId, "Error al buscar usuario.");
         SecurityUtils.validarUsuario(usuarioId);
+        Assert.notNull(usuarioId, "Error al buscar usuario.");
         return usuarioRepository.findById(usuarioId).orElseThrow(() -> new IllegalArgumentException());
     }
 

@@ -1,6 +1,6 @@
 package com.utn.tacs.grupo2.snake.service;
 
-import com.utn.tacs.grupo2.snake.SnakeApplicationTests;
+import com.utn.tacs.grupo2.snake.SnakeApplicationTest;
 import com.utn.tacs.grupo2.snake.builder.UsuarioBuilder;
 import com.utn.tacs.grupo2.snake.domain.Usuario;
 import com.utn.tacs.grupo2.snake.repository.UsuarioRepository;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-public class UsuarioServiceTest extends SnakeApplicationTests {
+public class UsuarioServiceTest extends SnakeApplicationTest {
 
     @Autowired
     private UsuarioService usuarioService;

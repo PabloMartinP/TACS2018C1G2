@@ -1,6 +1,6 @@
 package com.utn.tacs.grupo2.snake.service;
 
-import com.utn.tacs.grupo2.snake.SnakeApplicationTests;
+import com.utn.tacs.grupo2.snake.SnakeApplicationTest;
 import com.utn.tacs.grupo2.snake.domain.Billetera;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -18,7 +18,7 @@ import org.springframework.test.web.client.response.MockRestResponseCreators;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import org.springframework.web.client.HttpServerErrorException;
 
-public class BilleteraServiceTest extends SnakeApplicationTests {
+public class BilleteraServiceTest extends SnakeApplicationTest {
 
     @Autowired
     private BilleteraService billeteraService;
