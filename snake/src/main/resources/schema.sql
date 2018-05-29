@@ -2,6 +2,7 @@ CREATE TABLE usuario (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   username varchar(255),
   password varchar(255) NOT NULL DEFAULT '123456',
+  rol varchar(50) NOT NULL,
   enabled bit(1) NOT NULL DEFAULT 1,
   ultimo_acceso datetime,
   telegram_id bigint(20), 
