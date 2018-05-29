@@ -3,9 +3,13 @@ package com.utn.tacs.grupo2.snake.controller;
 import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import com.utn.tacs.grupo2.snake.service.TransaccionService;
 import com.utn.tacs.grupo2.snake.vo.TransaccionVo;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,5 +35,17 @@ public class TransaccionRestController {
             transaccionesVo.add(new TransaccionVo(transaccion));
         });
         return transaccionesVo;
+    }
+
+    @GetMapping("/transacciones")
+    public Long cantidadDeTransacciones(
+            @RequestParam(value = "fecha", required = false)
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaDesde) {
+
+        if (fechaDesde == null) {
+            return transaccionService.contarTodas();
+        } else {
+            return transaccionService.contarPosterioriesA(LocalDateTime.of(fechaDesde, LocalTime.of(0, 0)));
+        }
     }
 }

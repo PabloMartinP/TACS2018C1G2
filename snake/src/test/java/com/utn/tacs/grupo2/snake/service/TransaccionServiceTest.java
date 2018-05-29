@@ -5,6 +5,8 @@ import com.utn.tacs.grupo2.snake.builder.TransaccionBuilder;
 import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
@@ -167,21 +169,30 @@ public class TransaccionServiceTest extends SnakeApplicationTests {
     @Test(expected = IllegalArgumentException.class)
     public void buscarTodas_conUsuarioInvalidoYMonedaBitcoin_lanzaIllegalArgumentException() {
         String monedaNombre = "bitcoin";
-        
+
         transaccionService.buscarTodas(null, monedaNombre);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void buscarTodas_conUsuarioExistenteYMonedaInexistente_lanzaIllegalArgumentException() {
         String monedaNombre = "pesos";
-        
+
         transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void buscarTodas_conUsuarioExistenteYMonedaInvalida_lanzaIllegalArgumentException() {
         String monedaNombre = null;
-        
+
         transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
+    }
+
+    @Test
+    public void contarPosterioriesA_fechavalida_cantidad() {
+
+        Long cantidad = transaccionService.contarPosterioriesA(LocalDateTime.of(2018, Month.APRIL, 9, 0, 0));
+
+        assertThat(cantidad).isEqualTo(2L);
+
     }
 }

@@ -50,4 +50,12 @@ public class TransaccionService {
                 .orElseThrow(() -> new IllegalArgumentException());
     }
 
+    public Long contarTodas() {
+        return transaccionRepository.count();
+    }
+
+    public Long contarPosterioriesA(LocalDateTime fecha) {
+        return transaccionRepository.countByFechaGreaterThanEqual(fecha);
+    }
+
 }
