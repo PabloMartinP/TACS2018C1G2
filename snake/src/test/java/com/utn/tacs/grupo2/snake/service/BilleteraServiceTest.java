@@ -34,6 +34,15 @@ public class BilleteraServiceTest extends SnakeApplicationTest {
         assertThat(portfolio.isEmpty()).isFalse();
     }
 
+    @Test
+    @WithUserDetails(value = "admin")
+    public void buscarPorUsuarioId_conUsuarioAdmin_retornaPortfolio() {
+        List<Billetera> portfolio = billeteraService.buscarPorUsuarioId(USUARIO_ID);
+
+        assertThat(portfolio).isNotNull();
+        assertThat(portfolio.isEmpty()).isFalse();
+    }
+
     @Test(expected = IllegalArgumentException.class)
     @WithUserDetails(value = "chester")
     public void buscarPorUsuarioId_conUsuarioInexistente_lanzaIllegalArgumentException() {
@@ -60,6 +69,21 @@ public class BilleteraServiceTest extends SnakeApplicationTest {
     @Test
     @WithUserDetails(value = "chester")
     public void obtenerDiferencia_conDiferenciaActualYCotizacionActual_retornaGanaciaOPerdida() throws IOException {
+        String cotizacionBitcoinResponse = obtenerContenidoArchivo("jsons/response_cotizacionBitcoin.json");
+        String monedaNombre = "bitcoin";
+        mockRestServiceServer.expect(requestTo("https://api.coinmarketcap.com/v1/ticker/" + monedaNombre))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(cotizacionBitcoinResponse, MediaType.APPLICATION_JSON));
+
+        BigDecimal diferenciaActual = billeteraService.obtenerDiferencia(USUARIO_ID, monedaNombre);
+
+        assertThat(diferenciaActual).isNotNull();
+        assertThat(diferenciaActual).isEqualByComparingTo(new BigDecimal("9900"));
+    }
+
+    @Test
+    @WithUserDetails(value = "admin")
+    public void obtenerDiferencia_conUsuarioAdminDiferenciaActualYCotizacionActual_retornaGanaciaOPerdida() throws IOException {
         String cotizacionBitcoinResponse = obtenerContenidoArchivo("jsons/response_cotizacionBitcoin.json");
         String monedaNombre = "bitcoin";
         mockRestServiceServer.expect(requestTo("https://api.coinmarketcap.com/v1/ticker/" + monedaNombre))

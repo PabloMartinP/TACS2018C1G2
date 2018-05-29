@@ -19,14 +19,14 @@ public class BilleteraService {
 
     @PreAuthorize("isAuthenticated()")
     public List<Billetera> buscarPorUsuarioId(Long usuarioId) {
-        SecurityUtils.validarUsuario(usuarioId);
+        SecurityUtils.validarUsuarioOAdministrador(usuarioId);
         return billeteraRepository.findByUsuarioId(usuarioId).orElseThrow(() -> new IllegalArgumentException());
     }
 
 
     @PreAuthorize("isAuthenticated()")
     public BigDecimal obtenerDiferencia(Long usuarioId, String moneda) {
-        SecurityUtils.validarUsuario(usuarioId);
+        SecurityUtils.validarUsuarioOAdministrador(usuarioId);
         Billetera billetera = billeteraRepository.findByUsuarioIdAndMonedaNombre(usuarioId, moneda)
                 .orElseThrow(() -> new IllegalArgumentException());
         CotizacionMonedaVo cotizacionMonedaVo = monedaService.obtenerCotizacion(moneda);

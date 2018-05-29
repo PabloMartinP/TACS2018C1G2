@@ -1,8 +1,8 @@
 INSERT INTO usuario
- (id  ,  username,  password,     rol, enabled, ultimo_acceso, telegram_id) VALUES
- (1   , 'chester', 'chester',  'USER',       1,  '2018-04-10', 1234),
- (2   ,   'homer',   'homer',  'USER',       1,  '2018-04-11', 5678),
- (3   ,   'admin',   'admin', 'ADMIN',       1,  '2018-04-11', 0000);
+ (id  ,  username,  password,          rol, enabled, ultimo_acceso, telegram_id) VALUES
+ (1   , 'chester', 'chester',  'ROLE_USER',       1,  '2018-04-10', 1234),
+ (2   ,   'homer',   'homer',  'ROLE_USER',       1,  '2018-04-11', 5678),
+ (3   ,   'admin',   'admin', 'ROLE_ADMIN',       1,  '2018-04-11', 0000);
 
 INSERT INTO billetera
  (id  , usuario_id, moneda_nombre, cantidad, diferencia) VALUES

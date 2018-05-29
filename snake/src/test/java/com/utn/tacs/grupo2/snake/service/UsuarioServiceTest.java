@@ -10,6 +10,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.test.context.support.WithUserDetails;
 
@@ -23,12 +24,19 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
     private final static Long USUARIO_ID = 1L;
 
     @Test
-    public void obtenerTodos_retornaListaDeUsuario() throws IOException {
+    @WithUserDetails(value = "admin")
+    public void obtenerTodos_conUsuarioAdmin_retornaListaDeUsuario() throws IOException {
         List<Usuario> usuarios = usuarioService.obtenerTodos();
 
         assertThat(usuarios).isNotNull();
         assertThat(usuarios.isEmpty()).isFalse();
         assertThat(usuarios.size()).isEqualTo(usuarioRepository.count());
+    }
+
+    @Test(expected = AccessDeniedException.class)
+    @WithUserDetails(value = "chester")
+    public void obtenerTodos_conUsuarioComun_lanzaAccessDeniedException() throws IOException {
+        usuarioService.obtenerTodos();
     }
 
     @Test
@@ -38,7 +46,7 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
 
         assertThat(usuario).isNotNull();
         assertThat(usuario.getId()).isNotNull();
-        assertThat(usuario.getRol()).isEqualTo(Rol.USER);
+        assertThat(usuario.getRol()).isEqualTo(Rol.ROLE_USER);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -65,13 +73,14 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
     }
 
     @Test
+    @WithUserDetails(value = "admin")
     public void guardar_conUsuarioNuevo_guardaElUsuario() {
         Long cantidadUsuariosAntes = usuarioRepository.count();
         Usuario usuario = new UsuarioBuilder()
                 .conId(null)
                 .conUsername("Homer")
                 .conPassword("Simpson")
-                .conRol(Rol.USER)
+                .conRol(Rol.ROLE_USER)
                 .conUltimoAcceso(null)
                 .build();
 
@@ -83,7 +92,18 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "admin")
     public void guardar_conNombreDeUsuarioExistente_lanzaIllegalArgumentException() {
+        Usuario usuario = UsuarioBuilder
+                .tipico()
+                .build();
+
+        usuarioService.guardar(usuario);
+    }
+    
+    @Test(expected = AccessDeniedException.class)
+    @WithUserDetails(value = "chester")
+    public void guardar_conUsuarioComun_lanzaAccessDeniedException() {
         Usuario usuario = UsuarioBuilder
                 .tipico()
                 .build();

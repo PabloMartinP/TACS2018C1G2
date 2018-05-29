@@ -4,6 +4,7 @@ import java.nio.file.AccessDeniedException;
 import javax.xml.ws.WebServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -18,6 +19,11 @@ public class AdviceController {
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<String> handleAccessDeniedException(Exception exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
+    }
+    
+    @ExceptionHandler({AuthenticationCredentialsNotFoundException.class})
+    public ResponseEntity<String> handleAuthenticationCredentialsNotFoundException(Exception exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({WebServiceException.class})

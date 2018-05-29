@@ -186,6 +186,21 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
         transaccionService.registrar(transaccion, USUARIO_ID);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "admin")
+    public void registrar_conUsuarioAdmin_lanzaIllegalArgumentException() {
+        String monedaNombre = "bitcoin";
+        Transaccion transaccion = TransaccionBuilder
+                .compraTipica()
+                .conId(null)
+                .conMonedaNombre(monedaNombre)
+                .conBilletera(null)
+                .conCantidad(BigDecimal.ONE)
+                .build();
+
+        transaccionService.registrar(transaccion, USUARIO_ID);
+    }
+
     @Test
     @WithUserDetails(value = "chester")
     public void buscarTodas_conUsuarioExistenteYMonedaBitcoin_retornaListaDeTransacciones() {
@@ -226,17 +241,27 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
 
         transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
     }
-    
+
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void buscarTodas_conUsuarioNoLogeado_lanzaAuthenticationCredentialsNotFoundException() {
         String monedaNombre = "bitcoin";
         transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     @WithUserDetails(value = "homer")
     public void buscarTodas_conUsuarioSinPermisos_lanzaIllegalArgumentException() {
         String monedaNombre = "bitcoin";
         transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
+    }
+
+    @Test
+    @WithUserDetails(value = "admin")
+    public void buscarTodas_conUsuarioAdministradorYMonedaBitcoin_retornaListaDeTransacciones() {
+        String monedaNombre = "bitcoin";
+        List<Transaccion> transacciones = transaccionService.buscarTodas(USUARIO_ID, monedaNombre);
+
+        assertThat(transacciones).isNotNull();
+        assertThat(transacciones.isEmpty()).isFalse();
     }
 }

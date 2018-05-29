@@ -25,7 +25,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
 
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        authorities.add(new SimpleGrantedAuthority(usuario.getRol().toString()));
 
         return new CustomUserDetails(username, usuario.getPassword(), authorities, usuario);
     }

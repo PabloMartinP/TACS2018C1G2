@@ -49,7 +49,7 @@ public class TransaccionService {
 
     @PreAuthorize("isAuthenticated()")
     public List<Transaccion> buscarTodas(Long usuarioId, String monedaNombre) {
-        SecurityUtils.validarUsuario(usuarioId);
+        SecurityUtils.validarUsuarioOAdministrador(usuarioId);
         return transaccionRepository.findByBilleteraUsuarioIdAndMonedaNombre(usuarioId, monedaNombre)
                 .orElseThrow(() -> new IllegalArgumentException());
     }

@@ -15,17 +15,19 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Usuario> obtenerTodos() {
         return usuarioRepository.findAll();
     }
 
     @PreAuthorize("isAuthenticated()")
     public Usuario obtener(Long usuarioId) {
-        SecurityUtils.validarUsuario(usuarioId);
+        SecurityUtils.validarUsuarioOAdministrador(usuarioId);
         Assert.notNull(usuarioId, "Error al buscar usuario.");
         return usuarioRepository.findById(usuarioId).orElseThrow(() -> new IllegalArgumentException());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Usuario guardar(Usuario usuario) {
         Assert.isNull(usuarioRepository.findByUsername(usuario.getUsername()), "Error al crear al usuario.");
         return usuarioRepository.save(usuario);
