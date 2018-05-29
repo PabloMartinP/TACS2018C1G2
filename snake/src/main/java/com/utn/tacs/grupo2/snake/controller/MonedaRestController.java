@@ -1,7 +1,10 @@
 package com.utn.tacs.grupo2.snake.controller;
 
+import com.utn.tacs.grupo2.snake.domain.MonedaTipo;
 import com.utn.tacs.grupo2.snake.service.MonedaService;
 import com.utn.tacs.grupo2.snake.vo.CotizacionMonedaVo;
+import com.utn.tacs.grupo2.snake.vo.MonedaVo;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +24,14 @@ public class MonedaRestController {
     }
 
     @GetMapping("/monedas")
-    public String obtenerTodas() {
-        return "[{\"nombre\":\"bitcoin\",\"_links\":{\"cotizacion\":{\"href\":\"/api/monedas/Bitcoin/cotizacion\"}}},{\"nombre\":\"ethereum\",\"_links\":{\"cotizacion\":{\"href\":\"/api/monedas/Ethereum/cotizacion\"}}}]";
+    public ArrayList<MonedaVo> obtenerTodas() {
+
+        ArrayList<MonedaVo> monedasVo = new ArrayList<>();
+
+        for (MonedaTipo monedaTipo : MonedaTipo.values()) {
+            monedasVo.add(new MonedaVo(monedaTipo.getNombre()));
+        }
+
+        return monedasVo;
     }
 }
