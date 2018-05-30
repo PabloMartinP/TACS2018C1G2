@@ -42,10 +42,6 @@ public class TransaccionRestController {
             @RequestParam(value = "fecha", required = false)
             @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaDesde) {
 
-        if (fechaDesde == null) {
-            return transaccionService.contarTodas();
-        } else {
-            return transaccionService.contarPosterioriesA(LocalDateTime.of(fechaDesde, LocalTime.of(0, 0)));
-        }
+        return transaccionService.contar(fechaDesde);
     }
 }

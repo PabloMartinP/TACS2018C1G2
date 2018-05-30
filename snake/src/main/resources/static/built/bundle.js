@@ -496,7 +496,7 @@
 /* 12 */
 /***/ (function(module, exports) {
 
-	var core = module.exports = { version: '2.5.7' };
+	var core = module.exports = { version: '2.5.6' };
 	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -14572,13 +14572,7 @@
 	    throw new TypeError("Super expression must either be null or a function");
 	  }
 	
-	  subClass.prototype = Object.create(superClass && superClass.prototype, {
-	    constructor: {
-	      value: subClass,
-	      writable: true,
-	      configurable: true
-	    }
-	  });
+	  setPrototypeOf(subClass.prototype, superClass && superClass.prototype);
 	  if (superClass) setPrototypeOf(subClass, superClass);
 	}
 	

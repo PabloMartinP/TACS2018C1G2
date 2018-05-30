@@ -8,7 +8,9 @@ import com.utn.tacs.grupo2.snake.repository.MonedaRepository;
 import com.utn.tacs.grupo2.snake.repository.TransaccionRepository;
 import com.utn.tacs.grupo2.snake.security.SecurityUtils;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,12 +56,13 @@ public class TransaccionService {
                 .orElseThrow(() -> new IllegalArgumentException());
     }
 
-    public Long contarTodas() {
-        return transaccionRepository.count();
-    }
-
-    public Long contarPosterioriesA(LocalDateTime fecha) {
-        return transaccionRepository.countByFechaGreaterThanEqual(fecha);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Long contar(LocalDate fechaDesde) {
+        if (fechaDesde == null) {
+            return transaccionRepository.count();
+        } else {
+            return transaccionRepository.countByFechaGreaterThanEqual(LocalDateTime.of(fechaDesde, LocalTime.of(0, 0)));
+        }
     }
 
 }

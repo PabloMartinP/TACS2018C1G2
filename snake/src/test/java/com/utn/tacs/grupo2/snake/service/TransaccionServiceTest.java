@@ -5,7 +5,7 @@ import com.utn.tacs.grupo2.snake.builder.TransaccionBuilder;
 import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.test.context.support.WithUserDetails;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
@@ -265,12 +266,43 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
 
         assertThat(transacciones).isNotNull();
         assertThat(transacciones.isEmpty()).isFalse();
-    @Test
-    public void contarPosterioriesA_fechavalida_cantidad() {
+    }
 
-        Long cantidad = transaccionService.contarPosterioriesA(LocalDateTime.of(2018, Month.APRIL, 9, 0, 0));
+    @Test
+    @WithUserDetails(value = "admin")
+    public void contar_conFechaNula_retornaCantidadTotal() {
+        Long cantidad = transaccionService.contar(null);
+
+        assertThat(cantidad).isEqualTo(3L);
+    }
+    
+    @Test
+    @WithUserDetails(value = "admin")
+    public void contar_conFechaValidaPosteriorA_retornaCantidadAPartirDeEsaFecha() {
+        LocalDate fechaDesde = LocalDate.of(2018, Month.APRIL, 9);
+                
+        Long cantidad = transaccionService.contar(fechaDesde);
 
         assertThat(cantidad).isEqualTo(2L);
-
     }
+
+    @Test
+    @WithUserDetails(value = "admin")
+    public void contar_conFechaInexistente_retornaCero() {
+        Long cantidad = transaccionService.contar(LocalDate.MIN);
+
+        assertThat(cantidad).isEqualTo(0);
+    }
+    
+    @Test(expected = AccessDeniedException.class)
+    @WithUserDetails(value = "chester")
+    public void contar_conUsuarioNoAdministrador_lanzaAccessDeniedException() {
+        transaccionService.contar(null);
+    }
+    
+    @Test(expected = AuthenticationCredentialsNotFoundException.class)
+    public void contar_conUsuarioNoAdministrador_lanzaAuthenticationCredentialsNotFoundException() {
+        transaccionService.contar(null);
+    }
+    
 }
