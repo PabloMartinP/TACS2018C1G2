@@ -20,7 +20,7 @@ const SnakeRestAPI = {
             .then(respuesta => respuesta.json())
             .then(monedasEnJson => monedasEnJson.reduce((request, monedaEnJson) => {
                 return request
-                    .then(() => fetch(monedaEnJson._links.cotizacion.href, {credentials: "same-origin"})
+                    .then(() => fetch(monedaEnJson._links.cotizacion.href))
                     .then(respuesta => respuesta.json())
                     .then(cotizacionActual => cotizaciones.set(monedaEnJson.nombre, cotizacionActual.cotizacionDolar));
             }, Promise.resolve())
