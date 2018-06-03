@@ -13,34 +13,14 @@ import Checkbox from 'material-ui/Checkbox';
 import '../Portfolio/Portfolio.css';
 import {SnakeRestAPI} from '../../models/SnakeRestAPI';
 const moment = require('moment');
+import {CantidadDeTxs} from '../../models/CantidadDeTxs';
 
 export default class Administracion extends Component {
     constructor(props) {
         super(props);
         this.state = {
             usuario: null,
-            cantTransacciones: {
-                hoy: {
-                    name: 'En el día de hoy',
-                    value: 100
-                },
-                ult3Dias: {
-                    name: 'En los últimos 3 días',
-                    value: 100
-                },
-                ultSemana: {
-                    name: 'En la última semana',
-                    value: 100
-                },
-                ultMes: {
-                    name: 'En el último mes',
-                    value: 100
-                },
-                todas: {
-                    name: 'Desde el inicio de los tiempos',
-                    value: 100
-                }
-            },
+            cantTransacciones: CantidadDeTxs.inicializarCantDeTransacciones(),
             infoUsuarios: {
                 usuario: {
                     name: 'Usuario',
@@ -76,13 +56,11 @@ export default class Administracion extends Component {
         };
     }
 
-    // actualizarInfoPortfolio() {
-    //     SnakeRestAPI.obtenerUsuario()
-    //         .then(usuario => this.setState({ usuario }));
-
-    //     SnakeRestAPI.obtenerCotizador()
-    //         .then(cotizador => this.setState({ cotizador }));
-    // }
+    actualizarInfoTxs() {
+        SnakeRestAPI.obtenerCantidadDeTransacciones(
+            CantidadDeTxs.formatCantTxs(this.state.cantTransacciones))
+            .then(cantidades => this.setState({cantTransacciones: cantidades}));
+    }
 
     displaySecondFilter() {
         if (this.state.showSecondFilter) {
@@ -144,7 +122,7 @@ export default class Administracion extends Component {
     }
 
     componentDidMount() {
-        //this.actualizarInfoPortfolio();
+        this.actualizarInfoTxs();
     }
 
     render() {
@@ -160,7 +138,7 @@ export default class Administracion extends Component {
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
                         {
-                            Object.values(this.state.cantTransacciones).map((cantTransaccion, index) => (
+                            this.state.cantTransacciones.map((cantTransaccion, index) => (
                                 <TableRow key={index}>
                                     <TableRowColumn>{cantTransaccion.name}</TableRowColumn>
                                     <TableRowColumn>{cantTransaccion.value}</TableRowColumn>

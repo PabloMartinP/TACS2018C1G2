@@ -12,6 +12,24 @@ const SnakeRestAPI = {
         })
     },
 
+    obtenerCantidadDeTransacciones(cantTxs) {
+        const promises = cantTxs.map(cantTx =>
+            fetch('/api/transacciones?fecha=' + cantTx.fechaDesde, {credentials: "same-origin"})
+            .then(respuesta => respuesta.json())
+            .then(cantidad => {
+                return {
+                    key: cantTx.key,
+                    name: cantTx.nombre,
+                    value: cantidad
+                }
+            })
+        );
+        return Promise.all(promises).then(cantidades => {
+            console.log(cantidades);
+            return cantidades;
+        });
+    },
+
     obtenerCotizador() {
         // TODO: Para aliviar este quilombo sería mejor que cuando pida las monedasDisponibles, además del nombre ya me de la cotización
         // FIXME: Las monedas que obtengo de acá NO son las mismas que tiene un usuario, por eso no puedo saber su cotización actual
