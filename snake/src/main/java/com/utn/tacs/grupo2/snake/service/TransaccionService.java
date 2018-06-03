@@ -6,10 +6,14 @@ import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import com.utn.tacs.grupo2.snake.repository.BilleteraRepository;
 import com.utn.tacs.grupo2.snake.repository.MonedaRepository;
 import com.utn.tacs.grupo2.snake.repository.TransaccionRepository;
+import com.utn.tacs.grupo2.snake.security.SecurityUtils;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -21,10 +25,12 @@ public class TransaccionService {
     private final BilleteraRepository billeteraRepository;
     private final TransaccionRepository transaccionRepository;
 
-    public Transaccion registrar(Transaccion transaccion, Long usuarioId) {
-
+    @PreAuthorize("isAuthenticated()")
+    public Transaccion registrar(Transaccion transaccion) {
+        
+        Long usuarioId = SecurityUtils.getUsuarioLogueado().getUsuario().getId();
+        SecurityUtils.validarUsuario(usuarioId);
         Assert.isTrue(transaccion.getCantidad().compareTo(BigDecimal.ZERO) > 0, "La cantidad indicada no puede ser menor a 0.");
-
         transaccion.setCotizacion(monedaRepository.obtenerCotizacion(transaccion.getMonedaNombre()).getCotizacionDolar());
         transaccion.setFecha(LocalDateTime.now());
         Billetera billetera = billeteraRepository.findByUsuarioIdAndMonedaNombre(usuarioId, transaccion.getMonedaNombre())
@@ -45,9 +51,20 @@ public class TransaccionService {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     public List<Transaccion> buscarTodas(Long usuarioId, String monedaNombre) {
+        SecurityUtils.validarUsuarioOAdministrador(usuarioId);
         return transaccionRepository.findByBilleteraUsuarioIdAndMonedaNombre(usuarioId, monedaNombre)
                 .orElseThrow(() -> new IllegalArgumentException());
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Long contar(LocalDate fechaDesde) {
+        if (fechaDesde == null) {
+            return transaccionRepository.count();
+        } else {
+            return transaccionRepository.countByFechaGreaterThanEqual(LocalDateTime.of(fechaDesde, LocalTime.of(0, 0)));
+        }
     }
 
 }

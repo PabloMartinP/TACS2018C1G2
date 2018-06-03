@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @Transactional
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public abstract class SnakeApplicationTests {
+public abstract class SnakeApplicationTest {
 
     @Autowired
     private RestTemplate restTemplate;

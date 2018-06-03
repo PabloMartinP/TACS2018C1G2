@@ -7,17 +7,15 @@ import {List, ListItem} from 'material-ui/List';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import ListadoTransacciones from './ListadoTransacciones.jsx';
+import ListadoTransacciones from '../ListadoTransacciones/ListadoTransacciones.jsx';
 import FontIcon from 'material-ui/FontIcon';
-
+import '../Portfolio/Portfolio.css';
 
 export default class Billetera extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            modalOpen: false
-        }
+        this.state = { modalOpen: false };
     }
 
     toggle() {
@@ -25,7 +23,6 @@ export default class Billetera extends Component {
     }
 
     render() {
-        const {billetera} = this.props;
         const actions = [
             <FlatButton
                 label="Cerrar"
@@ -35,11 +32,11 @@ export default class Billetera extends Component {
         ];
         return (
             <TableRow>
-                <TableRowColumn>{billetera.moneda.nombre}
+                <TableRowColumn>{this.props.moneda}
                 </TableRowColumn>
-                <TableRowColumn>{billetera.cantidad}</TableRowColumn>
-                <TableRowColumn>USD {billetera.moneda.corizacionActual || '100000'}</TableRowColumn>
-                <TableRowColumn>USD <span>-400</span></TableRowColumn>
+                <TableRowColumn>{this.props.cantidad}</TableRowColumn>
+                <TableRowColumn>USD {this.props.cotizacion ? this.props.cotizacion : '-'}</TableRowColumn>
+                <TableRowColumn>USD <span>{this.props.usuario.obtenerBalanceDe(this.props.moneda)}</span></TableRowColumn>
                 <TableRowColumn>
                     <RaisedButton
                         label={
@@ -53,14 +50,22 @@ export default class Billetera extends Component {
                         style={{width: "60px", minWidth: "0px"}}
                     />
                     <Dialog
-                        title="Transacciones"
+                        title={
+                            <div>
+                                <h4>Transacciones</h4>
+                                <h6 className="subtitle">
+                                    {this.props.moneda.toUpperCase() + ' | USD ' +
+                                    (this.props.cotizacion ? this.props.cotizacion : '-')}
+                                </h6>
+                            </div>
+                        }
                         modal={false}
                         actions={actions}
                         open={this.state.modalOpen}
                         autoScrollBodyContent={true}
                         onRequestClose={this.toggle.bind(this)}
                     >
-                        <ListadoTransacciones/>
+                        <ListadoTransacciones usuario={this.props.usuario} moneda={this.props.moneda}/>
                     </Dialog>
                 </TableRowColumn>
             </TableRow>

@@ -13,7 +13,7 @@ public class SnakeApplication {
     public static void main(String[] args) {
         SpringApplication.run(SnakeApplication.class, args);
 
-        Boolean estaEnProduccion = true;
+        Boolean estaEnProduccion = false;
         TelegramUtils.Start(estaEnProduccion);
 
     }

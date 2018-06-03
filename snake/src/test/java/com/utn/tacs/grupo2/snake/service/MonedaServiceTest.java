@@ -1,6 +1,6 @@
 package com.utn.tacs.grupo2.snake.service;
 
-import com.utn.tacs.grupo2.snake.SnakeApplicationTests;
+import com.utn.tacs.grupo2.snake.SnakeApplicationTest;
 import com.utn.tacs.grupo2.snake.vo.CotizacionMonedaVo;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -17,7 +17,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
-public class MonedaServiceTest extends SnakeApplicationTests {
+public class MonedaServiceTest extends SnakeApplicationTest {
 
     @Autowired
     private MonedaService monedaService;
