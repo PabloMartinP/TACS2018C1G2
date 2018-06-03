@@ -1,5 +1,8 @@
 package com.utn.tacs.grupo2.snake.controller;
 
+import com.utn.tacs.grupo2.snake.domain.Rol;
+import com.utn.tacs.grupo2.snake.domain.Usuario;
+import com.utn.tacs.grupo2.snake.security.SecurityUtils;
 import java.security.Principal;
 import java.util.Collection;
 import javax.servlet.http.HttpSession;
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
-    
+
     @RequestMapping("/")
     public String genericPath() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -30,30 +33,24 @@ public class HomeController {
 
     @RequestMapping("/home")
     public String home(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
-            model.addAttribute("reactComponent", "portfolio");
-            return "home";
-        } else {
-            return "redirect:login";
+
+        Usuario usuarioLogeado = SecurityUtils.getUsuarioLogueado().getUsuario();
+
+        if (usuarioLogeado.getRol().equals(Rol.ROLE_ADMIN)) {
+            return "admin";
         }
+        model.addAttribute("reactComponent", "portfolio");
+        return "home";
     }
-    
+
     @RequestMapping("/login")
-    public String login(Model model,Principal principal,HttpSession session,
-    		@RequestParam(value="error",required=false,defaultValue="0") boolean loginError) {
-    	if(principal != null){
-            Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-            Collection<String> permissions = CollectionUtils.collect(authorities, new Transformer<SimpleGrantedAuthority, String>() {
-                @Override
-                public String transform(SimpleGrantedAuthority auth) {
-                        return auth.getAuthority();
-                }
-            });
+    public String login(Model model, Principal principal, HttpSession session,
+            @RequestParam(value = "error", required = false, defaultValue = "0") boolean loginError) {
+        if (principal != null) {
             return "redirect:/home";
-            
+
         } else {
-            return "login";     
+            return "login";
         }
     }
 
