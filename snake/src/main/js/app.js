@@ -12,12 +12,13 @@ class App extends React.Component {
         console.log(this.props.reactComponent);
         switch (this.props.reactComponent) {
             case 'portfolio':
-                // return (
-                //     <div className="App">
-                //         <Header userName={'Chester'}/>
-                //         <Portfolio usuarioId={1}/>
-                //     </div>
-                // );
+                return (
+                    <div className="App">
+                        <Header userName={'Chester'}/>
+                        <Portfolio usuarioId={1}/>
+                    </div>
+                );
+            case 'admin':
                 return (
                     <div className="App">
                         <Header userName={'Chester'}/>

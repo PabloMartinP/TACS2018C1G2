@@ -37,9 +37,10 @@ public class HomeController {
         Usuario usuarioLogeado = SecurityUtils.getUsuarioLogueado().getUsuario();
 
         if (usuarioLogeado.getRol().equals(Rol.ROLE_ADMIN)) {
-            return "admin";
+            model.addAttribute("reactComponent", "admin");
+        } else {
+            model.addAttribute("reactComponent", "portfolio");
         }
-        model.addAttribute("reactComponent", "portfolio");
         return "home";
     }
 
