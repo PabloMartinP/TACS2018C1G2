@@ -26,7 +26,9 @@ public class TransaccionService {
     private final TransaccionRepository transaccionRepository;
 
     @PreAuthorize("isAuthenticated()")
-    public Transaccion registrar(Transaccion transaccion, Long usuarioId) {
+    public Transaccion registrar(Transaccion transaccion) {
+        
+        Long usuarioId = SecurityUtils.getUsuarioLogueado().getUsuario().getId();
         SecurityUtils.validarUsuario(usuarioId);
         Assert.isTrue(transaccion.getCantidad().compareTo(BigDecimal.ZERO) > 0, "La cantidad indicada no puede ser menor a 0.");
         transaccion.setCotizacion(monedaRepository.obtenerCotizacion(transaccion.getMonedaNombre()).getCotizacionDolar());

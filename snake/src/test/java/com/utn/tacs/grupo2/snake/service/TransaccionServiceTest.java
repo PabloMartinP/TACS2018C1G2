@@ -55,7 +55,7 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
                 .andRespond(withSuccess(cotizacionBitcoinResponse, MediaType.APPLICATION_JSON));
 
         // ejercitamos
-        transaccionService.registrar(transaccion, USUARIO_ID);
+        transaccionService.registrar(transaccion);
 
         // validamos
         assertThat(transaccion).isNotNull();
@@ -82,7 +82,7 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(cotizacionBitcoinResponse, MediaType.APPLICATION_JSON));
 
-        transaccionService.registrar(transaccion, USUARIO_ID);
+        transaccionService.registrar(transaccion);
 
         assertThat(transaccion).isNotNull();
         assertThat(transaccion.getId()).isNotNull();
@@ -108,7 +108,7 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withStatus(HttpStatus.NOT_FOUND));
 
-        transaccionService.registrar(transaccion, USUARIO_ID);
+        transaccionService.registrar(transaccion);
     }
 
     @Test(expected = HttpServerErrorException.class)
@@ -127,7 +127,7 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withServerError());
 
-        transaccionService.registrar(transaccion, USUARIO_ID);
+        transaccionService.registrar(transaccion);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -142,7 +142,7 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
                 .conCantidad(BigDecimal.valueOf(-1L))
                 .build();
 
-        transaccionService.registrar(transaccion, USUARIO_ID);
+        transaccionService.registrar(transaccion);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -157,7 +157,7 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
                 .conCantidad(BigDecimal.ZERO)
                 .build();
 
-        transaccionService.registrar(transaccion, USUARIO_ID);
+        transaccionService.registrar(transaccion);
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
@@ -171,37 +171,7 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
                 .conCantidad(BigDecimal.ONE)
                 .build();
 
-        transaccionService.registrar(transaccion, USUARIO_ID);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    @WithUserDetails(value = "homer")
-    public void registrar_conUsuarioSinPermisos_lanzaIllegalArgumentException() {
-        String monedaNombre = "bitcoin";
-        Transaccion transaccion = TransaccionBuilder
-                .compraTipica()
-                .conId(null)
-                .conMonedaNombre(monedaNombre)
-                .conBilletera(null)
-                .conCantidad(BigDecimal.ONE)
-                .build();
-
-        transaccionService.registrar(transaccion, USUARIO_ID);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    @WithUserDetails(value = "admin")
-    public void registrar_conUsuarioAdmin_lanzaIllegalArgumentException() {
-        String monedaNombre = "bitcoin";
-        Transaccion transaccion = TransaccionBuilder
-                .compraTipica()
-                .conId(null)
-                .conMonedaNombre(monedaNombre)
-                .conBilletera(null)
-                .conCantidad(BigDecimal.ONE)
-                .build();
-
-        transaccionService.registrar(transaccion, USUARIO_ID);
+        transaccionService.registrar(transaccion);
     }
 
     @Test
