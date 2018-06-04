@@ -34,13 +34,13 @@ public class TokenPreAuthenticationFilter extends AbstractPreAuthenticatedProces
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
 //        String token = request.getHeader("X-Token");
         String token = request.getParameter("token");
-        Usuario user = userRepository.findByTelegramId(new Long(token));
-
-        if (user == null) {
-            return null;
-        } else {
-            return user.getUsername();
+        if (token != null) {
+            Usuario user = userRepository.findByTelegramId(new Long(token));
+            if (user != null) {
+                return user.getUsername();
+            }
         }
+        return null;
     }
 
     /**

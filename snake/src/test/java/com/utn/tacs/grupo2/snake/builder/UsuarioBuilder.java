@@ -20,7 +20,6 @@ public class UsuarioBuilder {
         usuario.setId(id);
         usuario.setUsername(username);
         usuario.setPassword(password);
-        usuario.setRol(rol);
         usuario.setUltimoAcceso(ultimoAcceso);
         return usuario;
     }
@@ -30,8 +29,7 @@ public class UsuarioBuilder {
         builder.id = 1L;
         builder.username = "chester";
         builder.password = "chester";
-        builder.rol = Rol.ROLE_USER;
-        builder.ultimoAcceso = LocalDateTime.now();
+        builder.ultimoAcceso = LocalDateTime.now().minusDays(1);
         return builder;
     }
 
@@ -47,11 +45,6 @@ public class UsuarioBuilder {
 
     public UsuarioBuilder conPassword(String password) {
         this.password = password;
-        return this;
-    }
-
-    public UsuarioBuilder conRol(Rol rol) {
-        this.rol = rol;
         return this;
     }
 
