@@ -1,10 +1,10 @@
 
 -- password = 123456
 INSERT INTO usuario
- (id  ,  username,  password,          rol, enabled, ultimo_acceso, telegram_id) VALUES
- (1   , 'chester', '$2a$10$o7uXsmd6UB.zqJpcjV8aqOR.fGhRV6UgcmGpmhh4uqII8tQ382NpK',  'ROLE_USER',       1,  '2018-04-10', 1234),
- (2   ,   'homer',   '$2a$10$o7uXsmd6UB.zqJpcjV8aqOR.fGhRV6UgcmGpmhh4uqII8tQ382NpK',  'ROLE_USER',       1,  '2018-04-11', 5678),
- (3   ,   'admin',   '$2a$10$o7uXsmd6UB.zqJpcjV8aqOR.fGhRV6UgcmGpmhh4uqII8tQ382NpK', 'ROLE_ADMIN',       1,  '2018-04-11', 0000);
+ (id  ,  username,                                                       password,          rol, enabled, ultimo_acceso, telegram_id) VALUES
+ (1   , 'chester', '$2a$10$IrnGYDOB2GKOa3CmlwsODeDwOb0lJl4G8JEjCmhXwWRdzD8yayR3y',  'ROLE_USER',       1,  '2018-04-10', 1234),
+ (2   ,   'homer', '$2a$10$o7uXsmd6UB.zqJpcjV8aqOR.fGhRV6UgcmGpmhh4uqII8tQ382NpK',  'ROLE_USER',       1,  '2018-04-11', 5678),
+ (3   ,   'admin', '$2a$10$o7uXsmd6UB.zqJpcjV8aqOR.fGhRV6UgcmGpmhh4uqII8tQ382NpK', 'ROLE_ADMIN',       1,  '2018-04-11', 0000);
 
 INSERT INTO billetera
  (id  , usuario_id, moneda_nombre, cantidad, diferencia) VALUES
