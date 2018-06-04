@@ -14,6 +14,7 @@ import '../Portfolio/Portfolio.css';
 import {SnakeRestAPI} from '../../models/SnakeRestAPI';
 const moment = require('moment');
 import {CantidadDeTxs} from '../../models/CantidadDeTxs';
+import {Usuario} from '../../models/Usuario';
 
 export default class Administracion extends Component {
     constructor(props) {
@@ -52,7 +53,8 @@ export default class Administracion extends Component {
                     displayError: false
                 }
             },
-            resultadoComparacion: ''
+            resultadoComparacion: '',
+            disableCompareButton: false
         };
     }
 
@@ -85,7 +87,8 @@ export default class Administracion extends Component {
                     </div>
                     <div>
                         <br/>
-                        <RaisedButton primary={true} onClick={this.compareUsers.bind(this)}>
+                        <RaisedButton primary={true} onClick={this.compareUsers.bind(this)}
+                            disabled={this.state.disableCompareButton}>
                             COMPARAR
                         </RaisedButton>
                     </div>
@@ -102,6 +105,7 @@ export default class Administracion extends Component {
     searchUsers() {
         if (this.state.userFilter1 === '') {
             const { errors } = this.state;
+            errors.error1.text = 'Debe completar este campo';
             errors.error1.displayError = true;
             this.setState({errors});
             return;
@@ -109,16 +113,37 @@ export default class Administracion extends Component {
     }
 
     compareUsers() {
+        const { errors } = this.state;
         if (this.state.userFilter1 === '' || this.state.userFilter2 === '') {
-            const { errors } = this.state;
+            errors.error2.text = 'Debe completar ambos campos';
             errors.error2.displayError = true;
             this.setState({errors});
             return;
         }
-        this.setState({
-            resultadoComparacion: this.state.userFilter1 + " tiene mayor capital que "
-                + this.state.userFilter2
-        });
+        this.setState({disableCompareButton: true});
+        SnakeRestAPI.compararUsuarios([this.state.userFilter1, this.state.userFilter2])
+            .then(usuariosPortfolios => {
+                if (usuariosPortfolios[0] === '') {
+                    errors.error2.text = 'El usuario ingresado no existe';
+                    errors.error2.displayError = true;
+                    this.setState({errors, disableCompareButton: false});
+                    return;
+                } else if (usuariosPortfolios[1] === '') {
+                    errors.error2.text = 'El usuario ingresado no existe';
+                    errors.error2.displayError = true;
+                    this.setState({errors, disableCompareButton: false});
+                    return;
+                }
+                SnakeRestAPI.obtenerCotizador()
+                    .then(cotizador => {
+                        this.setState({
+                            resultadoComparacion: Usuario.obtenerUsuarioConMayorCapital(
+                                cotizador, usuariosPortfolios, this.state.userFilter1,
+                                this.state.userFilter2),
+                            disableCompareButton: false
+                        })
+                    });
+            });
     }
 
     componentDidMount() {

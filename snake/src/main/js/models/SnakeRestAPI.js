@@ -14,7 +14,8 @@ const SnakeRestAPI = {
 
     obtenerCantidadDeTransacciones(cantTxs) {
         const promises = cantTxs.map(cantTx =>
-            fetch('/api/transacciones?fecha=' + cantTx.fechaDesde, {credentials: "same-origin"})
+            fetch('/api/transacciones?' + (cantTx.fechaDesde !== '' ?
+                'fecha=' + cantTx.fechaDesde : ''), {credentials: "same-origin"})
             .then(respuesta => respuesta.json())
             .then(cantidad => {
                 return {
@@ -25,9 +26,26 @@ const SnakeRestAPI = {
             })
         );
         return Promise.all(promises).then(cantidades => {
-            console.log(cantidades);
             return cantidades;
         });
+    },
+
+    compararUsuarios(usernames) {
+        let usuario;
+        const promises = usernames.map(username =>
+            fetch('/api/usuarios', {credentials: "same-origin"})
+            .then(respuesta => respuesta.json())
+            .then(usuarios => {
+                const usuariosFiltrado = usuarios.filter((user) => user.username === username);
+                if (usuariosFiltrado.length === 0) {
+                    return '';
+                }
+                const userJson = usuariosFiltrado[0];
+                usuario = Usuario.crear(username, this);
+                return this.obtenerPortfolio(usuario, userJson._links.portfolio.href);
+            })
+        );
+        return Promise.all(promises);
     },
 
     obtenerCotizador() {
@@ -45,20 +63,14 @@ const SnakeRestAPI = {
             .then(() => Cotizador.crear(cotizaciones)))
     },
 
-    obtenerUsuario() {
-        let usuario;
-        return fetch('/api/usuarios/logueado', {credentials: "same-origin"})
+    obtenerPortfolio(usuario, link) {
+        return fetch(link, {credentials: "same-origin"})
             .then(respuesta => respuesta.json())
-            .then(usuarioEnJson => {
-                usuario = Usuario.crear(usuarioEnJson.username, this);
-                return fetch(usuarioEnJson._links.portfolio.href, {credentials: "same-origin"});
-            })
-            .then(respuesta => respuesta.json())
-            .then(portfolioEnJson => {
+            .then(portfolioEnJson =>
                 portfolioEnJson.forEach(monedaEnJson => {
                     const criptomoneda = monedaEnJson.moneda.nombre;
                     usuario.agregarCriptomoneda(criptomoneda, monedaEnJson.cantidad);
-                    fetch(monedaEnJson._links.transacciones.href, {credentials: "same-origin"})
+                    return fetch(monedaEnJson._links.transacciones.href, {credentials: "same-origin"})
                         .then(respuesta => respuesta.json())
                         .then(transaccionesEnJson => transaccionesEnJson.forEach(transaccionEnJson => {
                             const tipoDeTransaccion = transaccionEnJson.tipo === 'COMPRA' ? Compra : Venta;
@@ -66,9 +78,19 @@ const SnakeRestAPI = {
                             return usuario.transacciones.push(tipoDeTransaccion.crear(criptomoneda, transaccionEnJson.cantidad,
                                 transaccionEnJson.cotizacion, transaccionEnJson.fecha));
                         }));
-                });
-            })
+                })
+            )
             .then(() => usuario);
+    },
+
+    obtenerUsuario() {
+        let usuario;
+        return fetch('/api/usuarios/logueado', {credentials: "same-origin"})
+            .then(respuesta => respuesta.json())
+            .then(usuarioEnJson => {
+                usuario = Usuario.crear(usuarioEnJson.username, this);
+                return this.obtenerPortfolio(usuario, usuarioEnJson._links.portfolio.href);
+            });
     }
 }
 

@@ -41,7 +41,7 @@ const CantidadDeTxs = {
             case 'ultMes':
                 return moment().subtract(1, "months").format("YYYY-MM-DD");
             case 'todas':
-                return "2000-01-01";
+                return "";
             default:
                 return moment().format("YYYY-MM-DD");
         }

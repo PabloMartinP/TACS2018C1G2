@@ -9,7 +9,6 @@ import Login from './components/Login/Login.jsx';
 
 class App extends React.Component {
     getComponent() {
-        console.log(this.props.reactComponent);
         switch (this.props.reactComponent) {
             case 'portfolio':
                 return (
