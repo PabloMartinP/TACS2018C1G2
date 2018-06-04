@@ -124,8 +124,8 @@ export default class Administracion extends Component {
         SnakeRestAPI.compararUsuarios([this.state.userFilter1, this.state.userFilter2])
             .then(usuariosPortfolios => {
                 if (usuariosPortfolios[0] === '') {
-                    errors.error2.text = 'El usuario ingresado no existe';
-                    errors.error2.displayError = true;
+                    errors.error1.text = 'El usuario ingresado no existe';
+                    errors.error1.displayError = true;
                     this.setState({errors, disableCompareButton: false});
                     return;
                 } else if (usuariosPortfolios[1] === '') {
