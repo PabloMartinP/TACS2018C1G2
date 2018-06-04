@@ -79,7 +79,7 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
         Usuario usuario = new UsuarioBuilder()
                 .conId(null)
                 .conUsername("Homer")
-                .conPassword("Simpson")
+                .conPassword("123456")
                 .conRol(Rol.ROLE_USER)
                 .conUltimoAcceso(null)
                 .build();
@@ -88,6 +88,7 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
 
         Long cantidadUsuariosDespues = usuarioRepository.count();
         assertThat(usuario.getId()).isNotNull();
+        assertThat(usuario.getPassword()).isNotNull().isNotEqualTo("123456");
         assertThat(cantidadUsuariosDespues).isEqualTo(cantidadUsuariosAntes + 1);
     }
 
