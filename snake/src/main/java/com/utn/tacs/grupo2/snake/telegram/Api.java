@@ -6,28 +6,22 @@
 package com.utn.tacs.grupo2.snake.telegram;
 
 import com.utn.tacs.grupo2.snake.domain.UsuarioTelegram;
-import com.utn.tacs.grupo2.snake.repository.UsuarioRepository;
 import com.utn.tacs.grupo2.snake.telegram.vo.BilleteraVo;
 import com.utn.tacs.grupo2.snake.telegram.vo.CotizacionMonedaVo;
 import com.utn.tacs.grupo2.snake.telegram.vo.TransaccionVo;
 import com.utn.tacs.grupo2.snake.telegram.vo.UsuarioVo;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
  *
  * @author fiok
  */
-@Component
-@RequiredArgsConstructor
 public class Api {
 
-    private final UsuarioRepository usuarioRepository;
     //private final  RestTemplate restTemplate;
     private final static String URL = "https://tacs2018-snake.herokuapp.com/api";
     private static RestTemplate _restTemplate = null;
