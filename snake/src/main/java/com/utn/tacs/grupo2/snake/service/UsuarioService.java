@@ -46,7 +46,8 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public void actualizarUltimoAcceso(Usuario usuario) {
+    public Usuario actualizarUltimoAcceso(Usuario usuario) {
         usuario.setUltimoAcceso(LocalDateTime.now());
+        return usuarioRepository.save(usuario);
     }
 }
