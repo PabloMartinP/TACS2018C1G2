@@ -31,6 +31,13 @@ public class UsuarioService {
         return usuarioRepository.findById(usuarioId).orElseThrow(() -> new IllegalArgumentException());
     }
 
+    @PreAuthorize("isAuthenticated()")
+    public Usuario obtenerPorUsername(String username) {
+        SecurityUtils.validarUsuarioOAdministrador(username);
+        Assert.notNull(username, "Error al buscar usuario.");
+        return usuarioRepository.findByUsernameIgnoreCase(username).orElseThrow(() -> new IllegalArgumentException());
+    }
+
     public Usuario guardar(Usuario usuario) {
         Assert.isNull(usuarioRepository.findByUsername(usuario.getUsername()), "Error al crear al usuario.");
         usuario.setTelegramId(Long.valueOf("1234"));

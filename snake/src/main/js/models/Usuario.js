@@ -11,12 +11,13 @@ function FalloEnRegistroDeTransaccionError(message) {
 const Usuario = {
     VENTA_CON_FONDOS_INSUFICIENTES: 'No se tienen los suficientes fondos como para realizar esta venta',
 
-    crear(unNombre, unSnakeService) {
+    crear(unNombre, unSnakeService, fechaDeUltimoAcceso) {
         const nuevoUsuario = Object.create(this);
         nuevoUsuario.nombre = unNombre;
         nuevoUsuario.wallet = new Map();
         nuevoUsuario.transacciones = [];
         nuevoUsuario.snakeService = unSnakeService;
+        nuevoUsuario.fechaDeUltimoAcceso = fechaDeUltimoAcceso;
         return nuevoUsuario;
     },
 

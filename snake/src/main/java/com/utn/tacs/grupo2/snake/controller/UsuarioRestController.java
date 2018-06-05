@@ -72,4 +72,9 @@ public class UsuarioRestController {
         return usuariosVo;
     }
 
+    @GetMapping("/usuarios/username/{username}")
+    public UsuarioVo obtenerUsuarioPorUsername(@PathVariable String username) {
+        return new UsuarioVo(usuarioService.obtenerPorUsername(username));
+    }
+
 }

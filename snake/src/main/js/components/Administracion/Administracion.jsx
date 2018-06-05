@@ -12,15 +12,17 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
 import '../Portfolio/Portfolio.css';
 import {SnakeRestAPI} from '../../models/SnakeRestAPI';
+
 const moment = require('moment');
 import {CantidadDeTxs} from '../../models/CantidadDeTxs';
 import {Usuario} from '../../models/Usuario';
+import InfoDeUsuario from "../InfoDeUsuario/InfoDeUsuario.jsx";
 
 export default class Administracion extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            usuario: null,
+            usuarioBuscado: null,
             cantTransacciones: CantidadDeTxs.inicializarCantDeTransacciones(),
             infoUsuarios: {
                 usuario: {
@@ -40,15 +42,15 @@ export default class Administracion extends Component {
                     value: moment(new Date()).format('DD/MM/YYYY')
                 }
             },
-            showSecondFilter: false,
-            userFilter1: '',
-            userFilter2: '',
-            errors: {
-                error1: {
+            comparadorDeUsuariosHabilitado: false,
+            nombreDeUsuarioABuscar: '',
+            nombreDeUsuarioAComparar: '',
+            errores: {
+                errorEnCampoDeBusqueda: {
                     text: 'Debe completar este campo',
                     displayError: false
                 },
-                error2: {
+                errorEnCampoDeComparacion: {
                     text: 'Debe completar ambos campos',
                     displayError: false
                 }
@@ -64,8 +66,9 @@ export default class Administracion extends Component {
             .then(cantidades => this.setState({cantTransacciones: cantidades}));
     }
 
+
     displaySecondFilter() {
-        if (this.state.showSecondFilter) {
+        if (this.state.comparadorDeUsuariosHabilitado) {
             return (
                 <div className="row mb-20">
                     <div className="input col-md-3">
@@ -74,26 +77,26 @@ export default class Administracion extends Component {
                             hintText="Usuario"
                             style={{width: "90%", marginLeft: "10px"}}
                             onChange={(e) => {
-                                const { errors } = this.state;
-                                errors.error2.displayError = false;
-                                this.setState({userFilter2: e.target.value});
+                                const {errores} = this.state;
+                                errores.errorEnCampoDeComparacion.displayError = false;
+                                this.setState({nombreDeUsuarioAComparar: e.target.value});
                             }}
                             errorText={
-                                this.state.errors.error2.displayError ?
-                                this.state.errors.error2.text :
-                                ''
+                                this.state.errores.errorEnCampoDeComparacion.displayError ?
+                                    this.state.errores.errorEnCampoDeComparacion.text :
+                                    ''
                             }
                         />
                     </div>
                     <div>
                         <br/>
                         <RaisedButton primary={true} onClick={this.compareUsers.bind(this)}
-                            disabled={this.state.disableCompareButton}>
+                                      disabled={this.state.disableCompareButton}>
                             COMPARAR
                         </RaisedButton>
                     </div>
                     <div className="comparisson-result">
-                        <br />
+                        <br/>
                         <p>{this.state.resultadoComparacion}</p>
                     </div>
                 </div>
@@ -103,43 +106,49 @@ export default class Administracion extends Component {
     }
 
     searchUsers() {
-        if (this.state.userFilter1 === '') {
-            const { errors } = this.state;
-            errors.error1.text = 'Debe completar este campo';
-            errors.error1.displayError = true;
-            this.setState({errors});
+        if (this.state.nombreDeUsuarioABuscar === '') {
+            const {errores} = this.state;
+            errores.errorEnCampoDeBusqueda.text = 'Debe completar este campo';
+            errores.errorEnCampoDeBusqueda.displayError = true;
+            this.setState({errors: errores});
             return;
         }
+        SnakeRestAPI.obtenerUsuarioPorUsername(this.state.nombreDeUsuarioABuscar)
+            .then(usuario => this.setState({usuarioBuscado: usuario}))
+            .catch(() => {
+                this.state.errores.errorEnCampoDeBusqueda = {text: 'Usuario no encontrado', displayError: true};
+                this.setState({usuarioBuscado: null});
+            });
     }
 
     compareUsers() {
-        const { errors } = this.state;
-        if (this.state.userFilter1 === '' || this.state.userFilter2 === '') {
-            errors.error2.text = 'Debe completar ambos campos';
-            errors.error2.displayError = true;
-            this.setState({errors});
+        const {errores} = this.state;
+        if (this.state.nombreDeUsuarioABuscar === '' || this.state.nombreDeUsuarioAComparar === '') {
+            errores.errorEnCampoDeComparacion.text = 'Debe completar ambos campos';
+            errores.errorEnCampoDeComparacion.displayError = true;
+            this.setState({errors: errores});
             return;
         }
         this.setState({disableCompareButton: true});
-        SnakeRestAPI.compararUsuarios([this.state.userFilter1, this.state.userFilter2])
+        SnakeRestAPI.compararUsuarios([this.state.nombreDeUsuarioABuscar, this.state.nombreDeUsuarioAComparar])
             .then(usuariosPortfolios => {
                 if (usuariosPortfolios[0] === '') {
-                    errors.error1.text = 'El usuario ingresado no existe';
-                    errors.error1.displayError = true;
-                    this.setState({errors, disableCompareButton: false});
+                    errores.errorEnCampoDeBusqueda.text = 'El usuario ingresado no existe';
+                    errores.errorEnCampoDeBusqueda.displayError = true;
+                    this.setState({errors: errores, disableCompareButton: false});
                     return;
                 } else if (usuariosPortfolios[1] === '') {
-                    errors.error2.text = 'El usuario ingresado no existe';
-                    errors.error2.displayError = true;
-                    this.setState({errors, disableCompareButton: false});
+                    errores.errorEnCampoDeComparacion.text = 'El usuario ingresado no existe';
+                    errores.errorEnCampoDeComparacion.displayError = true;
+                    this.setState({errors: errores, disableCompareButton: false});
                     return;
                 }
                 SnakeRestAPI.obtenerCotizador()
                     .then(cotizador => {
                         this.setState({
                             resultadoComparacion: Usuario.obtenerUsuarioConMayorCapital(
-                                cotizador, usuariosPortfolios, this.state.userFilter1,
-                                this.state.userFilter2),
+                                cotizador, usuariosPortfolios, this.state.nombreDeUsuarioABuscar,
+                                this.state.nombreDeUsuarioAComparar),
                             disableCompareButton: false
                         })
                     });
@@ -180,15 +189,15 @@ export default class Administracion extends Component {
                             hintText="Usuario"
                             style={{width: "90%", marginLeft: "10px"}}
                             onChange={(e) => {
-                                const { errors } = this.state;
-                                errors.error1.displayError = false;
-                                errors.error2.displayError = false;
-                                this.setState({userFilter1: e.target.value, errors})
+                                const {errores} = this.state;
+                                errores.errorEnCampoDeBusqueda.displayError = false;
+                                errores.errorEnCampoDeComparacion.displayError = false;
+                                this.setState({nombreDeUsuarioABuscar: e.target.value, errors: errores})
                             }}
                             errorText={
-                                this.state.errors.error1.displayError ?
-                                this.state.errors.error1.text :
-                                ''
+                                this.state.errores.errorEnCampoDeBusqueda.displayError ?
+                                    this.state.errores.errorEnCampoDeBusqueda.text :
+                                    ''
                             }
                         />
                     </div>
@@ -203,18 +212,18 @@ export default class Administracion extends Component {
                         <div className="row">
                             <div className="col-md-2">
                                 <Checkbox
-                                    checked={this.state.showSecondFilter}
+                                    checked={this.state.comparadorDeUsuariosHabilitado}
                                     onCheck={(event) => {
-                                        const { errors } = this.state;
-                                        errors.error2.displayError = false;
+                                        const {errores} = this.state;
+                                        errores.errorEnCampoDeComparacion.displayError = false;
                                         this.setState(
                                             {
-                                                showSecondFilter: event.target.checked,
-                                                userFilter2: '',
-                                                errors,
+                                                comparadorDeUsuariosHabilitado: event.target.checked,
+                                                nombreDeUsuarioAComparar: '',
+                                                errors: errores,
                                                 resultadoComparacion: ''
                                             })
-                                        }
+                                    }
                                     }
                                 >
                                 </Checkbox>
@@ -226,18 +235,7 @@ export default class Administracion extends Component {
                     </div>
                 </div>
                 {this.displaySecondFilter()}
-                <Table>
-                    <TableBody displayRowCheckbox={false}>
-                        {
-                            Object.values(this.state.infoUsuarios).map((info, index) => (
-                                <TableRow key={index}>
-                                    <TableRowColumn>{info.name}</TableRowColumn>
-                                    <TableRowColumn>{info.value}</TableRowColumn>
-                                </TableRow>
-                            ))
-                        }
-                    </TableBody>
-                </Table>
+                { this.state.usuarioBuscado ? <InfoDeUsuario usuario={this.state.usuarioBuscado}/> : null }
             </div>
         )
     }
