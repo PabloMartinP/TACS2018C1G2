@@ -43,11 +43,11 @@ public class TransaccionService {
 
     private void actualizarBilletera(Billetera billetera, Transaccion transaccion) {
         if (TipoTransaccion.COMPRA.equals(transaccion.getTipo())) {
-            billetera.setCantidad(billetera.getCantidad().add(transaccion.getCantidad()));
-            billetera.setDiferencia(billetera.getDiferencia().subtract(transaccion.getCantidad().multiply(transaccion.getCotizacion())));
+            billetera.setCantidadActual(billetera.getCantidadActual().add(transaccion.getCantidad()));
+            billetera.setDineroInvertido(billetera.getDineroInvertido().subtract(transaccion.getCantidad().multiply(transaccion.getCotizacion())));
         } else {
-            billetera.setCantidad(billetera.getCantidad().subtract(transaccion.getCantidad()));
-            billetera.setDiferencia(billetera.getDiferencia().add(transaccion.getCantidad().multiply(transaccion.getCotizacion())));
+            billetera.setCantidadActual(billetera.getCantidadActual().subtract(transaccion.getCantidad()));
+            billetera.setDineroInvertido(billetera.getDineroInvertido().add(transaccion.getCantidad().multiply(transaccion.getCotizacion())));
         }
     }
 

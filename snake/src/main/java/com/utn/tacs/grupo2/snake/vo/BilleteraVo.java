@@ -13,13 +13,13 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class BilleteraVo extends ResourceSupport {
 
     private MonedaVo moneda;
-    private BigDecimal cantidad;
-    private BigDecimal diferencia;
+    private BigDecimal cantidadActual;
+    private BigDecimal dineroInvertido;
 
     public BilleteraVo(Billetera billetera, Long usuarioId) {
         this.moneda = new MonedaVo(billetera.getMonedaNombre());
-        this.cantidad = billetera.getCantidad();
-        this.diferencia = billetera.getDiferencia();
+        this.cantidadActual = billetera.getCantidadActual();
+        this.dineroInvertido = billetera.getDineroInvertido();
 
         this.add(linkTo(methodOn(TransaccionRestController.class).obtenerTodas(usuarioId, billetera.getMonedaNombre())).withRel("transacciones"));
         this.add(linkTo(methodOn(UsuarioRestController.class).obtener(usuarioId)).withRel("usuario"));

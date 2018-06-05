@@ -62,8 +62,8 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
         assertThat(transaccion.getId()).isNotNull();
         assertThat(transaccion.getCotizacion()).isNotNull();
         assertThat(transaccion.getCotizacion()).isEqualTo(new BigDecimal("1000"));
-        assertThat(transaccion.getBilletera().getCantidad()).isEqualByComparingTo(BigDecimal.valueOf(11L));
-        assertThat(transaccion.getBilletera().getDiferencia()).isEqualByComparingTo(new BigDecimal("-1100"));
+        assertThat(transaccion.getBilletera().getCantidadActual()).isEqualByComparingTo(BigDecimal.valueOf(11L));
+        assertThat(transaccion.getBilletera().getDineroInvertido()).isEqualByComparingTo(new BigDecimal("-1100"));
     }
 
     @Test
@@ -88,8 +88,8 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
         assertThat(transaccion.getId()).isNotNull();
         assertThat(transaccion.getCotizacion()).isNotNull();
         assertThat(transaccion.getCotizacion()).isEqualTo(new BigDecimal("1000"));
-        assertThat(transaccion.getBilletera().getCantidad()).isEqualByComparingTo(BigDecimal.valueOf(9L));
-        assertThat(transaccion.getBilletera().getDiferencia()).isEqualByComparingTo(new BigDecimal("900"));
+        assertThat(transaccion.getBilletera().getCantidadActual()).isEqualByComparingTo(BigDecimal.valueOf(9L));
+        assertThat(transaccion.getBilletera().getDineroInvertido()).isEqualByComparingTo(new BigDecimal("900"));
     }
 
     @Test(expected = HttpClientErrorException.class)
