@@ -14,12 +14,25 @@
 ## Para compilar 
 mvn clean install
 
+## BD
+requiere una BD mysql con 
+
+usuario: snake 
+password:snake 
+
+y correr los scripts (schema.sql y data.sql) que se encuentra en TACS2018C1G2\snake\src\test\resources
+
 ## Para levantar
 mvn spring-boot:run
 
+
+
 ## autenticacion
 username: chester
-password: chester
+password: 123456
+
+username: admin
+password: 123456
 
 ## Url
 /api/usuarios (desde esta url se puede navegar por todas las entidades)
