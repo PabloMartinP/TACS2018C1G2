@@ -2,6 +2,8 @@ const {Usuario} = require('./Usuario');
 const {Compra, Venta} = require('./Transaccion');
 const {Cotizador} = require('./Cotizador');
 
+const fechaADate = objetoFecha => new Date(objetoFecha.year, objetoFecha.monthValue, objetoFecha.dayOfMonth, objetoFecha.hour, objetoFecha.minute, objetoFecha.second, 0);
+
 const SnakeRestAPI = {
     registrarTransaccion(unaTransaccion) {
         return fetch('/api/transacciones', {
@@ -10,6 +12,42 @@ const SnakeRestAPI = {
             body: JSON.stringify({monedaNombre: unaTransaccion.criptomoneda, cantidad: unaTransaccion.cantidad, tipo: unaTransaccion.nombre.toUpperCase()}),
             headers: {'Content-Type': 'application/json'}
         })
+    },
+
+    obtenerCantidadDeTransacciones(cantTxs) {
+        const promises = cantTxs.map(cantTx =>
+            fetch('/api/transacciones?' + (cantTx.fechaDesde !== '' ?
+                'fecha=' + cantTx.fechaDesde : ''), {credentials: "same-origin"})
+            .then(respuesta => respuesta.json())
+            .then(cantidad => {
+                return {
+                    key: cantTx.key,
+                    name: cantTx.nombre,
+                    value: cantidad
+                }
+            })
+        );
+        return Promise.all(promises).then(cantidades => {
+            return cantidades;
+        });
+    },
+
+    compararUsuarios(usernames) {
+        let usuario;
+        const promises = usernames.map(username =>
+            fetch('/api/usuarios', {credentials: "same-origin"})
+            .then(respuesta => respuesta.json())
+            .then(usuarios => {
+                const usuariosFiltrado = usuarios.filter((user) => user.username === username);
+                if (usuariosFiltrado.length === 0) {
+                    return '';
+                }
+                const userJson = usuariosFiltrado[0];
+                usuario = Usuario.crear(username, this, fechaADate(userJson.ultimoAcceso));
+                return this.obtenerPortfolio(usuario, userJson._links.portfolio.href);
+            })
+        );
+        return Promise.all(promises);
     },
 
     obtenerCotizador() {
@@ -27,31 +65,45 @@ const SnakeRestAPI = {
             .then(() => Cotizador.crear(cotizaciones)))
     },
 
-    obtenerUsuario() {
-        let usuario;
-        return fetch('/api/usuarios/logueado', {credentials: "same-origin"})
-            .then(respuesta => respuesta.json())
-            .then(usuarioEnJson => {
-                usuario = Usuario.crear(usuarioEnJson.username, this);
-                return fetch(usuarioEnJson._links.portfolio.href, {credentials: "same-origin"});
-            })
+    obtenerPortfolio(usuario, link) {
+        return fetch(link, {credentials: "same-origin"})
             .then(respuesta => respuesta.json())
             .then(portfolioEnJson => {
-                portfolioEnJson.forEach(monedaEnJson => {
+                const promesasDeMonedas = portfolioEnJson.map(monedaEnJson => {
                     const criptomoneda = monedaEnJson.moneda.nombre;
                     usuario.agregarCriptomoneda(criptomoneda, monedaEnJson.cantidad);
-                    fetch(monedaEnJson._links.transacciones.href, {credentials: "same-origin"})
+                    return fetch(monedaEnJson._links.transacciones.href, {credentials: "same-origin"})
                         .then(respuesta => respuesta.json())
                         .then(transaccionesEnJson => transaccionesEnJson.forEach(transaccionEnJson => {
                             const tipoDeTransaccion = transaccionEnJson.tipo === 'COMPRA' ? Compra : Venta;
                             // FIXME: Rompe el encapsulamiento del usuario
-                            return usuario.transacciones.push(tipoDeTransaccion.crear(criptomoneda, transaccionEnJson.cantidad,
-                                transaccionEnJson.cotizacion, transaccionEnJson.fecha));
+                            return usuario.transacciones.push(tipoDeTransaccion.crear(criptomoneda, transaccionEnJson.cantidad, transaccionEnJson.cotizacion, fechaADate(transaccionEnJson.fecha)));
                         }));
                 });
+                return Promise.all(promesasDeMonedas);
             })
             .then(() => usuario);
+    },
+
+    agregarPortfolioAUsuario(promesaDeUsuario) {
+        return promesaDeUsuario
+            .then(respuesta => {
+                if (!respuesta.ok) throw new Error('Error en la búsqueda');
+                return respuesta.json()
+            })
+            .then(usuarioEnJson => {
+                const usuario = Usuario.crear(usuarioEnJson.username, this, fechaADate(usuarioEnJson.ultimoAcceso));
+                return this.obtenerPortfolio(usuario, usuarioEnJson._links.portfolio.href);
+            });
+    },
+
+    obtenerUsuario() {
+        return this.agregarPortfolioAUsuario(fetch('/api/usuarios/logueado', {credentials: "same-origin"}));
+    },
+
+    obtenerUsuarioPorUsername(username) {
+        return this.agregarPortfolioAUsuario(fetch(`/api/usuarios/username/${username}`, {credentials: 'same-origin'}));
     }
-}
+};
 
 module.exports = { SnakeRestAPI };

@@ -4,17 +4,12 @@ import com.utn.tacs.grupo2.snake.domain.Rol;
 import com.utn.tacs.grupo2.snake.domain.Usuario;
 import com.utn.tacs.grupo2.snake.security.SecurityUtils;
 import java.security.Principal;
-import java.util.Collection;
 import javax.servlet.http.HttpSession;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Transformer;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,9 +32,10 @@ public class HomeController {
         Usuario usuarioLogeado = SecurityUtils.getUsuarioLogueado().getUsuario();
 
         if (usuarioLogeado.getRol().equals(Rol.ROLE_ADMIN)) {
-            return "admin";
+            model.addAttribute("reactComponent", "admin");
+        } else {
+            model.addAttribute("reactComponent", "portfolio");
         }
-        model.addAttribute("reactComponent", "portfolio");
         return "home";
     }
 

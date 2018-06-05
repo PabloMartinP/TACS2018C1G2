@@ -22,7 +22,7 @@ describe('Un usuario', () => {
     beforeEach(() => {
         unCotizador = Object.create(CotizadorStub);
         unCotizador.cotizacionDelDia = cotizacionDelDia;
-        unUsuario = Usuario.crear('unNombre', SnakeRestAPIStub);
+        unUsuario = Usuario.crear('unNombre', SnakeRestAPIStub, new Date());
         unaCriptomoneda = {};
     });
 
@@ -94,7 +94,7 @@ describe('Un usuario', () => {
             }
         };
 
-        unUsuario = Usuario.crear('unNombre', anotherSnakeRestAPIStub);
+        unUsuario = Usuario.crear('unNombre', anotherSnakeRestAPIStub, new Date());
         unUsuario.comprar(unaCriptomoneda, 10, unCotizador);
         assert(anotherSnakeRestAPIStub.fueLlamado);
     });
@@ -109,7 +109,7 @@ describe('Un usuario', () => {
             }
         };
 
-        unUsuario = Usuario.crear('unNombre', failingSnakeRestAPIControllerStub);
+        unUsuario = Usuario.crear('unNombre', failingSnakeRestAPIControllerStub, new Date());
         assert.throws(() => unUsuario.comprar(unaCriptomoneda, 10, unCotizador), FalloEnRegistroDeTransaccionError);
         assert(failingSnakeRestAPIControllerStub.fueLlamado);
         assert.equal(unUsuario.listarTransacciones().length, 0);

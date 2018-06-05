@@ -243,7 +243,7 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
     public void contar_conFechaNula_retornaCantidadTotal() {
         Long cantidad = transaccionService.contar(null);
 
-        assertThat(cantidad).isEqualTo(3L);
+        assertThat(cantidad).isEqualTo(6L);
     }
     
     @Test

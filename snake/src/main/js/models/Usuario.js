@@ -11,12 +11,13 @@ function FalloEnRegistroDeTransaccionError(message) {
 const Usuario = {
     VENTA_CON_FONDOS_INSUFICIENTES: 'No se tienen los suficientes fondos como para realizar esta venta',
 
-    crear(unNombre, unSnakeService) {
+    crear(unNombre, unSnakeService, fechaDeUltimoAcceso) {
         const nuevoUsuario = Object.create(this);
         nuevoUsuario.nombre = unNombre;
         nuevoUsuario.wallet = new Map();
         nuevoUsuario.transacciones = [];
         nuevoUsuario.snakeService = unSnakeService;
+        nuevoUsuario.fechaDeUltimoAcceso = fechaDeUltimoAcceso;
         return nuevoUsuario;
     },
 
@@ -74,6 +75,32 @@ const Usuario = {
         return this.listarTransaccionesDe(unaCriptomoneda).reduce((balance, transaccion) => {
             return balance + transaccion.calcularBalance();
         }, 0);
+    },
+
+    getCapital(cotizador, portfolio) {
+        return  Array.from(portfolio.wallet.keys()).reduce((acc, key) =>
+            acc + cotizador.cotizaciones.get(key) * portfolio.wallet.get(key), 0);
+    },
+
+    obtenerUsuarioConMayorCapital(cotizador, usuariosPortfolios, userFilter1, userFilter2) {
+        const user1Capital = this.getCapital(cotizador, usuariosPortfolios[0]).toFixed(2);
+        const user2Capital = this.getCapital(cotizador, usuariosPortfolios[1]).toFixed(2);
+        const results = user1Capital > user2Capital ?
+            {
+                userMayor: userFilter1,
+                capitalMayor: user1Capital,
+                userMenor: userFilter2,
+                capitalMenor: user2Capital
+            } :
+            {
+                userMayor: userFilter2,
+                capitalMayor: user2Capital,
+                userMenor: userFilter1,
+                capitalMenor: user1Capital
+            };
+        return results.userMayor + ' tiene mayor capital (USD '
+                + results.capitalMayor + ') que ' + results.userMenor + ' (USD '
+                + results.capitalMenor + ')';
     }
 };
 

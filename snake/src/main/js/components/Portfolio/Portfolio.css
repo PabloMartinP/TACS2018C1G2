@@ -6,6 +6,8 @@
 .table-container h5 {
     text-align: left;
     padding-left: 20px;
+    margin-top: 40px;
+    margin-bottom: 20px;
 }
 
 .table-container .input {
@@ -15,4 +17,26 @@
 
 h6.subtitle {
     color: #9e9e9e;
+}
+
+.checkbox-input .col-md-2 {
+    text-align: right;
+    padding-right: 0;
+}
+
+.checkbox-input .col-md-7 {
+    text-align: left;
+    padding-left: 0;
+}
+
+.admin table {
+    margin-bottom: 20px;
+}
+
+.admin button {
+    color: white;
+}
+
+.admin .comparisson-result {
+    margin-left: 40px;
 }

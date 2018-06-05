@@ -6,6 +6,7 @@ import com.utn.tacs.grupo2.snake.domain.Rol;
 import com.utn.tacs.grupo2.snake.domain.Usuario;
 import com.utn.tacs.grupo2.snake.repository.UsuarioRepository;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
@@ -73,14 +74,12 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
     }
 
     @Test
-    @WithUserDetails(value = "admin")
     public void guardar_conUsuarioNuevo_guardaElUsuario() {
         Long cantidadUsuariosAntes = usuarioRepository.count();
         Usuario usuario = new UsuarioBuilder()
                 .conId(null)
                 .conUsername("Homer")
-                .conPassword("Simpson")
-                .conRol(Rol.ROLE_USER)
+                .conPassword("123456")
                 .conUltimoAcceso(null)
                 .build();
 
@@ -88,11 +87,13 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
 
         Long cantidadUsuariosDespues = usuarioRepository.count();
         assertThat(usuario.getId()).isNotNull();
+        assertThat(usuario.getPassword()).isNotNull().isNotEqualTo("123456");
+        assertThat(usuario.getTelegramId()).isNotNull().isEqualTo(1234L);
+        assertThat(usuario.getRol()).isEqualTo(Rol.ROLE_USER);
         assertThat(cantidadUsuariosDespues).isEqualTo(cantidadUsuariosAntes + 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @WithUserDetails(value = "admin")
     public void guardar_conNombreDeUsuarioExistente_lanzaIllegalArgumentException() {
         Usuario usuario = UsuarioBuilder
                 .tipico()
@@ -100,15 +101,14 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
 
         usuarioService.guardar(usuario);
     }
-    
-    @Test(expected = AccessDeniedException.class)
-    @WithUserDetails(value = "chester")
-    public void guardar_conUsuarioComun_lanzaAccessDeniedException() {
-        Usuario usuario = UsuarioBuilder
-                .tipico()
-                .build();
 
-        usuarioService.guardar(usuario);
+    @Test
+    public void actualizarUltimoAcceso_conUsuarioLogeado_actualizaElUltimoAcceso() {
+        Usuario usuario = usuarioRepository.findByUsername("chester");
+        LocalDateTime anteriorIngreso = usuario.getUltimoAcceso();
+        
+        usuarioService.actualizarUltimoAcceso(usuario);
+
+        assertThat(usuario.getUltimoAcceso()).isNotEqualTo(anteriorIngreso);
     }
-
 }

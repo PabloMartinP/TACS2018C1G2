@@ -37,6 +37,11 @@ public class SecurityUtils {
         Assert.isTrue(usuarioLogeado.getId().equals(usuarioId) || usuarioLogeado.getRol().equals(Rol.ROLE_ADMIN), "Permiso Denegado");
     }
 
+    public static void validarUsuarioOAdministrador(String username) {
+        Usuario usuarioLogeado = SecurityUtils.getUsuarioLogueado().getUsuario();
+        Assert.isTrue(usuarioLogeado.getUsername().equals(username) || usuarioLogeado.getRol().equals(Rol.ROLE_ADMIN), "Permiso Denegado");
+    }
+
     public UsuarioVo loguearseComoUsuario(String username) {
 
         UserDetails user = userDetailsService.loadUserByUsername(username);

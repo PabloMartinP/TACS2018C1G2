@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-        import TextField from 'material-ui/TextField';
+import TextField from 'material-ui/TextField';
 import '../Portfolio/Portfolio.css';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -70,6 +70,6 @@ export default class AgregarTransaccion extends Component {
                         </FloatingActionButton>
                     </div>
                 </div>
-                                    )
-                        }
-                    }
+            );
+    }
+}

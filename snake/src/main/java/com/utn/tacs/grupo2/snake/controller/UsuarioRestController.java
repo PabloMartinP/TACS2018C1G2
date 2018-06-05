@@ -47,8 +47,8 @@ public class UsuarioRestController {
     }
 
     @PostMapping("/usuarios")
-    public Usuario guardar(@Valid @RequestBody Usuario usuario) {
-        return usuarioService.guardar(usuario);
+    public UsuarioVo guardar(@Valid @RequestBody Usuario usuario) {
+        return new UsuarioVo(usuarioService.guardar(usuario));
     }
 
     @GetMapping("/usuarios/logueado")
@@ -70,6 +70,11 @@ public class UsuarioRestController {
             usuariosVo.add(new UsuarioVo(usuario));
         });
         return usuariosVo;
+    }
+
+    @GetMapping("/usuarios/username/{username}")
+    public UsuarioVo obtenerUsuarioPorUsername(@PathVariable String username) {
+        return new UsuarioVo(usuarioService.obtenerPorUsername(username));
     }
 
 }
