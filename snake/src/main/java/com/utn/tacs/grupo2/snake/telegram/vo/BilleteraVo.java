@@ -21,4 +21,5 @@ import lombok.NoArgsConstructor;
 public class BilleteraVo {
     private MonedaVo moneda;
     private BigDecimal cantidad;
+    private BigDecimal diferencia;
 }
