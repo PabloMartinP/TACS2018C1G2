@@ -31,7 +31,7 @@ CREATE TABLE transaccion (
   fecha datetime,
   tipo varchar(50),
   PRIMARY KEY (id),
-  FOREIGN KEY (billetera_id) REFERENCES billetera(id),
+  FOREIGN KEY (billetera_id) REFERENCES billetera(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 
