@@ -8,10 +8,10 @@ INSERT INTO usuario
 
 INSERT INTO billetera
  (id  , usuario_id, moneda_nombre, cantidad_actual, dinero_invertido) VALUES
- (1   , 1         ,     'bitcoin',            0.01,                0),
+ (1   , 1         ,     'bitcoin',            0.01,              0.0),
  (2   , 1         ,    'ethereum',            1.00,            -10.0),
  (3   , 1         ,    'dogecoin',           27.80,            -10.0),
- (4   , 2         ,     'bitcoin',             0.0,              0.0);
+ (4   , 2         ,     'bitcoin',            10.0,             10.0);
 
 INSERT INTO transaccion
  (id  , billetera_id, moneda_nombre, cantidad, cotizacion,        fecha,     tipo) VALUES
