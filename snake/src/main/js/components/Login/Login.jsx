@@ -3,7 +3,7 @@ import './Login.css';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-import {SnakeRestApi} from '../../models/SnakeRestAPI';
+// import {SnakeRestApi} from '../../models/SnakeRestAPI';
 
 class Login extends Component {
 
@@ -12,9 +12,13 @@ class Login extends Component {
         this.state = {
             username: '',
             password: '',
+            passwordConfirm: '',
+            telegramId: '',
             error: '',
             usernameError: '',
-            passwordError: ''
+            passwordError: '',
+            passwordConfirmError: '',
+            telegramIdError: ''
         };
     }
 
@@ -24,8 +28,30 @@ class Login extends Component {
     }
 
     registerUser() {
-        const { username, password } = this.state;
-        SnakeRestAPI.registrarUsuario({username, password});
+        const { username, password, telegramId, passwordConfirm } = this.state;
+        let emptyfield = false;
+        ['username', 'password', 'telegramId', 'passwordConfirm'].forEach(key => {
+            if (this.state[key].length === 0) {
+                this.setState({[key + 'Error']: 'Debe completar este campo'})
+                emptyfield = true;
+            }
+        });
+        if (emptyfield) {
+            return;
+        }
+        if (password !== passwordConfirm) {
+            this.setState({passwordConfirm: 'Las contraseñas deben coincidir'});
+            return;
+        }
+        // SnakeRestAPI.registrarUsuario({username, password});
+        fetch('/api/usuarios', {
+            method: 'POST',
+            credentials: "same-origin",
+            body: JSON.stringify({ username, password, telegramId }),
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then(r => window.location.replace("/login"))
+        .catch(e => this.setState.error("El nombre de usuario ya existe"));
     }
 
     renderSubmitButton(register) {
@@ -41,6 +67,25 @@ class Login extends Component {
                 <RaisedButton label="Ingresar" primary={true} type="submit"/>
             </div>
         );
+    }
+
+    renderLoginButtons(register) {
+        if (!register) {
+            return (
+                <div className="row col-sm-5 col-md-6 col-centered">
+                    <div className="col-md-6">
+                        <FlatButton label="Olvidaste tu contraseña" primary={true} />
+                    </div>
+                    <div className="col-md-6">
+                        <a href="/register">
+                            <FlatButton label="Registrar" primary={true}
+                                style={{alignSelf: "flex-end", position: "absolute"}}/>
+                        </a>
+                    </div>
+                </div>
+            );
+        }
+        return '';
     }
 
     // login(event) {
@@ -84,6 +129,19 @@ class Login extends Component {
                             name="username"
                             errorText={this.state.usernameError}
                             /><br />
+                        { register ?
+                            (
+                                <TextField
+                                    style={{width: "100%"}}
+                                    hintText="Usuario de Telegram"
+                                    onChange={this.handleOnInputChange.bind(this)}
+                                    name="telegramId"
+                                    errorText={this.state.telegramIdError}
+                                    />
+                            )
+                            : ''
+                        }
+                        <br />
                         <TextField
                             hintText="Contraseña"
                             style={{width: "100%"}}
@@ -92,17 +150,23 @@ class Login extends Component {
                             errorText={this.state.passwordError}
                             type="password"
                             /><br />
+                        { register ?
+                            (
+                                <TextField
+                                    hintText="Confirmar Contraseña"
+                                    style={{width: "100%"}}
+                                    onChange={this.handleOnInputChange.bind(this)}
+                                    name="passwordConfirm"
+                                    errorText={this.state.passwordConfirmError}
+                                    type="password"
+                                    />
+                            )
+                            : ''
+                        }
+                        <br />
                     </div>
                     {this.renderSubmitButton(register)}
-                    <div className="row col-sm-5 col-md-6 col-centered">
-                        <div className="col-md-6">
-                            <FlatButton label="Olvidaste tu contraseña" primary={true} />
-                        </div>
-                        <div className="col-md-6">
-                            <FlatButton label="Registrar" primary={true}
-                                        style={{alignSelf: "flex-end", position: "absolute"}}/>
-                        </div>
-                    </div>
+                    {this.renderLoginButtons(register)}
                 </div>
                 );
     }
