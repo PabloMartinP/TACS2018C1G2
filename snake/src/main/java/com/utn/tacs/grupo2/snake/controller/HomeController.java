@@ -50,4 +50,15 @@ public class HomeController {
         }
     }
 
+    @RequestMapping("/register")
+    public String register(Model model, Principal principal, HttpSession session,
+            @RequestParam(value = "error", required = false, defaultValue = "0") boolean loginError) {
+        if (principal != null) {
+            return "redirect:/home";
+
+        } else {
+            return "register";
+        }
+    }
+
 }

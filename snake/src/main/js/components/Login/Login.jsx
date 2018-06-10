@@ -3,6 +3,7 @@ import './Login.css';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import {SnakeRestApi} from '../../models/SnakeRestAPI';
 
 class Login extends Component {
 
@@ -20,6 +21,26 @@ class Login extends Component {
     handleOnInputChange(event) {
         this.setState({[event.target.name]: event.target.value, error: '',
             [event.target.name + 'Error']: ''});
+    }
+
+    registerUser() {
+        const { username, password } = this.state;
+        SnakeRestAPI.registrarUsuario({username, password});
+    }
+
+    renderSubmitButton(register) {
+        if (register) {
+            return (
+                <div className="mb-20">
+                    <RaisedButton onClick={this.registerUser.bind(this)} label="Registrar" primary={true}/>
+                </div>
+            );
+        }
+        return (
+            <div className="mb-20">
+                <RaisedButton label="Ingresar" primary={true} type="submit"/>
+            </div>
+        );
     }
 
     // login(event) {
@@ -47,6 +68,7 @@ class Login extends Component {
     // }
 
     render() {
+        const { register } = this.props;
         return (
                 <div className="App">
                     <header className="App-header mb-20">
@@ -71,9 +93,7 @@ class Login extends Component {
                             type="password"
                             /><br />
                     </div>
-                    <div className="mb-20">
-                        <RaisedButton label="Ingresar" primary={true} type="submit"/>
-                    </div>
+                    {this.renderSubmitButton(register)}
                     <div className="row col-sm-5 col-md-6 col-centered">
                         <div className="col-md-6">
                             <FlatButton label="Olvidaste tu contraseña" primary={true} />
@@ -84,8 +104,8 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-                                    );
-                        }
-                    }
+                );
+    }
+}
 
-                    export default Login;
+export default Login;
