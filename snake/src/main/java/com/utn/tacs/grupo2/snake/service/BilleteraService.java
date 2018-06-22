@@ -34,9 +34,9 @@ public class BilleteraService {
     }
 
     private BigDecimal calcularDiferencia(Billetera billetera, CotizacionMonedaVo cotizacionMonedaVo) {
-        BigDecimal diferenciaActual = billetera.getDiferencia();
-        BigDecimal valoracionActual = billetera.getCantidad().multiply(cotizacionMonedaVo.getCotizacionDolar());
-        return diferenciaActual.add(valoracionActual);
+        BigDecimal dineroInvertido = billetera.getDineroInvertido();
+        BigDecimal valorDeLaMonedaActualmente = billetera.getCantidadActual().multiply(cotizacionMonedaVo.getCotizacionDolar());
+        return valorDeLaMonedaActualmente.subtract(dineroInvertido);
     }
 
 }

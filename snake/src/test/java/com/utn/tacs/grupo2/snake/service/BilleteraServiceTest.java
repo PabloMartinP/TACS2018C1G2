@@ -78,7 +78,7 @@ public class BilleteraServiceTest extends SnakeApplicationTest {
         BigDecimal diferenciaActual = billeteraService.obtenerDiferencia(USUARIO_ID, monedaNombre);
 
         assertThat(diferenciaActual).isNotNull();
-        assertThat(diferenciaActual).isEqualByComparingTo(new BigDecimal("9900"));
+        assertThat(diferenciaActual).isEqualByComparingTo(new BigDecimal("10"));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class BilleteraServiceTest extends SnakeApplicationTest {
         BigDecimal diferenciaActual = billeteraService.obtenerDiferencia(USUARIO_ID, monedaNombre);
 
         assertThat(diferenciaActual).isNotNull();
-        assertThat(diferenciaActual).isEqualByComparingTo(new BigDecimal("9900"));
+        assertThat(diferenciaActual).isEqualByComparingTo(new BigDecimal("10"));
     }
 
     @Test(expected = HttpServerErrorException.class)

@@ -62,12 +62,31 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
         assertThat(transaccion.getId()).isNotNull();
         assertThat(transaccion.getCotizacion()).isNotNull();
         assertThat(transaccion.getCotizacion()).isEqualTo(new BigDecimal("1000"));
-        assertThat(transaccion.getBilletera().getCantidad()).isEqualByComparingTo(BigDecimal.valueOf(11L));
-        assertThat(transaccion.getBilletera().getDiferencia()).isEqualByComparingTo(new BigDecimal("-1100"));
+        assertThat(transaccion.getBilletera().getCantidadActual()).isEqualByComparingTo(new BigDecimal("1.01"));
+        assertThat(transaccion.getBilletera().getDineroInvertido()).isEqualByComparingTo(new BigDecimal("1000"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @WithUserDetails(value = "chester")
+    public void registrar_conTransaccionVentaConCantidadMayorABilletera_lanzaIllegalArgumentException() throws IOException {
+        String monedaNombre = "bitcoin";
+        String cotizacionBitcoinResponse = obtenerContenidoArchivo("jsons/response_cotizacionBitcoin.json");
+        Transaccion transaccion = TransaccionBuilder
+                .ventaTipica()
+                .conId(null)
+                .conMonedaNombre(monedaNombre)
+                .conBilletera(null)
+                .conCantidad(BigDecimal.ONE)
+                .build();
+        mockRestServiceServer.expect(requestTo("https://api.coinmarketcap.com/v1/ticker/" + monedaNombre))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(cotizacionBitcoinResponse, MediaType.APPLICATION_JSON));
+
+        transaccionService.registrar(transaccion);
     }
 
     @Test
-    @WithUserDetails(value = "chester")
+    @WithUserDetails(value = "homer")
     public void registrar_conTransaccionVentaValida_retornaTransaccion() throws IOException {
         String cotizacionBitcoinResponse = obtenerContenidoArchivo("jsons/response_cotizacionBitcoin.json");
         String monedaNombre = "bitcoin";
@@ -88,8 +107,8 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
         assertThat(transaccion.getId()).isNotNull();
         assertThat(transaccion.getCotizacion()).isNotNull();
         assertThat(transaccion.getCotizacion()).isEqualTo(new BigDecimal("1000"));
-        assertThat(transaccion.getBilletera().getCantidad()).isEqualByComparingTo(BigDecimal.valueOf(9L));
-        assertThat(transaccion.getBilletera().getDiferencia()).isEqualByComparingTo(new BigDecimal("900"));
+        assertThat(transaccion.getBilletera().getCantidadActual()).isEqualByComparingTo(BigDecimal.valueOf(9L));
+        assertThat(transaccion.getBilletera().getDineroInvertido()).isEqualByComparingTo(new BigDecimal("-990"));
     }
 
     @Test(expected = HttpClientErrorException.class)
@@ -245,12 +264,12 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
 
         assertThat(cantidad).isEqualTo(6L);
     }
-    
+
     @Test
     @WithUserDetails(value = "admin")
     public void contar_conFechaValidaPosteriorA_retornaCantidadAPartirDeEsaFecha() {
         LocalDate fechaDesde = LocalDate.of(2018, Month.APRIL, 9);
-                
+
         Long cantidad = transaccionService.contar(fechaDesde);
 
         assertThat(cantidad).isEqualTo(2L);
@@ -263,16 +282,16 @@ public class TransaccionServiceTest extends SnakeApplicationTest {
 
         assertThat(cantidad).isEqualTo(0);
     }
-    
+
     @Test(expected = AccessDeniedException.class)
     @WithUserDetails(value = "chester")
     public void contar_conUsuarioNoAdministrador_lanzaAccessDeniedException() {
         transaccionService.contar(null);
     }
-    
+
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void contar_conUsuarioNoAdministrador_lanzaAuthenticationCredentialsNotFoundException() {
         transaccionService.contar(null);
     }
-    
+
 }

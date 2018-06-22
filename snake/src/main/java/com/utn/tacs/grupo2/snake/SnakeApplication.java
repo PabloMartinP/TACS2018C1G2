@@ -20,19 +20,20 @@ public class SnakeApplication {
 
         Map<String, Object> propiedades = new HashMap<String, Object>();
 
-        URI jdbUri = new URI(System.getenv("JAWSDB_URL"));
+        String dbUsuario;
+        String dbPass;
+        String dbURL;
 
-        String dbUsuario = jdbUri.getUserInfo().split(":")[0];
-        String dbPass = jdbUri.getUserInfo().split(":")[1];
-        String port = String.valueOf(jdbUri.getPort());
-        String dbURL = "jdbc:mysql://" + jdbUri.getHost() + ":" + port + jdbUri.getPath();
-
-        if (dbPass == null) {
-
+        String jdbUriString = System.getenv("JAWSDB_URL");
+        if (jdbUriString == null) {
             dbUsuario = "snake";
             dbPass = "snake";
             dbURL = "jdbc:mysql://localhost/snake";
-
+        } else {
+            URI jdbUri = new URI(jdbUriString);
+            dbUsuario = jdbUri.getUserInfo().split(":")[0];
+            dbPass = jdbUri.getUserInfo().split(":")[1];
+            dbURL = "jdbc:mysql://" + jdbUri.getHost() + ":" + String.valueOf(jdbUri.getPort()) + jdbUri.getPath();
         }
 
         System.out.println("################");

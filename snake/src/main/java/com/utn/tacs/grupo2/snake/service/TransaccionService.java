@@ -27,27 +27,34 @@ public class TransaccionService {
 
     @PreAuthorize("isAuthenticated()")
     public Transaccion registrar(Transaccion transaccion) {
-        
+
         Long usuarioId = SecurityUtils.getUsuarioLogueado().getUsuario().getId();
         SecurityUtils.validarUsuario(usuarioId);
         Assert.isTrue(transaccion.getCantidad().compareTo(BigDecimal.ZERO) > 0, "La cantidad indicada no puede ser menor a 0.");
         transaccion.setCotizacion(monedaRepository.obtenerCotizacion(transaccion.getMonedaNombre()).getCotizacionDolar());
-        transaccion.setFecha(LocalDateTime.now());
         Billetera billetera = billeteraRepository.findByUsuarioIdAndMonedaNombre(usuarioId, transaccion.getMonedaNombre())
                 .orElseThrow(() -> new IllegalArgumentException());
+        validarBilletera(billetera, transaccion);
+        transaccion.setFecha(LocalDateTime.now());
         actualizarBilletera(billetera, transaccion);
         transaccion.setBilletera(billetera);
 
         return transaccionRepository.save(transaccion);
     }
 
+    private void validarBilletera(Billetera billetera, Transaccion transaccion) {
+        if (TipoTransaccion.VENTA.equals(transaccion.getTipo())) {
+            Assert.isTrue(billetera.getCantidadActual().compareTo(transaccion.getCantidad()) > 0, "Fondos Insuficientes.");
+        }
+    }
+
     private void actualizarBilletera(Billetera billetera, Transaccion transaccion) {
         if (TipoTransaccion.COMPRA.equals(transaccion.getTipo())) {
-            billetera.setCantidad(billetera.getCantidad().add(transaccion.getCantidad()));
-            billetera.setDiferencia(billetera.getDiferencia().subtract(transaccion.getCantidad().multiply(transaccion.getCotizacion())));
+            billetera.setCantidadActual(billetera.getCantidadActual().add(transaccion.getCantidad()));
+            billetera.setDineroInvertido(billetera.getDineroInvertido().add(transaccion.getCantidad().multiply(transaccion.getCotizacion())));
         } else {
-            billetera.setCantidad(billetera.getCantidad().subtract(transaccion.getCantidad()));
-            billetera.setDiferencia(billetera.getDiferencia().add(transaccion.getCantidad().multiply(transaccion.getCotizacion())));
+            billetera.setCantidadActual(billetera.getCantidadActual().subtract(transaccion.getCantidad()));
+            billetera.setDineroInvertido(billetera.getDineroInvertido().subtract(transaccion.getCantidad().multiply(transaccion.getCotizacion())));
         }
     }
 

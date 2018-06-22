@@ -25,6 +25,6 @@ public class Billetera implements Serializable {
     @JoinColumn
     @ManyToOne
     private Usuario usuario;
-    private BigDecimal cantidad;
-    private BigDecimal diferencia;
+    private BigDecimal cantidadActual;
+    private BigDecimal dineroInvertido;
 }

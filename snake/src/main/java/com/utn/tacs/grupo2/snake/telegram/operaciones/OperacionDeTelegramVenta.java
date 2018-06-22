@@ -17,7 +17,7 @@ public class OperacionDeTelegramVenta implements OperacionDeTelegram{
 
     @Override
     public String getResultado(PartesMensajeTelegram parametros) {
-        boolean ok  = Api.vender(parametros.getUsuario().getUsuarioId(), parametros.getMoneda(), parametros.getCantidad());
+        boolean ok  = Api.vender(parametros.getUsuario().getUsuarioId(), parametros.getMoneda(), parametros.getCantidad(), parametros.getTelegramId());
         if(ok)
             return "Vendiste " + String.valueOf(parametros.getCantidad()) + " " + parametros.getMoneda().getNombre();
         else

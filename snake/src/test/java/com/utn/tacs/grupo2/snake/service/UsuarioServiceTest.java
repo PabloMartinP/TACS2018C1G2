@@ -107,8 +107,9 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
         Usuario usuario = usuarioRepository.findByUsername("chester");
         LocalDateTime anteriorIngreso = usuario.getUltimoAcceso();
         
-        usuarioService.actualizarUltimoAcceso(usuario);
+        Usuario usuarioActualizado = usuarioService.actualizarUltimoAcceso(usuario);
 
-        assertThat(usuario.getUltimoAcceso()).isNotEqualTo(anteriorIngreso);
+        assertThat(usuarioActualizado.getUltimoAcceso()).isNotEqualTo(anteriorIngreso);
     }
+    
 }

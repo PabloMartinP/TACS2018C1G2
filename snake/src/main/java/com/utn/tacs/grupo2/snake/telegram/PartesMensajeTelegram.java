@@ -37,9 +37,9 @@ public class PartesMensajeTelegram {
         if(esUnLogin()){
             username = mensajeSeparado[1];
             telegramToken = Long.parseLong(mensajeSeparado[2]);
-            tryLogin();
+            tryLogin(telegramToken);
         }else{
-            if(tryLogin()){
+            if(tryLogin(telegramId)){
                 if(mensajeSeparado.length>1)
                     moneda= TelegramUtils.newMoneda(mensajeSeparado[1].substring(0, 1)); 
                 if(mensajeSeparado.length>2)
@@ -53,8 +53,8 @@ public class PartesMensajeTelegram {
        return this.usuario;
    }
 
-   private boolean tryLogin(){
-       this.usuario = Api.login(this.telegramId);
+   private boolean tryLogin(Long telegramIdOToken){
+       this.usuario = Api.login(telegramIdOToken);
        return LogOk();
    }
    
@@ -99,7 +99,7 @@ public class PartesMensajeTelegram {
     }
    
    public boolean esUnLogin(){
-       return getTexto().equalsIgnoreCase("login");
+       return mensajeSinBarra.startsWith("login");
    }
    
     public String getTexto(){

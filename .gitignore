@@ -23,5 +23,3 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-
-snake/src/main/resources/static/built

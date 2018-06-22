@@ -24,6 +24,7 @@ public class Api {
 
     //private final  RestTemplate restTemplate;
     private final static String URL = "https://tacs2018-snake.herokuapp.com/api";
+    //private final static String URL = "http://localhost:8080/api";
     private static RestTemplate _restTemplate = null;
 
     //TODO: Esto supongo que se podria hacer mejor con spring
@@ -74,10 +75,14 @@ public class Api {
         return usuario;
 
     }
+    
+    private static String getQueryStringToken(Long telegramId){
+        return "token=" + telegramId.toString();
+    }
 
-    public static BigDecimal getCantidadDeMonedasDe(Long usuarioId, Moneda moneda) {
+    public static BigDecimal getCantidadDeMonedasDe(Long usuarioId, Moneda moneda, Long telegramId) {
         RestTemplate restTemplate = newRestTemplate();
-        String url = URL + "/usuarios/" + usuarioId.toString() + "/portfolio";
+        String url = URL + "/usuarios/" + usuarioId.toString() + "/portfolio?" + getQueryStringToken(telegramId);
         BilleteraVo[] billetera;
         billetera = restTemplate.getForObject(url, BilleteraVo[].class);
         BigDecimal cantidad = new BigDecimal(0);
@@ -93,13 +98,13 @@ public class Api {
         return cantidad;
     }
 
-    public static boolean comprar(Long usuarioId, Moneda moneda, BigDecimal cantidad) {
-        return Api.transaccion(usuarioId, moneda, cantidad, "COMPRA");
+    public static boolean comprar(Long usuarioId, Moneda moneda, BigDecimal cantidad, Long telegramId) {
+        return Api.transaccion(usuarioId, moneda, cantidad, "COMPRA", telegramId);
     }
 
-    private static boolean transaccion(Long usuarioId, Moneda moneda, BigDecimal cantidad, String tipo) {
+    private static boolean transaccion(Long usuarioId, Moneda moneda, BigDecimal cantidad, String tipo, Long telegramId) {
         RestTemplate restTemplate = newRestTemplate();
-        String url = URL + "/transacciones/";
+        String url = URL + "/transacciones?" +  getQueryStringToken(telegramId);
         TransaccionVo t;
         if (tipo.equalsIgnoreCase("COMPRA")) {
             t = TransaccionVo.newCompra();
@@ -117,8 +122,8 @@ public class Api {
         }
     }
 
-    public static boolean vender(Long usuarioId, Moneda moneda, BigDecimal cantidad) {
-        return Api.transaccion(usuarioId, moneda, cantidad, "VENTA");
+    public static boolean vender(Long usuarioId, Moneda moneda, BigDecimal cantidad, Long telegramId) {
+        return Api.transaccion(usuarioId, moneda, cantidad, "VENTA", telegramId);
     }
 
 }

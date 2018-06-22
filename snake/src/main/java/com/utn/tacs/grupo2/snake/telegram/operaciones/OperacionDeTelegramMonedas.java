@@ -19,7 +19,7 @@ public class OperacionDeTelegramMonedas implements OperacionDeTelegram {
     @Override
     public String getResultado(PartesMensajeTelegram parametros) {
         
-        BigDecimal cantidad = Api.getCantidadDeMonedasDe(parametros.getUsuario().getUsuarioId(),  parametros.getMoneda());
+        BigDecimal cantidad = Api.getCantidadDeMonedasDe(parametros.getUsuario().getUsuarioId(),  parametros.getMoneda(), parametros.getTelegramId());
         return "Tenes " + cantidad.toString() + " de " + parametros.getMoneda().getNombre();
     }
     
