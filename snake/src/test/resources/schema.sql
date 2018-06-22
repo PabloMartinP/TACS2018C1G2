@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS transaccion;
+DROP TABLE IF EXISTS billetera;
+DROP TABLE IF EXISTS usuario;
+
 CREATE TABLE usuario (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   username varchar(255),
@@ -31,7 +35,7 @@ CREATE TABLE transaccion (
   fecha datetime,
   tipo varchar(50),
   PRIMARY KEY (id),
-  FOREIGN KEY (billetera_id) REFERENCES billetera(id),
+  FOREIGN KEY (billetera_id) REFERENCES billetera(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 
