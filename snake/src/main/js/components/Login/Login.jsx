@@ -40,7 +40,11 @@ class Login extends Component {
             return;
         }
         if (password !== passwordConfirm) {
-            this.setState({passwordConfirm: 'Las contraseñas deben coincidir'});
+            this.setState({passwordConfirmError: 'Las contraseñas deben coincidir'});
+            return;
+        }
+        if (!parseInt(telegramId)) {
+            this.setState({telegramIdError: 'Este campo debe ser númerico'});
             return;
         }
         // SnakeRestAPI.registrarUsuario({username, password});
