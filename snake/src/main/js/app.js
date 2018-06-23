@@ -32,6 +32,10 @@ class App extends React.Component {
                         <Administracion/>
                     </div>
                 );
+            case 'register':
+                return (
+                    <Login register={true}/>
+                );
             default:
                 return <Login/>;
         }

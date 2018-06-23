@@ -39,10 +39,11 @@ public class UsuarioService {
     }
 
     public Usuario guardar(Usuario usuario) {
+        System.out.println(usuario);
         Assert.isNull(usuarioRepository.findByUsername(usuario.getUsername()), "Error al crear al usuario.");
-        usuario.setTelegramId(Long.valueOf("1234"));
         usuario.setRol(Rol.ROLE_USER);
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        usuario.setUltimoAcceso(LocalDateTime.now());
         return usuarioRepository.save(usuario);
     }
 

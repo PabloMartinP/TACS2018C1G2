@@ -5,6 +5,16 @@ const {Cotizador} = require('./Cotizador');
 const fechaADate = objetoFecha => new Date(objetoFecha.year, objetoFecha.monthValue, objetoFecha.dayOfMonth, objetoFecha.hour, objetoFecha.minute, objetoFecha.second, 0);
 
 const SnakeRestAPI = {
+
+    registrarUsuario(usuario) {
+        return fetch('/api/usuarios', {
+            method: 'POST',
+            credentials: "same-origin",
+            body: JSON.stringify(usuario),
+            headers: {'Content-Type': 'application/json'}
+        })
+    },
+
     registrarTransaccion(unaTransaccion) {
         return fetch('/api/transacciones', {
             method: 'POST',
