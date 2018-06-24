@@ -11,8 +11,9 @@ function FalloEnRegistroDeTransaccionError(message) {
 const Usuario = {
     VENTA_CON_FONDOS_INSUFICIENTES: 'No se tienen los suficientes fondos como para realizar esta venta',
 
-    crear(unNombre, unSnakeService, fechaDeUltimoAcceso) {
+    crear(unId, unNombre, unSnakeService, fechaDeUltimoAcceso) {
         const nuevoUsuario = Object.create(this);
+        nuevoUsuario.id = unId;
         nuevoUsuario.nombre = unNombre;
         nuevoUsuario.wallet = new Map();
         nuevoUsuario.transacciones = [];
@@ -72,9 +73,7 @@ const Usuario = {
     },
 
     obtenerBalanceDe(unaCriptomoneda) {
-        return this.listarTransaccionesDe(unaCriptomoneda).reduce((balance, transaccion) => {
-            return balance + transaccion.calcularBalance();
-        }, 0);
+        return this.snakeService.obtenerBalanceDe(this, unaCriptomoneda);
     },
 
     getCapital(cotizador, portfolio) {

@@ -5,7 +5,6 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
-import {Usuario} from '../../models/Usuario';
 const moment = require('moment');
 
 export default class InfoDeUsuario extends Component {

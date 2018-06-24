@@ -53,7 +53,7 @@ const SnakeRestAPI = {
                     return '';
                 }
                 const userJson = usuariosFiltrado[0];
-                usuario = Usuario.crear(username, this, fechaADate(userJson.ultimoAcceso));
+                usuario = Usuario.crear(userJson.usuarioId, username, this, fechaADate(userJson.ultimoAcceso));
                 return this.obtenerPortfolio(usuario, userJson._links.portfolio.href);
             })
         );
@@ -81,7 +81,7 @@ const SnakeRestAPI = {
             .then(portfolioEnJson => {
                 const promesasDeMonedas = portfolioEnJson.map(monedaEnJson => {
                     const criptomoneda = monedaEnJson.moneda.nombre;
-                    usuario.agregarCriptomoneda(criptomoneda, monedaEnJson.cantidad);
+                    usuario.agregarCriptomoneda(criptomoneda, monedaEnJson.cantidadActual);
                     return fetch(monedaEnJson._links.transacciones.href, {credentials: "same-origin"})
                         .then(respuesta => respuesta.json())
                         .then(transaccionesEnJson => transaccionesEnJson.forEach(transaccionEnJson => {
@@ -102,7 +102,7 @@ const SnakeRestAPI = {
                 return respuesta.json()
             })
             .then(usuarioEnJson => {
-                const usuario = Usuario.crear(usuarioEnJson.username, this, fechaADate(usuarioEnJson.ultimoAcceso));
+                const usuario = Usuario.crear(usuarioEnJson.usuarioId, usuarioEnJson.username, this, fechaADate(usuarioEnJson.ultimoAcceso));
                 return this.obtenerPortfolio(usuario, usuarioEnJson._links.portfolio.href);
             });
     },
@@ -113,6 +113,11 @@ const SnakeRestAPI = {
 
     obtenerUsuarioPorUsername(username) {
         return this.agregarPortfolioAUsuario(fetch(`/api/usuarios/username/${username}`, {credentials: 'same-origin'}));
+    },
+
+    obtenerBalanceDe(unUsuario, unaCriptomoneda) {
+        return fetch(`/api/usuarios/${unUsuario.id}/portfolio/${unaCriptomoneda}/diferencia`, {credentials: 'same-origin'})
+            .then(respuesta => respuesta.json());
     }
 };
 

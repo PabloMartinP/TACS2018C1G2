@@ -22,7 +22,7 @@ describe('Un usuario', () => {
     beforeEach(() => {
         unCotizador = Object.create(CotizadorStub);
         unCotizador.cotizacionDelDia = cotizacionDelDia;
-        unUsuario = Usuario.crear('unNombre', SnakeRestAPIStub, new Date());
+        unUsuario = Usuario.crear('unId', 'unNombre', SnakeRestAPIStub, new Date());
         unaCriptomoneda = {};
     });
 
@@ -72,19 +72,6 @@ describe('Un usuario', () => {
         ])
     });
 
-    it('puede calcular la pérdida que genera comprar sin haber comprado', () => {
-        unUsuario.comprar(unaCriptomoneda, 1, unCotizador);
-        assert.equal(unUsuario.obtenerBalanceDe(unaCriptomoneda), -50);
-    });
-
-    it('puede calcular la ganancia que genera vender', () => {
-        unCotizador.cotizacionDelDia = 10;
-        unUsuario.comprar(unaCriptomoneda, 1, unCotizador);
-        unCotizador.cotizacionDelDia = 5;
-        unUsuario.vender(unaCriptomoneda, 1, unCotizador);
-        assert.equal(unUsuario.obtenerBalanceDe(unaCriptomoneda), -5)
-    });
-
     it('debe informar al SnakeService ante cada transacción que se registre', () => {
         const anotherSnakeRestAPIStub = {
             fueLlamado: false,
@@ -94,7 +81,7 @@ describe('Un usuario', () => {
             }
         };
 
-        unUsuario = Usuario.crear('unNombre', anotherSnakeRestAPIStub, new Date());
+        unUsuario = Usuario.crear('unId', 'unNombre', anotherSnakeRestAPIStub, new Date());
         unUsuario.comprar(unaCriptomoneda, 10, unCotizador);
         assert(anotherSnakeRestAPIStub.fueLlamado);
     });
@@ -109,7 +96,7 @@ describe('Un usuario', () => {
             }
         };
 
-        unUsuario = Usuario.crear('unNombre', failingSnakeRestAPIControllerStub, new Date());
+        unUsuario = Usuario.crear('unId', 'unNombre', failingSnakeRestAPIControllerStub, new Date());
         assert.throws(() => unUsuario.comprar(unaCriptomoneda, 10, unCotizador), FalloEnRegistroDeTransaccionError);
         assert(failingSnakeRestAPIControllerStub.fueLlamado);
         assert.equal(unUsuario.listarTransacciones().length, 0);

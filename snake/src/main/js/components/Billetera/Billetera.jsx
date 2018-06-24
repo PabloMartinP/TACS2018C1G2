@@ -15,12 +15,17 @@ export default class Billetera extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { modalOpen: false };
+        this.state = { modalOpen: false, difference: null };
     }
 
     toggle() {
         this.setState({modalOpen: !this.state.modalOpen});
     }
+
+   componentDidMount() {
+       this.props.usuario.obtenerBalanceDe(this.props.moneda)
+           .then(difference => this.setState({ difference }));
+   }
 
     render() {
         const actions = [
@@ -36,7 +41,7 @@ export default class Billetera extends Component {
                 </TableRowColumn>
                 <TableRowColumn>{this.props.cantidad}</TableRowColumn>
                 <TableRowColumn>USD {this.props.cotizacion ? this.props.cotizacion : '-'}</TableRowColumn>
-                <TableRowColumn>USD <span>{this.props.usuario.obtenerBalanceDe(this.props.moneda)}</span></TableRowColumn>
+                <TableRowColumn>USD {this.state.difference ? this.state.difference : '-'}</TableRowColumn>
                 <TableRowColumn>
                     <RaisedButton
                         label={
