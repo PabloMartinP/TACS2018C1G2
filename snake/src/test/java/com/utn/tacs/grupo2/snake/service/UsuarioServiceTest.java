@@ -82,6 +82,7 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
                 .conPassword("123456")
                 .conUltimoAcceso(null)
                 .build();
+        usuario.setTelegramId(1234L);
 
         usuarioService.guardar(usuario);
 
@@ -106,10 +107,10 @@ public class UsuarioServiceTest extends SnakeApplicationTest {
     public void actualizarUltimoAcceso_conUsuarioLogeado_actualizaElUltimoAcceso() {
         Usuario usuario = usuarioRepository.findByUsername("chester");
         LocalDateTime anteriorIngreso = usuario.getUltimoAcceso();
-        
+
         Usuario usuarioActualizado = usuarioService.actualizarUltimoAcceso(usuario);
 
         assertThat(usuarioActualizado.getUltimoAcceso()).isNotEqualTo(anteriorIngreso);
     }
-    
+
 }
