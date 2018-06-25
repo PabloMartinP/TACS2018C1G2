@@ -4,8 +4,6 @@ import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import com.utn.tacs.grupo2.snake.service.TransaccionService;
 import com.utn.tacs.grupo2.snake.vo.TransaccionVo;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
