@@ -137,7 +137,7 @@ class Login extends Component {
                             (
                                 <TextField
                                     style={{width: "100%"}}
-                                    hintText="Usuario de Telegram"
+                                    hintText="Clave para Telegram"
                                     onChange={this.handleOnInputChange.bind(this)}
                                     name="telegramId"
                                     errorText={this.state.telegramIdError}
