@@ -3,8 +3,11 @@ package com.utn.tacs.grupo2.snake.service;
 import com.utn.tacs.grupo2.snake.domain.Billetera;
 import com.utn.tacs.grupo2.snake.domain.MonedaTipo;
 import com.utn.tacs.grupo2.snake.domain.Rol;
+import com.utn.tacs.grupo2.snake.domain.TipoTransaccion;
+import com.utn.tacs.grupo2.snake.domain.Transaccion;
 import com.utn.tacs.grupo2.snake.domain.Usuario;
 import com.utn.tacs.grupo2.snake.repository.BilleteraRepository;
+import com.utn.tacs.grupo2.snake.repository.TransaccionRepository;
 import com.utn.tacs.grupo2.snake.repository.UsuarioRepository;
 import com.utn.tacs.grupo2.snake.security.SecurityUtils;
 import java.math.BigDecimal;
@@ -25,6 +28,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final BilleteraRepository billeteraRepository;
+    private final TransaccionRepository transaccionRepository;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Usuario> obtenerTodos() {
@@ -58,12 +62,23 @@ public class UsuarioService {
 
             Billetera nuevaBilletera = new Billetera();
 
-            nuevaBilletera.setUsuario(usuario);
+            nuevaBilletera.setUsuario(usuarioCreado);
             nuevaBilletera.setDineroInvertido(BigDecimal.ZERO);
-            nuevaBilletera.setCantidadActual(BigDecimal.ONE);
+            nuevaBilletera.setCantidadActual(BigDecimal.ZERO);
             nuevaBilletera.setMonedaNombre(monedaTipo.getNombre());
 
             billeteraRepository.save(nuevaBilletera);
+
+            Transaccion transaccion = new Transaccion();
+
+            transaccion.setBilletera(nuevaBilletera);
+            transaccion.setCantidad(BigDecimal.ZERO);
+            transaccion.setCotizacion(BigDecimal.ZERO);
+            transaccion.setTipo(TipoTransaccion.COMPRA);
+            transaccion.setFecha(LocalDateTime.now());
+            transaccion.setMonedaNombre(monedaTipo.getNombre());
+
+            transaccionRepository.save(transaccion);
         }
 
         return usuarioCreado;
