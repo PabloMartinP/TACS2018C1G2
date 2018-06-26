@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BilleteraVo {
     private MonedaVo moneda;
-    private BigDecimal cantidadActual;
-    private BigDecimal dineroInvertido;
+    private BigDecimal cantidad;
+    private BigDecimal diferencia;
 
 }
