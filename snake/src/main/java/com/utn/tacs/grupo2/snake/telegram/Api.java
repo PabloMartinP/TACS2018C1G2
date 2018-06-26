@@ -89,7 +89,7 @@ public class Api {
         if (billetera != null) {
             for (BilleteraVo b : billetera) {
                 if (b.getMoneda().getNombre().equalsIgnoreCase(moneda.getNombre())) {
-                    cantidad = b.getCantidadActual();
+                    cantidad = b.getCantidad();
                     cantidad = cantidad.setScale(2, RoundingMode.CEILING);
                     break;
                 }
